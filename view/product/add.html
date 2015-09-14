@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+		<title>添加理财产品</title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+		<script type="text/javascript" src="../../js/support.js"></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/product/add');
+		</script>
+	</head>
+
+	<body>
+		<header class="header">
+			<span class="icon icon-back floatleft" id="backBtn"></span>
+			<h1 class="aligncenter font17">添加产品</h1>
+		</header>
+		<div class="main p-bt10 Ios_scroll" style="top:50px;bottom:50px;">
+				<ul class="inputList mart15">
+					<li class="clearfix" id="selectProductType" controlType="text">
+						<span class="lable">产品类型</span>
+						<span class="alignright placeTxt">请选择</span>
+						<label class="lableTxt"></label>
+					</li>
+				</ul>
+				<p id="blank" class="p-bt10 p-top10 color-a font14 aligncenter">请先选择产品类型</p>
+		</div>
+	</body>
+</html>

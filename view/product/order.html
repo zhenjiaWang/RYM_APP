@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" /> 
+		<meta name="apple-touch-fullscreen" content="yes"/>
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"> 
+		<title>添加理财产品</title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+		<script type="text/javascript" src="../../js/support.js"></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/product/order');
+		</script>
+		<style>
+			body{ -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;}
+		</style>
+	</head>
+	<body>
+		<header class="header">
+			<span class="icon icon-back floatleft" id="backBtn"></span>
+			<h1 class="aligncenter font17">调整产品顺序</h1>
+			<div class="next_step" id="sendBtn"><span class="headerBtn aligncenter">发布</span></div>
+		</header>
+		<div class="main p-bt10" style="top: 50px;">
+			<ul class="inputList productList mart15" id="productSaleNumUL">
+				<!--<li class="clearfix current" style="top:0;">
+					<span class="icon icon-replace"></span>
+					<span class="lable txt_hidden block">鑫晟财富2014004号集合资金信托计划</span>
+					<span class="icon icon-move"></span>
+				</li>-->
+				<!--<li class="clearfix move" style="top:30px;">
+					<span class="icon icon-replace"></span>
+					<span class="icon icon-delete"></span>
+					<span class="lable">鑫晟财富2014004号集合</span>
+					<span class="icon icon-move"></span>
+				</li>-->
+				<!--<li class="clearfix" style="top:46px;">
+					<span class="icon icon-replace"></span>
+					<span class="lable ">鑫晟财富</span>
+					<span class="icon icon-move"></span>
+				</li>
+				<li class="clearfix" style="top:92px;">
+					<span class="icon icon-replace"></span>
+					<span class="lable ">鑫晟财富</span>
+					<span class="icon icon-move"></span>
+				</li>
+				<li class="clearfix" style="top:138px;">
+					<span class="icon icon-add"></span>
+					<span class="lable color-a">空</span>
+				</li>-->
+			</ul>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	    <meta name="apple-touch-fullscreen" content="yes"/>
+	    <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"> 
+		<title>login</title>
+		<link rel="stylesheet" type="text/css" href="../css/appstyle.css">
+		<script type="text/javascript" src="../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../js/sea.js"></script>
+		<script type="text/javascript" src="../js/json2.js"></script>
+		<script>
+			seajs.config({
+				base: "../js/modules/"
+			});
+			seajs.use('view/login');
+		</script>
+	</head>
+	<body>
+		<div class="loginBox">
+			<section class="loginTop">
+				<div class="userImg"></div>
+				<div class="loginInt font14">
+					<p>
+						<i class="icon icon-1"></i>
+						<input type="text" id="mobilePhone" name="mobilePhone" placeholder="用户名" class="font14"/>
+						<i class="icon icon-clear"></i>
+					</p>
+					<p class="mart20">
+						<i class="icon icon-2"></i>
+						<input type="password" id="password" name="password" placeholder="密码" class="font14"/>
+						<i class="icon icon-clear"></i>
+					</p>
+				</div>
+				<a href="javascript:;" id="loginBtn" class="loginBtn aligncenter font17">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</a>
+				<p class="alignright mart5"><a href="javascript:;">忘记密码？</a></p>
+			</section>
+			<section class="bottomBtn clearfix">
+				<a href="javascript:;" id="regBtn" class="font14 floatleft aligncenter">注册新用户</a>
+				<span></span>
+				<a href="javascript:;" id="wxBtn" class="font14 floatright aligncenter">微信账号登录</a>
+			</section>
+		</div>
+	</body>
+</html>

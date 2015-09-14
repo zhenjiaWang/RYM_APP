@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" /> 
+		<meta name="apple-touch-fullscreen" content="yes"/>
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"> 
+		<title>理财室-在售中</title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+		<script type="text/javascript" src="../../js/support.js"></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/product/sale');
+		</script>
+	</head>
+	<body >
+		<div class="main" style="display: none;">
+			<section class="personBoard">
+				<div class="topImg" id="uploadBgImgBtn">
+					<img>
+					<div class="imgMask"></div>
+				</div>
+				<div class="userInfo mart5 clearfix">
+					<span class="userPhoto floatleft"><img src=""></span>
+					<div class="floatleft marl15 mart10 font13">
+						<p class="font17" id="userName"></p>
+						<p id="orgName"></p>
+						<p >工号：<span id="plannerNo"></span></p>
+					</div>
+					<div class="floatright mart15 alignright color-6">
+						<p ><span id="friends"></span><i class="icon icon-3 marl5"></i></p>
+						<p ><span id="follow"></span><i class="icon icon-4 marl5"></i></p>
+					</div>
+				</div>
+				<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i><span id="signature"></span></div>
+			</section>
+			<p class="p-bt10 p-top10 color-a font14 aligncenter" id="blank" style="display: none;">当前无产品</p>
+			<div class="cardBox"></div>
+			<!--<div class="cardBox">
+				<div class="oneCard">
+					<p class="font11 title color-a alignright">
+						<span class="tips floatleft strong">理 财</span>
+						<span class="floatleft marl5">1小时前更新</span>
+						<span>关联自<em>Brad Pitt</em></span>
+					</p>
+					<p class="color-3 marl10 font17 mart10 strong">鑫晟财富2014004号集合</p>
+					<p class="color-3 marl10 mart5 font17 strong">资金信托计划<span class="tip font12">在售</span></p>
+					<div class="clearfix mart5">
+						<span class="font14 floatleft inlineblock marl10 p-top25 color-9">期限:<em class="color-6">35 - 365天</em></span>
+						<div class="floatright alignright marr10">
+							<p class="font11 color-a">预计年化率</p>
+							<span class="tipsBig font25 color-white">4.64 - 6.85<em class="font14 color-white">%</em></span>
+						</div>
+					</div>
+					<div class="cardBottom clearfix alignright mart10">
+						<span class="clearfix floatleft"><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft">1,2983</em></span>
+						<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">823</em></span>
+						<span><i class="icon icon-comment"></i></span>
+					</div>
+				</div>
+				<div class="oneCard">
+					<p class="font11 title color-a alignright">
+						<span class="tips tips-j floatleft strong">基 金</span>
+						<span class="floatleft marl5">1小时前更新</span>
+						<span>关联自<em>Brad Pitt</em></span>
+					</p>
+					<p class="color-3 marl10 font17 mart10 strong">鑫晟财富2014004号集合</p>
+					<p class="color-3 marl10 mart5 font17 strong">资金信托计划<span class="tip tip-over font12">募集期结束</span></p>
+					<div class="clearfix mart5">
+						<span class="font14 floatleft inlineblock marl10 p-top25 color-9">期限:<em class="color-6">35 - 365天</em></span>
+						<div class="floatright alignright marr10">
+							<p class="font11 color-a">基金类型</p>
+							<span class="tipsBig tips-j font20 color-white strong">股票型</em></span>
+						</div>
+					</div>
+					<div class="cardBottom clearfix alignright mart10">
+						<span class="clearfix floatleft"><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft">1,2983</em></span>
+						<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">823</em></span>
+						<span><i class="icon icon-comment"></i></span>
+					</div>
+				</div>
+				<div class="oneCard">
+					<p class="font11 title color-a alignright">
+						<span class="tips tips-x floatleft strong">信 托</span>
+						<span class="floatleft marl5">1小时前更新</span>
+						<span>关联自<em>Brad Pitt</em></span>
+					</p>
+					<p class="color-3 marl10 font17 mart10 strong">鑫晟财富2014004号集合</p>
+					<p class="color-3 marl10 mart5 font17 strong">资金信托计划<span class="tip font12">在售</span></p>
+					<div class="clearfix mart5">
+						<span class="font14 floatleft inlineblock marl10 p-top25 color-9">期限:<em class="color-6">35 - 365天</em></span>
+						<div class="floatright alignright marr10">
+							<p class="font11 color-a">预计年化率</p>
+							<span class="tipsBig tips-x font20 color-white">6.85<em class="font14 color-white">%</em></span>
+						</div>
+					</div>
+					<div class="cardBottom clearfix alignright mart10">
+						<span class="clearfix floatleft"><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft">1,2983</em></span>
+						<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">823</em></span>
+						<span><i class="icon icon-comment"></i></span>
+					</div>
+				</div>
+			</div>-->
+		</div>
+		<!--底部弹出begin-->
+		<footer class="footer footerMask" style="height:99px;bottom:-99px;"></footer>
+		<div class="bottomPop aligncenter nobg" id="bottomPop">
+			<span class="popBtn" id="addProductBtn">
+				<i class="icon icon-plus-big"></i>
+				<em class="font11 color-6">添加产品</em>
+			</span>
+			<span class="popBtn" id="relationProductBtn">
+				<i class="icon icon-6"></i>
+				<em class="font11 color-6">关联产品</em>
+			</span>
+		</div>
+		<!--底部弹出over-->
+	</body>
+</html>

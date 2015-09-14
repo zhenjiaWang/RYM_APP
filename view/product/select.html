@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="apple-touch-fullscreen" content="yes"/>
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"> 
+		<title>选择项列表</title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+		<script type="text/javascript" src="../../js/support.js"></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/product/select');
+		</script>
+	</head>
+	<body>
+		<header class="header">
+			<span class="icon icon-back floatleft" id="backBtn"></span>
+			<h1 class="aligncenter font17"></h1>
+		</header>
+		<div class="main" style="top: 50px;">
+			<ul class="inputList checkList" id="selectItemUL">
+				<!--<li class="clearfix choosed">
+					<span class="lable txt_hidden">朝阳区工体北路分部1</span>
+				</li>
+				<li class="clearfix ">
+					<span class="lable txt_hidden">朝阳区工体北路分部22</span>
+				</li>
+				<li class="clearfix ">
+					<span class="lable txt_hidden">朝阳区工体北路分部333</span>
+				</li>
+				<li class="clearfix ">
+					<span class="lable txt_hidden">朝阳区工体北路分部444</span>
+				</li>-->
+			</ul>
+		</div>
+	</body>
+</html>

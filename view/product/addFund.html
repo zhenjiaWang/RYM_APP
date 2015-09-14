@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+		<title>添加理财产品</title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+		<script type="text/javascript" src="../../js/support.js"></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/product/addFund');
+		</script>
+	</head>
+
+	<body>
+		<header class="header">
+			<span class="icon icon-back floatleft" id="backBtn"></span>
+			<h1 class="aligncenter font17" style="left:70px;right:70px;">添加产品</h1>
+			<div class="next_step" id="saveBtn"><span class="headerBtn aligncenter">下一步</span></div>
+		</header>
+		<div class="main p-bt10 Ios_scroll" style="top:50px;bottom:50px;">
+			<form name="editForm" id="editForm">
+				<ul class="inputList mart15">
+					<li class="clearfix" id="selectProductType" controlType="text">
+						<span class="lable">产品类型</span>
+						<span class="alignright placeTxt">请选择</span>
+						<input type="hidden" class="alignright" id="typeId" name="typeId" />
+						<label class="lableTxt"></label>
+					</li>
+				</ul>
+				<ul id="productDataUL" class="inputList mart15">
+					<li class="clearfix" controlType="text">
+						<span class="lable">名称</span>
+						<input type="text" id="productName" name="productName" class="alignright" placeholder="未填写" />
+						<label class="lableTxt"></label>
+					</li>
+					<li class="clearfix" controlType="text" id="selectProductOrg">
+						<span class="lable">发行机构</span>
+						<span class="alignright placeTxt">请选择</span>
+						<input type="hidden" class="alignright" id="productOrgId" name="productOrgId" />
+						<label class="lableTxt"></label>
+					</li>
+					<li class="clearfix" controlType="text" id="selectFundType">
+						<span class="lable">基金类型</span>
+						<input type="hidden" class="alignright" id="fundType" name="fundType" />
+						<span class="alignright placeTxt">请选择</span>
+						<label class="lableTxt"></label>
+					</li>
+				</ul>
+				<ul id="descUL" class="inputList textareaLi mart15">
+					<li class="clearfix noboder" controlType="text">
+						<span class="lable">产品描述</span>
+						<p>
+							<textarea id="remarks" name="remarks"></textarea>
+						</p>
+						<label class="lableTxt"></label>
+					</li>
+				</ul>
+				<input type="hidden" id="org.guiceside.web.jsp.taglib.Token" name="org.guiceside.web.jsp.taglib.Token"/>
+				<input type="hidden" id="numSeq" name="numSeq"/>
+			</form>
+			<!--<ul class="inputList imgList mart15">
+				<li class="clearfix noboder Ios_scroll" style="overflow-y: hidden;">
+					<div class="ImgBox" style="width:1000px">
+						<img src="../../img/3.jpg">
+						<img src="../../img/4.jpg">
+						<img src="../../img/3.jpg">
+						<img src="../../img/4.jpg">
+					</div>
+				</li>
+			</ul>-->
+		</div>
+		<!--添加产品的底部begin-->
+		<footer class="footer footerInner  clearfix">
+			<!--<span class="floatleft marl15">增加产品详情</span>-->
+			<span class="floatright marr15">使用图片</span>
+		</footer>
+		<!--添加产品的底部over-->
+	</body>
+
+</html>
