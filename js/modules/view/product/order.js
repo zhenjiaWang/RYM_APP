@@ -7,10 +7,32 @@ define(function(require, exports, module) {
 	var queryMap = parseURL();
 	var productName = queryMap.get('productName');
 	var finalTop = 0;
+	var movenNext = false;
+	var movenPrev = false;
+	var index = -1;
+	var maxNum = -1;
+	setMoveEndLi = function(o, setTopFlag) {
+		var li = $(o).closest('li');
+		if (li) {
+			if (setTopFlag) {
+				var top = (index - 1) * 46;
+				$(li).animate({
+					'top': top + 'px'
+				}).attr('index', index);
+				index = -1;
+			} else {
+				$(li).attr('index', index);
+			}
+			movenNext = false;
+			movenPrev = false;
+		}
+	};
 	bindEvent = function() {
 		$common.touchSME($('.icon-move', '#productSaleNumUL'), function(startX, startY, endX, endY, event, startTouch, o) {
 				var li = $(o).closest('li');
 				if (li) {
+					index = $(li).attr('index');
+					index = parseInt(index);
 					var top = $(li).css('top');
 					top = top.replaceAll('px', '');
 					top = parseInt(top);
@@ -21,14 +43,63 @@ define(function(require, exports, module) {
 				var li = $(o).closest('li');
 				if (li) {
 					if (startY != endY) {
-						var top=finalTop + (endY-startY);
-						$(li).css('top', top + 'px');
+						var diffY = endY - startY;
+						if (diffY > 0) {
+							var top = finalTop + diffY;
+							$(li).css('top', top + 'px');
+							var nextIndex = (index + 1);
+							if (nextIndex > maxNum) {
+								nextIndex = maxNum;
+							}
+							if (nextIndex > index) {
+								var nextLi = $('li[index="' + nextIndex + '"]', '#productSaleNumUL');
+								if (nextLi) {
+									var nextTop = $(nextLi).css('top');
+									if (nextTop) {
+										nextTop = nextTop.replaceAll('px', '');
+										nextTop = parseInt(nextTop);
+										if (((top + 23) >= nextTop) && !movenNext) {
+											movenNext = true;
+											index += 1;
+											$(nextLi).attr('index', (nextIndex - 1)).animate({
+												'top': (nextTop - 46) + 'px'
+											}, false, false, function() {
+												setMoveEndLi(o, false);
+											});
+										}
+									}
+								}
+							}
+						} else if (diffY < 0) {
+							var top = finalTop + diffY;
+							$(li).css('top', top + 'px');
+							var prevIndex = (index - 1);
+							if (prevIndex < 1) {
+								prevIndex = 1;
+							}
+							if (prevIndex < index) {
+								var prevLi = $('li[index="' + prevIndex + '"]', '#productSaleNumUL');
+								if (prevLi) {
+									var prevTop = $(prevLi).css('top');
+									if (prevTop) {
+										prevTop = prevTop.replaceAll('px', '');
+										prevTop = parseInt(prevTop);
+										if (((top - 23) <= prevTop) && !movenPrev) {
+											movenPrev = true;
+											index -= 1;
+											$(prevLi).attr('index', (prevIndex + 1)).animate({
+												'top': (prevTop + 46) + 'px'
+											}, false, false, setMoveEndLi(o, false));
+										}
+									}
+								}
+							}
+						}
 					}
 				}
-
 			},
 			function(startX, startY, endX, endY, event, o) {
-
+				setMoveEndLi(o, true);
 			});
 	};
 	loadData = function() {
@@ -41,7 +112,7 @@ define(function(require, exports, module) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
 						$nativeUIManager.wattingClose();
-						var maxNum = jsonData['maxNum'];
+						maxNum = jsonData['maxNum'];
 						maxNum = parseInt(maxNum);
 						if (maxNum > 0) {
 							var numObjArray = jsonData['numObjArray'];
