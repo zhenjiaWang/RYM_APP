@@ -4,11 +4,18 @@ define(function(require, exports, module) {
 	var $nativeUIManager = require('manager/nativeUI');
 	var $windowManager = require('manager/window');
 	var $templete = require('core/templete');
+	var $productCommon = require('view/product/productCommon');
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
 	var tab = queryMap.get('tab');
+	var productName;
+	onAction = function(numSeq) {
+		$productCommon.onProductSale(id,numSeq);
+	};
 	bindEvent = function() {
-		
+		$common.touchSE($('#moreBtn'), function(event, startTouch, o) {}, function(event, o) {
+			$productCommon.showMoreAction(id,tab,productName);
+		});
 	};
 	loadData = function() {
 		$nativeUIManager.watting('请稍等...');
@@ -16,25 +23,26 @@ define(function(require, exports, module) {
 			type: 'POST',
 			url: $common.getRestApiURL() + '/product/info/view',
 			dataType: 'json',
-			data:{
-				id:id,
-				tab:tab
+			data: {
+				id: id,
+				tab: tab
 			},
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
-						var trust=jsonData['trust'];
-						var productInfo=jsonData['productInfo'];
-						if(productInfo&&trust){
+						var trust = jsonData['trust'];
+						var productInfo = jsonData['productInfo'];
+						if (productInfo && trust) {
 							$('#name').text(productInfo['name']);
-							$('#updateTime').text(productInfo['updateTime']+'前更新');
+							productName=productInfo['name'];
+							$('#updateTime').text(productInfo['updateTime'] + '前更新');
 							$('#viewCount').text(productInfo['viewCount']);
 							$('#orgName').text(productInfo['orgName']);
 							$('#remarks').text(productInfo['remarks']);
-							
-							$('#dayLimit').text(trust['dayLimit']+'天');
+
+							$('#dayLimit').text(trust['dayLimit'] + '天');
 							$('#yieldDesc').text(trust['yield']);
-							$('#yield').text(trust['yield']+'%');
+							$('#yield').text(trust['yield'] + '%');
 							$('#purchaseAmount').text(trust['purchaseAmount']);
 							$('#payOffType').text(trust['payOffType']);
 							$('#startDate').text(trust['startDate']);

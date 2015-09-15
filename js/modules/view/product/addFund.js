@@ -177,11 +177,13 @@ define(function(require, exports, module) {
 				var passed = $validator.isPassed();
 				if (passed) {
 					$nativeUIManager.watting('请选择发布栏位...');
-					var productName = $('#productName').val();
-					$windowManager.create('product_send', 'send.html?productName=' + productName, false, true, function(show) {
-						show();
-						$nativeUIManager.wattingClose();
-					});
+					window.setTimeout(function() {
+						var productName = $('#productName').val();
+						$windowManager.create('product_send', 'send.html?productName=' + productName + '&saveWinId=product_add&saveFunction=saveData', false, true, function(show) {
+							show();
+							$nativeUIManager.wattingClose();
+						});
+					}, 1500);
 				} else {
 					$nativeUIManager.alert('提示', '请检查信息是否填写完毕', 'OK', function() {});
 				}

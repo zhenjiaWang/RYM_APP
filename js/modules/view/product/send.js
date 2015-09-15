@@ -6,6 +6,8 @@ define(function(require, exports, module) {
 	var $templete = require('core/templete');
 	var queryMap = parseURL();
 	var productName = queryMap.get('productName');
+	var saveWinId = queryMap.get('saveWinId');
+	var saveFunction = queryMap.get('saveFunction');
 	var selectNumSeq = -1;
 	var oldProductName = false;
 	bindEvent = function() {
@@ -14,9 +16,9 @@ define(function(require, exports, module) {
 				$nativeUIManager.alert('提示', '请选择产品发布栏位', 'OK', function() {});
 			}
 			$nativeUIManager.confirm('提示', '确定按照现在的产品栏位发布产品?', ['确定', '取消'], function() {
-				var productAddWindow = $windowManager.getById('product_add');
+				var productAddWindow = $windowManager.getById(saveWinId);
 				if (productAddWindow) {
-					productAddWindow.evalJS('saveData(' + selectNumSeq + ')');
+					productAddWindow.evalJS(saveFunction+'(' + selectNumSeq + ')');
 					window.setTimeout(function() {
 						$windowManager.close();
 					}, 300);

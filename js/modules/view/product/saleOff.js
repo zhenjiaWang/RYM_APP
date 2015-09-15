@@ -41,6 +41,25 @@ define(function(require, exports, module) {
 		$('#bottomPop').removeClass('current');
 	};
 	bindEvent = function() {
+		$common.touchSE($('.oneCard', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
+			var typeId = $(o).attr('typeId');
+			var uid = $(o).attr('uid');
+			if (typeId && uid) {
+				if (typeId == '1') {
+					$windowManager.create('product_view', 'viewFinancial.html?id=' + uid + '&tab=saleOff', false, true, function(show) {
+						show();
+					});
+				} else if (typeId == '2') {
+					$windowManager.create('product_view', 'viewFund.html?id=' + uid + '&tab=saleOff', false, true, function(show) {
+						show();
+					});
+				} else if (typeId == '3') {
+					$windowManager.create('product_view', 'viewTrust.html?id=' + uid + '&tab=saleOff', false, true, function(show) {
+						show();
+					});
+				}
+			}
+		});
 		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.create('product_add', 'add.html', false, true, function(show) {
 				show();
@@ -79,8 +98,10 @@ define(function(require, exports, module) {
 							$('#blank').hide();
 							var sb = new StringBuilder();
 							$(productArray).each(function(i, o) {
+								var relationYn = o['relationYn'];
 								var typeId = o['typeId'];
 								var relationYn = o['relationYn'];
+								var uid = o['uid'];
 								if (typeId && relationYn) {
 									if (typeId == 1) {
 
@@ -88,6 +109,8 @@ define(function(require, exports, module) {
 										var fundObj = o['fund'];
 										if (fundObj) {
 											sb.append(String.formatmodel($templete.fundItem(relationYn), {
+												typeId:typeId,
+												uid:uid,
 												typeName: o['typeName'],
 												name: o['name'],
 												updateTime: o['updateTime'],
@@ -98,6 +121,8 @@ define(function(require, exports, module) {
 										var trustObj = o['trust'];
 										if (trustObj) {
 											sb.append(String.formatmodel($templete.trustItem(relationYn), {
+												typeId:typeId,
+												uid:uid,
 												typeName: o['typeName'],
 												name: o['name'],
 												updateTime: o['updateTime'],
@@ -108,7 +133,6 @@ define(function(require, exports, module) {
 									}
 								}
 							});
-							console.info(sb.toString());
 							$('.cardBox').empty().append(sb.toString());
 						} else {
 							$('#blank').show();

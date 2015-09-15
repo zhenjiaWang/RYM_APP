@@ -4,11 +4,18 @@ define(function(require, exports, module) {
 	var $nativeUIManager = require('manager/nativeUI');
 	var $windowManager = require('manager/window');
 	var $templete = require('core/templete');
+	var $productCommon = require('view/product/productCommon');
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
 	var tab = queryMap.get('tab');
+	var productName;
+	onAction = function(numSeq) {
+		$productCommon.onProductSale(id,numSeq);
+	};
 	bindEvent = function() {
-		
+		$common.touchSE($('#moreBtn'), function(event, startTouch, o) {}, function(event, o) {
+			$productCommon.showMoreAction(id,tab,productName);
+		});
 	};
 	loadData = function() {
 		$nativeUIManager.watting('请稍等...');
@@ -27,6 +34,7 @@ define(function(require, exports, module) {
 						var productInfo=jsonData['productInfo'];
 						if(productInfo&&fund){
 							$('#name').text(productInfo['name']);
+							productName=productInfo['name'];
 							$('#updateTime').text(productInfo['updateTime']+'前更新');
 							$('#viewCount').text(productInfo['viewCount']);
 							$('#orgName').text(productInfo['orgName']);
