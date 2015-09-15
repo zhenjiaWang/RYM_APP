@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<meta charset="utf-8">
+	<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+	<meta name="apple-touch-fullscreen" content="yes" />
+	<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+	<title>产品详情</title>
+	<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+	<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+	<script type="text/javascript" src="../../js/sea.js"></script>
+	<script type="text/javascript" src="../../js/json2.js"></script>
+	<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+	<script type="text/javascript" src="../../js/support.js"></script>
+	<script>
+		seajs.config({
+			base: "../../js/modules/"
+		});
+		seajs.use('view/product/viewTrust');
+	</script>
+	<body>
+		<header class="header clearfix">
+			<span class="icon icon-back floatleft" id="backBtn"></span>
+			<h1 class="aligncenter font17">产品详情</h1>
+			<span class="icon icon-more floatright" id="moreBtn"></span>
+		</header>
+		<div class="main" style="top: 50px;display: none;">
+			<div class="oneCard detail">
+				<div class="font11 title color-a alignright">
+					<span class="tips tips-x floatleft strong">信 托</span>
+					<span class="color-3 font17 strong txt_hidden" style="width:86%;" id="name"></span>
+				</div>
+				<div class="clearfix mart5">
+					<span class="font14 floatleft inlineblock marl10 color-6">期限:<em class="color-6" id="dayLimit"></em></span>
+					<div class="floatright alignright marr10">
+						<p class="font11 color-a">预计年化率</p>
+						<span class="tipsBig font25 color-white"><span id="yieldDesc"></span><em class="font14 color-white">%</em></span>
+					</div>
+				</div>
+				<div class="cardBottom clearfix alignright mart10">
+					<span class="floatleft color-a marl10" id="updateTime"></span>
+					<span class="clearfix "><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft" id="viewCount"></em></span>
+					<span class="clearfix marr10"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">823</em></span>
+				</div>
+			</div>
+			<ul class="inputList detail mart10">
+				<li class="clearfix">
+					<span class="lable">发行机构</span>
+					<span class="alignright placeTxt nobg nopadding" id="orgName"></span>
+				</li>
+				<li class="clearfix">
+					<span class="lable">收益类型</span>
+					<span class="alignright placeTxt nobg nopadding" id="payOffType"></span>
+				</li>
+				<li class="clearfix">
+					<span class="lable">起购金额</span>
+					<span class="alignright placeTxt nobg nopadding" id="purchaseAmount"></span>
+				</li>
+				<li class="clearfix">
+					<span class="lable">募集起止日期</span>
+					<span class="alignright placeTxt nobg nopadding"><span id="startDate"></span>  至  <span id="endDate"></span></span>
+				</li>
+				<li class="clearfix">
+					<span class="lable">计息天数</span>
+					<span class="alignright placeTxt nobg nopadding" id="accrualDay"></span>
+				</li>
+				<li class="clearfix">
+					<span class="lable">到期日</span>
+					<span class="alignright placeTxt nobg nopadding" id="expireDate"></span>
+				</li>
+				<li class="clearfix">
+					<span class="lable">预期收益率</span>
+					<span class="alignright placeTxt nobg nopadding" id="yield"></span>
+				</li>
+			</ul>
+			<ul class="inputList mart10">
+				<li class="clearfix noboder">
+					<span class="lable">产品描述</span>
+					<p class="font15 txt" id="remarks">
+					</p>
+				</li>
+			</ul>
+		</div>
+	</body>
+
+</html>
