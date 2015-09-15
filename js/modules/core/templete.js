@@ -15,8 +15,12 @@ define(function(require, exports, module) {
 	};
 	exports.saleNumItem = function(moveFlag) {
 		var selectItem = new StringBuilder();
-		selectItem.append('<li index="{index}" type="{action}" class="clearfix" style="top:{top}px;">\n');
-		selectItem.append('<span class="icon icon-{action}"></span>\n');
+		selectItem.append('<li uid="{uid}"  index="{index}" type="{action}" class="clearfix" style="top:{top}px;">\n');
+		if (moveFlag) {
+			selectItem.append('<span class="tips {typeClass} strong">{typeName}</span>\n');
+		}else{
+			selectItem.append('<span class="icon icon-{action}"></span>\n');
+		}
 		selectItem.append('<span class="lable txt_hidden block">{name}</span>\n');
 		if (moveFlag) {
 			selectItem.append('<span class="icon icon-move"></span>\n');
@@ -26,7 +30,7 @@ define(function(require, exports, module) {
 	};
 	exports.trustItem = function(relationYn) {
 		var trustItem = new StringBuilder();
-		trustItem.append('<div class="oneCard">\n');
+		trustItem.append('<div class="oneCard" typeId="{typeId}" uid="{uid}">\n');
 		trustItem.append('<p class="font11 title color-a alignright">\n');
 		trustItem.append('<span class="tips tips-x floatleft strong">{typeName}</span>\n');
 		trustItem.append('<span class="floatleft marl5">{updateTime}</span>\n');
@@ -52,7 +56,7 @@ define(function(require, exports, module) {
 	};
 	exports.fundItem = function(relationYn) {
 		var fundItem = new StringBuilder();
-		fundItem.append('<div class="oneCard">\n');
+		fundItem.append('<div class="oneCard" typeId="{typeId}" uid="{uid}">\n');
 		fundItem.append('<p class="font11 title color-a alignright">\n');
 		fundItem.append('<span class="tips tips-j floatleft strong">{typeName}</span>\n');
 		fundItem.append('<span class="floatleft marl5">{updateTime}</span>\n');

@@ -22,9 +22,9 @@ define(function(require, exports, module) {
 				success: function(jsonData) {
 					if (jsonData) {
 						if (jsonData['result'] == '0') {
-							$windowManager.close();
+							$windowManager.reloadOtherWindow('product_user', true);
 							window.setTimeout(function(){
-								$windowManager.reloadOtherWindow('product_sale', false);
+								$windowManager.close();
 							},300);
 						} else {
 							$nativeUIManager.wattingClose();

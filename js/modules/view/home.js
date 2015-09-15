@@ -8,7 +8,7 @@ define(function(require, exports, module) {
 	plusRest = function() {
 		if ($('#plusBtn').hasClass('current')) {
 			$('#plusBtn').removeClass('current');
-			var productSaleWindow = $windowManager.getById('product_sale');
+			var productSaleWindow = $windowManager.getById('product_user');
 			if (productSaleWindow) {
 				productSaleWindow.evalJS('hideAddTools()');
 			}
@@ -23,13 +23,13 @@ define(function(require, exports, module) {
 		$common.touchSE($('#plusBtn'), function(event, startTouch, o) {}, function(event, o) {
 			if (!$(o).hasClass('current')) {
 				$(o).addClass('current');
-				var productSaleWindow = $windowManager.getById('product_sale');
+				var productSaleWindow = $windowManager.getById('product_user');
 				if (productSaleWindow) {
 					productSaleWindow.evalJS('showAddTools()');
 				}
 			} else {
 				$(o).removeClass('current');
-				var productSaleWindow = $windowManager.getById('product_sale');
+				var productSaleWindow = $windowManager.getById('product_user');
 				if (productSaleWindow) {
 					productSaleWindow.evalJS('hideAddTools()');
 				}

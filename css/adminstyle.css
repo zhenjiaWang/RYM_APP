@@ -19,23 +19,25 @@
 .leftNav li a{display:block;height:50px;line-height:50px;color:#7c8a96;text-align: center;}
 .leftNav li a:hover,.leftNav li a.current{background:#1b2226;color:#16c1f3;transition: 0.2s;-webkit-transition: 0.2s;}
 .topBar{width:100%;height:50px;background:#fff;}
-.topBar .searchBox{width:298px;height:28px;border:1px solid #d9d9d9;border-radius:2px;position:relative;bottom:-10px;}
-.topBar .searchBox input{height:28px;width:270px;border:0;text-indent:5px;}
-.topBar .inlineblock{border-right:1px solid #d9d9d9;padding-right:20px;}
+.searchBox{width:298px;height:28px;border:1px solid #d9d9d9;border-radius:2px;position:relative;bottom:-10px;}
+.searchBox input{height:28px;width:270px;border:0;text-indent:5px;}
+.inlineblock{border-right:1px solid #d9d9d9;padding-right:20px;}
 .userPhoto{display: inline-block;width:40px;height:40px;border-radius:50%;vertical-align: middle;margin-right:10px;position: relative;}
 .userPhoto img{width:40px;height:40px;border-radius:50%;}
 .rightMain{position: absolute;top:60px;left:10px;right:10px;bottom:10px;background:#fff;overflow:hidden;overflow-y: auto;padding-bottom:40px;}
 .topNav{height:49px;border-bottom:1px solid #d9d9d9;}
-.topNav .floatleft a{display: inline-block;min-width:118px;height:49px;line-height:49px;border-right:1px solid #d9d9d9;text-align: center;color:#888;float: left;}
-.topNav .floatleft a:hover{color:#16c1f3;}
-.topNav .floatleft a.current,.topNav .floatleft a.current:hover{background:#7c8a96;color:#fff;}
+.topNav .navIn a{display: inline-block;min-width:118px;height:49px;line-height:49px;border-right:1px solid #d9d9d9;text-align: center;color:#888;float: left;}
+.topNav .navIn a:hover{color:#16c1f3;}
+.topNav .navIn a.current,.topNav .navIn a.current:hover{background:#7c8a96;color:#fff;}
 .dataTable{width:100%;}
 .dataTable th,.dataTable td{height:49px;border-bottom:1px solid #d9d9d9;padding-left:20px;color:#666;}
 .dataTable th{border-bottom-width:2px;}
 .dataTable th div{font-size:14px;}
 .dataTable tbody tr:nth-child(2n+1){background:#f9fdfd;}
+.topNav a.floatleft img{vertical-align: bottom}
 
 .color-info{color:#812990;}
+a.color-info:hover{text-decoration: underline;}
 .btn{display:inline-block;min-width:50px;text-align:center;height:30px;line-height:30px;color:#fff;padding:0 15px;background:#16c1f3;border-radius:4px;}
 .btn:hover{opacity:0.9;}
 .btn-fb{background:#22ac38;}
@@ -100,4 +102,5 @@
 .friend_list .personBoard p{line-height:24px;}
 .friend_list .personBoard.current{background:#f2f2f2;}
 
-
+.friend_list2{position: relative;top:0;left:0;overflow: hidden;}
+.friend_list2 .personBoard{width:46%;float: left;border:1px solid #d9d9d9;margin:20px 0 0 20px;}

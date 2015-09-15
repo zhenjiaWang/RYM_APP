@@ -95,6 +95,25 @@ define(function(require, exports, module) {
 		$('#bottomPop').removeClass('current');
 	};
 	bindEvent = function() {
+		$common.touchSE($('.oneCard', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
+			var typeId = $(o).attr('typeId');
+			var uid = $(o).attr('uid');
+			if (typeId && uid) {
+				if (typeId == '1') {
+					$windowManager.create('product_view', 'viewFinancial.html?id=' + uid + '&tab=sale', false, true, function(show) {
+						show();
+					});
+				} else if (typeId == '2') {
+					$windowManager.create('product_view', 'viewFund.html?id=' + uid + '&tab=sale', false, true, function(show) {
+						show();
+					});
+				} else if (typeId == '3') {
+					$windowManager.create('product_view', 'viewTrust.html?id=' + uid + '&tab=sale', false, true, function(show) {
+						show();
+					});
+				}
+			}
+		});
 		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.create('product_add', 'add.html', false, true, function(show) {
 				show();
@@ -216,13 +235,16 @@ define(function(require, exports, module) {
 								$(productArray).each(function(i, o) {
 									var typeId = o['typeId'];
 									var relationYn = o['relationYn'];
-									if (typeId && relationYn) {
+									var uid=o['uid'];
+									if (typeId && relationYn&&uid) {
 										if (typeId == 1) {
 
 										} else if (typeId == 2) {
 											var fundObj = o['fund'];
 											if (fundObj) {
 												sb.append(String.formatmodel($templete.fundItem(relationYn), {
+													uid:uid,
+													typeId: typeId,
 													typeName: o['typeName'],
 													name: o['name'],
 													updateTime: o['updateTime'],
@@ -233,11 +255,13 @@ define(function(require, exports, module) {
 											var trustObj = o['trust'];
 											if (trustObj) {
 												sb.append(String.formatmodel($templete.trustItem(relationYn), {
+													uid:uid,
+													typeId: typeId,
 													typeName: o['typeName'],
 													name: o['name'],
 													updateTime: o['updateTime'],
 													yield: trustObj['yield'],
-													dayLimit:trustObj['dayLimit']
+													dayLimit: trustObj['dayLimit']
 												}));
 											}
 										}

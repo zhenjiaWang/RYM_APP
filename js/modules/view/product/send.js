@@ -16,9 +16,9 @@ define(function(require, exports, module) {
 			$nativeUIManager.confirm('提示', '确定按照现在的产品栏位发布产品?', ['确定', '取消'], function() {
 				var productAddWindow = $windowManager.getById('product_add');
 				if (productAddWindow) {
-					$windowManager.close();
+					productAddWindow.evalJS('saveData(' + selectNumSeq + ')');
 					window.setTimeout(function() {
-						productAddWindow.evalJS('saveData(' + selectNumSeq + ')');
+						$windowManager.close();
 					}, 300);
 				}
 			}, function() {});
