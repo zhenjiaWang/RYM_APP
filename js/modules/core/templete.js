@@ -30,7 +30,7 @@ define(function(require, exports, module) {
 	};
 	exports.trustItem = function(relationYn) {
 		var trustItem = new StringBuilder();
-		trustItem.append('<div class="oneCard" typeId="{typeId}" uid="{uid}">\n');
+		trustItem.append('<div class="oneCard" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
 		trustItem.append('<p class="font11 title color-a alignright">\n');
 		trustItem.append('<span class="tips tips-x floatleft strong">{typeName}</span>\n');
 		trustItem.append('<span class="floatleft marl5">{updateTime}</span>\n');
@@ -47,8 +47,8 @@ define(function(require, exports, module) {
 		trustItem.append('</div>\n');
 		trustItem.append('</div>\n');
 		trustItem.append('<div class="cardBottom clearfix alignright mart10">\n');
-		trustItem.append('<span class="clearfix floatleft"><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft">1,2983</em></span>\n');
-		trustItem.append('<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">823</em></span>\n');
+		trustItem.append('<span class="clearfix floatleft"><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft">{viewCount}</em></span>\n');
+		trustItem.append('<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">{relationCount}</em></span>\n');
 		trustItem.append('<span><i class="icon icon-comment"></i></span>\n');
 		trustItem.append('</div>\n');
 		trustItem.append('</div>\n');
@@ -56,7 +56,7 @@ define(function(require, exports, module) {
 	};
 	exports.fundItem = function(relationYn) {
 		var fundItem = new StringBuilder();
-		fundItem.append('<div class="oneCard" typeId="{typeId}" uid="{uid}">\n');
+		fundItem.append('<div class="oneCard" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
 		fundItem.append('<p class="font11 title color-a alignright">\n');
 		fundItem.append('<span class="tips tips-j floatleft strong">{typeName}</span>\n');
 		fundItem.append('<span class="floatleft marl5">{updateTime}</span>\n');
@@ -73,8 +73,8 @@ define(function(require, exports, module) {
 		fundItem.append('</div>\n');
 		fundItem.append('</div>\n');
 		fundItem.append('<div class="cardBottom clearfix alignright mart10">\n');
-		fundItem.append('<span class="clearfix floatleft"><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft">1,2983</em></span>\n');
-		fundItem.append('<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">823</em></span>\n');
+		fundItem.append('<span class="clearfix floatleft"><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft">{viewCount}</em></span>\n');
+		fundItem.append('<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">{relationCount}</em></span>\n');
 		fundItem.append('<span><i class="icon icon-comment"></i></span>\n');
 		fundItem.append('</div>\n');
 		fundItem.append('</div>\n');

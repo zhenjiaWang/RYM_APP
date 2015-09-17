@@ -8,13 +8,15 @@ define(function(require, exports, module) {
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
 	var tab = queryMap.get('tab');
+	var productId;
+	var userId;
 	var productName;
 	onAction = function(numSeq) {
 		$productCommon.onProductSale(id,numSeq);
 	};
 	bindEvent = function() {
 		$common.touchSE($('#moreBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$productCommon.showMoreAction(id,tab,productName);
+			$productCommon.showMoreAction(id,tab,productName,productId,userId);
 		});
 	};
 	loadData = function() {
@@ -35,8 +37,11 @@ define(function(require, exports, module) {
 						if (productInfo && trust) {
 							$('#name').text(productInfo['name']);
 							productName=productInfo['name'];
+							productId=productInfo['productId'];
+							userId=productInfo['userId'];
 							$('#updateTime').text(productInfo['updateTime'] + '前更新');
 							$('#viewCount').text(productInfo['viewCount']);
+							$('#relationCount').text(productInfo['relationCount']);
 							$('#orgName').text(productInfo['orgName']);
 							$('#remarks').text(productInfo['remarks']);
 

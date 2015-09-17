@@ -44,15 +44,15 @@ define(function(require, exports, module) {
 			var uid = $(o).attr('uid');
 			if (typeId && uid) {
 				if (typeId == '1') {
-					$windowManager.create('product_view', 'viewFinancial.html?id=' + uid + '&tab=saleOff', false, true, function(show) {
+					$windowManager.create('product_view', 'viewFinancial.html?id=' + uid + '&tab=favorites', false, true, function(show) {
 						show();
 					});
 				} else if (typeId == '2') {
-					$windowManager.create('product_view', 'viewFund.html?id=' + uid + '&tab=saleOff', false, true, function(show) {
+					$windowManager.create('product_view', 'viewFund.html?id=' + uid + '&tab=favorites', false, true, function(show) {
 						show();
 					});
 				} else if (typeId == '3') {
-					$windowManager.create('product_view', 'viewTrust.html?id=' + uid + '&tab=saleOff', false, true, function(show) {
+					$windowManager.create('product_view', 'viewTrust.html?id=' + uid + '&tab=favorites', false, true, function(show) {
 						show();
 					});
 				}
@@ -83,7 +83,7 @@ define(function(require, exports, module) {
 		}
 		$.ajax({
 			type: 'POST',
-			url: $common.getRestApiURL() + '/product/info/saleOffListData',
+			url: $common.getRestApiURL() + '/product/info/favoritesListData',
 			dataType: 'json',
 			data: {
 				userId: $userInfo.get('userId')

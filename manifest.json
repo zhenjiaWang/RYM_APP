@@ -100,7 +100,7 @@
 		"NativeObj": {
 			"description": "原生对象"
 		},
-		"OAuth": {},"Payment":{},"Push":{}
+		"OAuth": {},"Payment":{},"Push":{},"Share":{}
 	},
 	"plus": {
 		"splashscreen": {
@@ -111,7 +111,7 @@
 		"runmode": "normal",/*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
 		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
 		"distribute": {
-			"plugins": {"push":{"igexin":{"appid":"121212","appkey":"121212","appsecret":"121212"}},"payment":{"weixin":{"description":"微信支付","appid":"wx7ec527daa5585fc3"}},
+			"plugins": {"share":{"weixin":{"appid":"wx7ec527daa5585fc3","appsecret":"c131c39a78b32de587b851b992bea9f2","description":"可选，微信分享"}},"push":{"igexin":{"appid":"121212","appkey":"121212","appsecret":"121212"}},"payment":{"weixin":{"description":"微信支付","appid":"wx7ec527daa5585fc3"}},
 				"oauth": {
 					"weixin": {
 						"appid": "wx7ec527daa5585fc3",

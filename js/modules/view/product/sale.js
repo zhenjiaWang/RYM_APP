@@ -203,7 +203,7 @@ define(function(require, exports, module) {
 		}
 		$.ajax({
 			type: 'POST',
-			url: $common.getRestApiURL() + '/product/info',
+			url: $common.getRestApiURL() + '/product/info/saleListData',
 			dataType: 'json',
 			data: {
 				userId: $userInfo.get('userId')
@@ -243,6 +243,10 @@ define(function(require, exports, module) {
 											var fundObj = o['fund'];
 											if (fundObj) {
 												sb.append(String.formatmodel($templete.fundItem(relationYn), {
+													productId:o['productId'],
+													userId:o['userId'],
+													viewCount:o['viewCount'],
+													relationCount:o['relationCount'],
 													uid:uid,
 													typeId: typeId,
 													typeName: o['typeName'],
@@ -255,6 +259,10 @@ define(function(require, exports, module) {
 											var trustObj = o['trust'];
 											if (trustObj) {
 												sb.append(String.formatmodel($templete.trustItem(relationYn), {
+													productId:o['productId'],
+													userId:o['userId'],
+													viewCount:o['viewCount'],
+													relationCount:o['relationCount'],
 													uid:uid,
 													typeId: typeId,
 													typeName: o['typeName'],
@@ -266,7 +274,6 @@ define(function(require, exports, module) {
 											}
 										}
 									}
-
 								});
 								$('.cardBox').empty().append(sb.toString());
 							} else {
