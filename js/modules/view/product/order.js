@@ -41,32 +41,32 @@ define(function(require, exports, module) {
 					var seq = $(o).attr('index');
 					orderChange += uid + '_' + seq + ',';
 				});
-								$common.refreshToken(function(tokenId) {
-									$.ajax({
-										type: 'POST',
-										url: $common.getRestApiURL() + '/product/info/saveOrderMobile',
-										dataType: 'json',
-										data: {
-											orderChange:orderChange,
-											'org.guiceside.web.jsp.taglib.Token':tokenId
-										},
-										success: function(jsonData) {
-											if (jsonData) {
-												if (jsonData['result'] == '0') {
-													$windowManager.reloadOtherWindow('product_user', true);
-													$windowManager.close();
-												} else {
-													$nativeUIManager.wattingClose();
-													$nativeUIManager.alert('提示', '保存失败', 'OK', function() {});
-												}
-											}
-										},
-										error: function(XMLHttpRequest, textStatus, errorThrown) {
-											$nativeUIManager.wattingClose();
-											$nativeUIManager.alert('提示', '保存失败', 'OK', function() {});
-										}
-									});
-								});
+				$common.refreshToken(function(tokenId) {
+					$.ajax({
+						type: 'POST',
+						url: $common.getRestApiURL() + '/product/info/saveOrderMobile',
+						dataType: 'json',
+						data: {
+							orderChange: orderChange,
+							'org.guiceside.web.jsp.taglib.Token': tokenId
+						},
+						success: function(jsonData) {
+							if (jsonData) {
+								if (jsonData['result'] == '0') {
+									$windowManager.reloadOtherWindow('product_user', true);
+									$windowManager.close();
+								} else {
+									$nativeUIManager.wattingClose();
+									$nativeUIManager.alert('提示', '保存失败', 'OK', function() {});
+								}
+							}
+						},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+							$nativeUIManager.wattingClose();
+							$nativeUIManager.alert('提示', '保存失败', 'OK', function() {});
+						}
+					});
+				});
 
 			}, function() {});
 

@@ -43,19 +43,9 @@ define(function(require, exports, module) {
 			var typeId = $(o).attr('typeId');
 			var uid = $(o).attr('uid');
 			if (typeId && uid) {
-				if (typeId == '1') {
-					$windowManager.create('product_view', 'viewFinancial.html?id=' + uid + '&tab=favorites', false, true, function(show) {
-						show();
-					});
-				} else if (typeId == '2') {
-					$windowManager.create('product_view', 'viewFund.html?id=' + uid + '&tab=favorites', false, true, function(show) {
-						show();
-					});
-				} else if (typeId == '3') {
-					$windowManager.create('product_view', 'viewTrust.html?id=' + uid + '&tab=favorites', false, true, function(show) {
-						show();
-					});
-				}
+				$windowManager.create('product_view', 'viewHeader.html?id=' + uid + '&tab=favorites&typeId=' + typeId, false, true, function(show) {
+					show();
+				});
 			}
 		});
 		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {

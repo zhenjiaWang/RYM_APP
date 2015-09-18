@@ -367,7 +367,6 @@ define(function(require, exports, module) {
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
-						alert('a')
 						$('#attToken').val(jsonData['attToken']);
 						$('#footerTools').show();
 					}

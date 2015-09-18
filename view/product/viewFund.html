@@ -18,12 +18,7 @@
 		seajs.use('view/product/viewFund');
 	</script>
 	<body>
-		<header class="header clearfix">
-			<span class="icon icon-back floatleft" id="backBtn"></span>
-			<h1 class="aligncenter font17">产品详情</h1>
-			<span class="icon icon-more floatright" id="moreBtn"></span>
-		</header>
-		<div class="main" style="top: 50px;display: none;">
+		<div class="main" style="display: none;" id="contentMain">
 			<div class="oneCard detail">
 				<div class="font11 title color-a alignright">
 					<span class="tips tips-j floatleft strong">基 金</span>
@@ -59,6 +54,15 @@
 					</p>
 				</li>
 			</ul>
+		</div>
+		<footer class="footer footerInner clearfix" id="showImgBtn" style="display: none;">
+			<p class="aligncenter font14 color-8"><img src="../../img/top_arrow.png" width="20" class="marr10">上拉查看图片详情</p>
+		</footer>
+		<div class="main" style="top:100%;" id="imgMain">
+			<div class="imgDetail">
+				<p class="font14 title color-8d">下拉回到“产品详情”</p>
+			</div>
+			<span class="goTop" ></span>
 		</div>
 	</body>
 

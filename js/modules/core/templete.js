@@ -49,7 +49,7 @@ define(function(require, exports, module) {
 		trustItem.append('<div class="cardBottom clearfix alignright mart10">\n');
 		trustItem.append('<span class="clearfix floatleft"><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft">{viewCount}</em></span>\n');
 		trustItem.append('<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">{relationCount}</em></span>\n');
-		trustItem.append('<span><i class="icon icon-comment"></i></span>\n');
+		trustItem.append('<span class="commentBtn"><i class="icon icon-comment"></i></span>\n');
 		trustItem.append('</div>\n');
 		trustItem.append('</div>\n');
 		return trustItem.toString();
@@ -75,9 +75,23 @@ define(function(require, exports, module) {
 		fundItem.append('<div class="cardBottom clearfix alignright mart10">\n');
 		fundItem.append('<span class="clearfix floatleft"><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft">{viewCount}</em></span>\n');
 		fundItem.append('<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">{relationCount}</em></span>\n');
-		fundItem.append('<span><i class="icon icon-comment"></i></span>\n');
+		fundItem.append('<span class="commentBtn"><i class="icon icon-comment"></i></span>\n');
 		fundItem.append('</div>\n');
 		fundItem.append('</div>\n');
 		return fundItem.toString();
+	};
+	exports.commentItem = function() {
+		var commentItem = new StringBuilder();
+		commentItem.append('<li class="clearfix" userId="{userId}">\n');
+		commentItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
+		commentItem.append('<div class="marl60 marr10">\n');
+		commentItem.append('<p class="font12 alignright clearfix">\n');
+		commentItem.append('<span class="font17 floatleft">{userName}</span>\n');
+		commentItem.append('<span class="color-a">{dateTime}</span>\n');
+		commentItem.append('</p>\n');
+		commentItem.append('<p class="font14 color-9">{content}</p>\n');
+		commentItem.append('</div>\n');
+		commentItem.append('</li>\n');
+		return commentItem.toString();
 	};
 });

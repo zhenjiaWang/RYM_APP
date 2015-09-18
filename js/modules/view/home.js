@@ -16,26 +16,34 @@ define(function(require, exports, module) {
 	};
 	bindEvent = function() {
 		$common.androidBack(function() {
-			$nativeUIManager.confirm('提示', '你确定登出明道OA?', ['确定', '取消'], function() {
+			$nativeUIManager.confirm('提示', '你确定登出理财任意门?', ['确定', '取消'], function() {
 				plus.runtime.quit();
 			}, function() {});
 		});
-		$common.touchSE($('#plusBtn'), function(event, startTouch, o) {}, function(event, o) {
-			if (!$(o).hasClass('current')) {
-				$(o).addClass('current');
-				var productSaleWindow = $windowManager.getById('product_user');
-				if (productSaleWindow) {
-					productSaleWindow.evalJS('showAddTools()');
-				}
-			} else {
-				$(o).removeClass('current');
-				var productSaleWindow = $windowManager.getById('product_user');
-				if (productSaleWindow) {
-					productSaleWindow.evalJS('hideAddTools()');
+		$common.touchSE($('span', '#footerAction'), function(event, startTouch, o) {}, function(event, o) {
+			var dir = $(o).attr('dir');
+			if (dir) {
+				if (dir == 'plusBtn') {
+					if (!$(o).hasClass('current')) {
+						$(o).addClass('current');
+						var productSaleWindow = $windowManager.getById('product_user');
+						if (productSaleWindow) {
+							productSaleWindow.evalJS('showAddTools()');
+						}
+					} else {
+						$(o).removeClass('current');
+						var productSaleWindow = $windowManager.getById('product_user');
+						if (productSaleWindow) {
+							productSaleWindow.evalJS('hideAddTools()');
+						}
+					}
+				} else {
+					if (!$('#plusBtn').hasClass('current')) {
+
+					}
 				}
 			}
 		});
-
 	};
 	loadWebview = function() {
 		var workHead = plus.webview.create("header.html", "header", {
@@ -45,7 +53,9 @@ define(function(require, exports, module) {
 		});
 		workHead.addEventListener("loaded", function() { //叶面加载完成后才显示
 			$windowManager.current().append(workHead);
-			//$('span[dir="platform"]', '#bottomTab').attr('lang', '1');
+			if ($('span.current', '#footerAction').size() == 0) {
+				$('span', '#footerAction').first().addClass('current');
+			}
 		}, false);
 	}
 	plusReady = function() {

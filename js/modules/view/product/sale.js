@@ -95,23 +95,25 @@ define(function(require, exports, module) {
 		$('#bottomPop').removeClass('current');
 	};
 	bindEvent = function() {
+		$common.touchSE($('.commentBtn', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
+			event.stopPropagation();
+			var card = $(o).closest('.oneCard');
+			if (card) {
+				var uid = $(card).attr('uid');
+				if (uid) {
+					$windowManager.create('product_comment', 'comment.html?id=' + uid, false, true, function(show) {
+						show();
+					});
+				}
+			}
+		});
 		$common.touchSE($('.oneCard', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
 			var typeId = $(o).attr('typeId');
 			var uid = $(o).attr('uid');
 			if (typeId && uid) {
-				if (typeId == '1') {
-					$windowManager.create('product_view', 'viewFinancial.html?id=' + uid + '&tab=sale', false, true, function(show) {
-						show();
-					});
-				} else if (typeId == '2') {
-					$windowManager.create('product_view', 'viewFund.html?id=' + uid + '&tab=sale', false, true, function(show) {
-						show();
-					});
-				} else if (typeId == '3') {
-					$windowManager.create('product_view', 'viewTrust.html?id=' + uid + '&tab=sale', false, true, function(show) {
-						show();
-					});
-				}
+				$windowManager.create('product_view', 'viewHeader.html?id=' + uid + '&tab=sale&typeId=' + typeId, false, true, function(show) {
+					show();
+				});
 			}
 		});
 		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
@@ -235,19 +237,19 @@ define(function(require, exports, module) {
 								$(productArray).each(function(i, o) {
 									var typeId = o['typeId'];
 									var relationYn = o['relationYn'];
-									var uid=o['uid'];
-									if (typeId && relationYn&&uid) {
+									var uid = o['uid'];
+									if (typeId && relationYn && uid) {
 										if (typeId == 1) {
 
 										} else if (typeId == 2) {
 											var fundObj = o['fund'];
 											if (fundObj) {
 												sb.append(String.formatmodel($templete.fundItem(relationYn), {
-													productId:o['productId'],
-													userId:o['userId'],
-													viewCount:o['viewCount'],
-													relationCount:o['relationCount'],
-													uid:uid,
+													productId: o['productId'],
+													userId: o['userId'],
+													viewCount: o['viewCount'],
+													relationCount: o['relationCount'],
+													uid: uid,
 													typeId: typeId,
 													typeName: o['typeName'],
 													name: o['name'],
@@ -259,11 +261,11 @@ define(function(require, exports, module) {
 											var trustObj = o['trust'];
 											if (trustObj) {
 												sb.append(String.formatmodel($templete.trustItem(relationYn), {
-													productId:o['productId'],
-													userId:o['userId'],
-													viewCount:o['viewCount'],
-													relationCount:o['relationCount'],
-													uid:uid,
+													productId: o['productId'],
+													userId: o['userId'],
+													viewCount: o['viewCount'],
+													relationCount: o['relationCount'],
+													uid: uid,
 													typeId: typeId,
 													typeName: o['typeName'],
 													name: o['name'],

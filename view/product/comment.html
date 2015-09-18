@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" /> 
+		<meta name="apple-touch-fullscreen" content="yes"/>
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"> 
+		<title>评论</title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+		<script type="text/javascript" src="../../js/support.js"></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/product/comment');
+		</script>
+	</head>
+	<body>
+		<header class="header">
+			<span class="icon icon-back floatleft" id="backBtn"></span>
+			<h1 class="aligncenter font17" style="left:70px;right:70px;">评论</h1>
+		</header>
+		<div class="main" style="top: 50px;bottom: 50px;">
+			<section class="commentTop">
+				<span><i class="icon icon-con"></i>15</span>
+				<span id="likeSpan"><i class="icon icon-zan"></i><em>0</em></span>
+				<span class="floatright font14" id="likeAction" style="display: none;">赞一个</span>
+			</section>
+			<p class="p-bt10 p-top10 color-a font14 aligncenter" id="blank" style="display: none;">当前暂无评论</p>
+			<ul class="inputList feedList" style="display: none;" id="commentUL">
+				
+			</ul>
+		</div>
+		<footer class="footer footerInner clearfix">
+			<input type="text" id="content" name="content" class="commentInt" placeholder="输入评论..." />
+		</footer>
+	</body>
+</html>

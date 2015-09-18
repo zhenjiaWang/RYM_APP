@@ -211,7 +211,8 @@ margin-top:-11px;transition:0.3s;-webkit-transition:0.3s;}
 
 .header{height:49px;line-height:49px;border-bottom:1px solid #b2b2b2;background:#fff;position:fixed;left:0;top:0;right:0;color:#000;position:relative;}
 .header h1{position: absolute;top:0;bottom:0;left:50px;right:50px;}
-.main{width:100%;overflow-y: auto;position: absolute;top:0;left:0;right:0;bottom:0;}
+.main{width:100%;overflow-y: auto;position: absolute;top:0;left:0;right:0;bottom:0;transition:0.3s;-webkit-transition:0.3s;}
+/*.detailMain .main{position: relative;min-height: 100%;overflow-y:scroll;}*/
 .title{height:40px;line-height: 40px;color:#666;}
 .inputList{border:1px solid #d9d9d9;border-width:1px 0;padding-left:10px;background:#fff;}
 .inputList li{min-height:45px;line-height: 45px;border-bottom:1px solid #d9d9d9;position: relative;}
@@ -279,13 +280,15 @@ margin-top:-11px;transition:0.3s;-webkit-transition:0.3s;}
 .userInfo .floatright p.font11,.userInfo .floatright p.color-6{line-height:25px;padding-top:8px;}
 .userInfo .floatright p.color-6{padding-top:6px;}
 .userInfo .floatright p .icon{margin-bottom:-2px;}
-.signature{height:28px;line-height:28px;position:relative;border:1px solid #d9d9d9;border-radius:30px;margin:0 10px;text-indent:10px;background:#fff;}
+.signature{height:28px;line-height:28px;position:relative;border:1px solid #d9d9d9;border-radius:30px;margin:0 10px;text-indent:5px;background:#fff;}
+.signature .txt_hidden{width:95%;}
 .cardBox{margin:5px;}
 .oneCard{background:#fff;border:1px solid #d6d6d6;border-bottom:1px solid #a7a7a7;border-radius:3px;min-height:100px;position: relative;margin-bottom:5px;}
 .oneCard .title{height:20px;line-height:20px;padding:5px 10px;}
 .tips,.tip,.tipsBig{display:inline-block;height:20px;line-height:22px;margin-left:-11px;background:#fc7864;color:#fff;padding:0 10px 0 7px;border-radius:2px 20px 20px 2px;}
 .tips-j{background:#febf0f;}
 .tips-x{background:#16c1f3;}
+.oneCard p.strong{width:65%;line-height:24px;}
 .productList .tips{position:absolute;left:0;top:50%;margin:0;margin-top:-10px;}
 .oneCard em{color:#9c66ab;padding-left:5px;}
 .tip{height:17px;line-height:18px;padding:0 6px;color:#633eb0;border:1px solid #633eb0;border-radius:3px;background:#fff;margin-left:10px;position:relative;top:-1px;}
@@ -366,9 +369,9 @@ margin:-11px 0 0 -11px;-webkit-transform:rotate(0deg);transition:0.3s;-webkit-tr
 .checkWord.showWord{font-size:20px;}
 .checkWord.showWord .icon-select{opacity: 0;}
 .add{background:#00479d url(../img/icon-plus.png) no-repeat center center;background-size:30px;}
-.wordList{position:fixed;left:0;height:;right:0;background:#fff;color:#2a2a2a;z-index:10;top:-160px;transition:0.2s;-webkit-transition:0.2s;}
-.wordList table{width:100%;}
-.wordList td{height:36px;border:4px solid #e5e5e5;}
+.wordList{position:fixed;left:0;right:0;background:#fff;color:#2a2a2a;z-index:10;top:-180px;transition:0.2s;-webkit-transition:0.2s;}
+.wordList table{width:100%;background:#e5e5e5;}
+.wordList td{height:36px;border:4px solid #e5e5e5;background:#fff;}
 .wordList span{display:block;height:36px;line-height:36px;text-align:center;}
 .wordList span.current{box-shadow:0 1px 1px #666 inset;}
 .wordList.current{top:0;transition:0.2s;-webkit-transition:0.2s;}
@@ -381,7 +384,7 @@ margin:-11px 0 0 -11px;-webkit-transform:rotate(0deg);transition:0.3s;-webkit-tr
 .topNav li.current{color:#333;}
 .commentList .personBoard .floatright{width:26%;}
 
-.mask{width:100%;position:fixed;top:0;left:0;bottom:0;background:#000;opacity:0.5;display: none;}
+.mask{width:100%;position:fixed;top:0;right:0;left:0;bottom:0;display: none;}
 
 .timeBar{display:inline-block;margin:10px 0 5px 0;height:25px;line-height:25px;border-radius:3px;background:#ccc;padding:0 15px; color: #fff;}
 .feedLeft,.feedRight{margin:15px 10px;}

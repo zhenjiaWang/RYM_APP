@@ -32,19 +32,19 @@ define(function(require, exports, module) {
 				success: function(jsonData) {
 					if (jsonData) {
 						if (jsonData['result'] == '0') {
-							$windowManager.reloadOtherWindow('product_user', true);
+							$nativeUIManager.wattingTitle('收藏成功!');
 							window.setTimeout(function() {
 								$windowManager.close();
 							}, 300);
 						} else {
 							$nativeUIManager.wattingClose();
-							$nativeUIManager.alert('提示', '下架产品失败', 'OK', function() {});
+							$nativeUIManager.alert('提示', '收藏产品失败', 'OK', function() {});
 						}
 					}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
 					$nativeUIManager.wattingClose();
-					$nativeUIManager.alert('提示', '下架产品失败', 'OK', function() {});
+					$nativeUIManager.alert('提示', '收藏产品失败', 'OK', function() {});
 				}
 			});
 		});
@@ -63,7 +63,7 @@ define(function(require, exports, module) {
 				success: function(jsonData) {
 					if (jsonData) {
 						if (jsonData['result'] == '0') {
-							$windowManager.reloadOtherWindow('product_user', true);
+							$nativeUIManager.wattingTitle('取消收藏成功!');
 							window.setTimeout(function() {
 								$windowManager.close();
 							}, 300);
