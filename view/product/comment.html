@@ -12,6 +12,7 @@
 		<script type="text/javascript" src="../../js/json2.js"></script>
 		<script type="text/javascript" src="../../js/StringBuilder.js"></script>
 		<script type="text/javascript" src="../../js/support.js"></script>
+		<script type="text/javascript" src='../../js/autosize.js'></script>
 		<script>
 			seajs.config({
 				base: "../../js/modules/"
@@ -35,8 +36,9 @@
 				
 			</ul>
 		</div>
-		<footer class="footer footerInner clearfix">
-			<input type="text" id="content" name="content" class="commentInt" placeholder="输入评论..." />
+		<footer class="footer footerInner clearfix " style="height:auto;min-height:49px;">
+			<textarea id="content" name="content" class="commentInt textarea floatleft" placeholder=""></textarea>
+			<a class="btnSend floatleft" href="javascript:;">发 送</a>
 		</footer>
 	</body>
 </html>

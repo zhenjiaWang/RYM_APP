@@ -71,7 +71,6 @@ define(function(require, exports, module) {
 						});
 					}
 					$('#contentMain').show();
-					console.info($('body').html());
 					pullToRefreshEvent();
 				}
 				bindEvent();

@@ -7,8 +7,8 @@ define(function(require, exports, module) {
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
 	bindEvent = function() {
-		$('#content').off('blur').on('blur', function() {
-			var content = $(this).val();
+		$common.touchSE($('.btnSend'), function(event, startTouch, o) {}, function(event, o) {
+			var content = $('#content').val();
 			if (content && content != '') {
 				$nativeUIManager.watting('请稍等...');
 				$common.refreshToken(function(tokenId) {
@@ -53,8 +53,11 @@ define(function(require, exports, module) {
 						}
 					});
 				});
+			}else{
+				$nativeUIManager.alert('提示', '请先输入评论内容', 'OK', function() {});
 			}
 		});
+		
 		$common.touchSE($('#likeAction'), function(event, startTouch, o) {}, function(event, o) {
 			$(o).hide();
 			$common.refreshToken(function(tokenId) {
@@ -153,6 +156,7 @@ define(function(require, exports, module) {
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});
+		autosize($('#content'));
 	};
 	if (window.plus) {
 		plusReady();

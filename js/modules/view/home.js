@@ -24,29 +24,54 @@ define(function(require, exports, module) {
 			var dir = $(o).attr('dir');
 			if (dir) {
 				if (dir == 'plusBtn') {
-					if (!$(o).hasClass('current')) {
-						$(o).addClass('current');
-						var productSaleWindow = $windowManager.getById('product_user');
-						if (productSaleWindow) {
-							productSaleWindow.evalJS('showAddTools()');
+					var currentDir = $('span.current', '#footerAction').attr('dir');
+					var plusWinId = false;
+					if (currentDir) {
+						if (currentDir == 'room') {
+							plusWinId = 'product_user';
+						} else if (currentDir == 'friend') {
+							plusWinId = 'friend_list';
 						}
-					} else {
-						$(o).removeClass('current');
-						var productSaleWindow = $windowManager.getById('product_user');
-						if (productSaleWindow) {
-							productSaleWindow.evalJS('hideAddTools()');
+					}
+					if (plusWinId) {
+						if (!$(o).hasClass('current')) {
+							$(o).addClass('current');
+							var productSaleWindow = $windowManager.getById(plusWinId);
+							if (productSaleWindow) {
+								productSaleWindow.evalJS('showAddTools()');
+							}
+						} else {
+							$(o).removeClass('current');
+							var productSaleWindow = $windowManager.getById(plusWinId);
+							if (productSaleWindow) {
+								productSaleWindow.evalJS('hideAddTools()');
+							}
 						}
 					}
 				} else {
 					if (!$('#plusBtn').hasClass('current')) {
-
+						if (dir == 'friend') {
+							$windowManager.loadOtherWindow('header', 'friend/header.html');
+							$('span.current', '#footerAction').removeClass('current');
+							$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
+						} else if (dir == 'customer') {
+							$('span.current', '#footerAction').removeClass('current');
+							$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
+						} else if (dir == 'tip') {
+							$('span.current', '#footerAction').removeClass('current');
+							$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
+						} else if (dir == 'room') {
+							$windowManager.loadOtherWindow('header', 'product/header.html');
+							$('span.current', '#footerAction').removeClass('current');
+							$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
+						}
 					}
 				}
 			}
 		});
 	};
 	loadWebview = function() {
-		var workHead = plus.webview.create("header.html", "header", {
+		var workHead = plus.webview.create("product/header.html", "header", {
 			top: "0px",
 			bottom: "50px",
 			scrollIndicator: 'vertical'

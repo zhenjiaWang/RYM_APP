@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+		<script type="text/javascript" src="../../js/support.js"></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/friend/list');
+		</script>
+		<body>
+			<div class="main bgwhite">
+				<!--搜索begin-->
+				<div class="searchBar" style="margin-top:-45px;" title="默认不显示，下拉页面时候改margin-top为0显示出来，上滑的时候改成-45隐藏">
+					<input type="text" class="langTxt font14 " placeholder="手机号/姓名/昵称" title="当input foucs和不为空的时候加current">
+				</div>
+				<!--搜索over-->
+				<div class="friend_list mart10 marl10">
+					<section class="personBoard">
+						<div class="userInfo mart5 clearfix">
+							<span class="userPhoto floatleft"><img src="../../img/1.jpg"></span>
+							<div class="floatleft marl15 font13">
+								<p class="font17">Bruce Zhang</p>
+								<p>北京银行西城支行</p>
+								<p class="font11"><i class="icon icon-7"></i>互相关注</p>
+							</div>
+							<div class="floatright alignright color-6">
+								<p>168<i class="icon icon-3 marl5"></i></p>
+								<p class="mart10">2882<i class="icon icon-4 marl5"></i></p>
+							</div>
+						</div>
+						<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i>走路太骚会摔跤，得瑟过劲必闪腰</div>
+					</section>
+					<section class="personBoard">
+						<div class="userInfo mart5 clearfix">
+							<span class="userPhoto floatleft"><img src="../../img/1.jpg"></span>
+							<div class="floatleft marl15 font13">
+								<p class="font17">liu dehua</p>
+								<p>北京银行西城支行</p>
+								<p class="font11"><i class="icon icon-8"></i>我已关注</p>
+							</div>
+							<div class="floatright alignright color-6">
+								<p>168<i class="icon icon-3 marl5"></i></p>
+								<p class="mart10">2882<i class="icon icon-4 marl5"></i></p>
+							</div>
+						</div>
+						<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i>走路太骚会摔跤，得瑟过劲必闪腰</div>
+					</section>
+					<section class="personBoard">
+						<div class="userInfo mart5 clearfix">
+							<span class="userPhoto floatleft"><img src="../../img/1.jpg"></span>
+							<div class="floatleft marl15 font13">
+								<p class="font17">Bruce Zhang</p>
+								<p>北京银行西城支行</p>
+								<p class="font11"><i class="icon icon-9"></i>关注了我</p>
+							</div>
+							<div class="floatright alignright color-6">
+								<p>168<i class="icon icon-3 marl5"></i></p>
+								<p class="mart10">2882<i class="icon icon-4 marl5"></i></p>
+							</div>
+						</div>
+						<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i>走路太骚会摔跤，得瑟过劲必闪腰</div>
+					</section>
+				</div>
+			</div>
+			<!--底部弹出begin-->
+			<footer class="footer footerMask" style="height:99px;bottom:-99px;"></footer>
+			<div class="bottomPop aligncenter nobg" id="bottomPop">
+				<span class="popBtn" id="addProductBtn">
+				<i class="icon icon-plus-big"></i>
+				<em class="font11 color-6">添加产品</em>
+			</span>
+				<span class="popBtn" id="relationProductBtn">
+				<i class="icon icon-6"></i>
+				<em class="font11 color-6">关联产品</em>
+			</span>
+			</div>
+			<!--底部弹出over-->
+		</body>
+
+</html>

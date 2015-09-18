@@ -7,7 +7,7 @@ define(function(require, exports, module) {
 	var $controlWindow = require('manager/controlWindow');
 	bindEvent = function() {
 		$common.touchSE($('#myBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('my_info', 'my/info.html', false, true, function(show) {
+			$windowManager.create('my_info', '../my/info.html', false, true, function(show) {
 				show();
 			});
 		});
@@ -18,11 +18,11 @@ define(function(require, exports, module) {
 				var dir=$(o).attr('dir');
 				if(dir){
 					if(dir=='sale'){
-						$windowManager.loadOtherWindow('product_user','product/sale.html');
+						$windowManager.loadOtherWindow('product_user','sale.html');
 					}else if(dir=='favorites'){
-						$windowManager.loadOtherWindow('product_user','product/favorites.html');
+						$windowManager.loadOtherWindow('product_user','favorites.html');
 					}else if(dir=='saleOff'){
-						$windowManager.loadOtherWindow('product_user','product/saleOff.html');
+						$windowManager.loadOtherWindow('product_user','saleOff.html');
 					}
 				}
 			}
@@ -38,7 +38,7 @@ define(function(require, exports, module) {
 						if (index == 1) {
 
 						} else if (index == 2) {
-							$windowManager.create('product_order', 'product/order.html', false, true, function(show) {
+							$windowManager.create('product_order', 'order.html', false, true, function(show) {
 								show();
 							});
 						}
@@ -48,7 +48,7 @@ define(function(require, exports, module) {
 
 	};
 	loadWebview = function() {
-		var productUserWin = plus.webview.create("product/sale.html", "product_user", {
+		var productUserWin = plus.webview.create("sale.html", "product_user", {
 			top: "50px",
 			bottom: "0px",
 			scrollIndicator: 'vertical'

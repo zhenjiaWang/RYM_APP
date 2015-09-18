@@ -8,7 +8,7 @@ define(function(require, exports, module) {
 	};
 	exports.connect=function(){
 		if (!dataBase) {
-			exports.init('MD_OA','MD_OA',1024*1024*5);
+			exports.init('RUYIMEN','RUYIMEN',1024*1024*5);
 		}
 	};
 	exports.isSupport = function() {

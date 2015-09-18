@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+		<title>添加好友</title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+		<script type="text/javascript" src="../../js/support.js"></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/friend/addNew');
+		</script>
+	</head>
+
+	<body>
+		<header class="header">
+			<span class="icon icon-back floatleft" id="backBtn"></span>
+			<h1 class="aligncenter font17">添加好友</h1>
+		</header>
+		<div class="main" style="top:50px;">
+			<ul class="inputList ulBg mart-1 nopadding">
+				<li class="clearfix" id="addPhoneContacts">
+					<i class="icon icon-phone floatleft"></i>
+					<span class="lable floatleft">添加手机联系人</span>
+				</li>
+				<li class="clearfix">
+					<i class="icon icon-clock floatleft"></i>
+					<span class="lable floatleft">最近访问</span>
+				</li>
+			</ul>
+			<p class="title font12 aligncenter">新注册手机联系人</p>
+			<ul class="inputList feedList">
+				<li class="clearfix">
+					<span class="userPhoto floatleft"><img src="../../img/1.jpg"></span>
+					<p class="mart15"><span class="font16 marl10">Bruce Zhang</span></p>
+					<span class="addBtn nobg noboder color-b">已添加</span>
+				</li>
+				<li class="clearfix">
+					<span class="userPhoto floatleft"><img src="../../img/2.jpg"></span>
+					<p class="mart15"><span class="font16 marl10">Bruce Zhang</span></p>
+					<span class="addBtn nobg noboder color-b">已添加</span>
+				</li>
+				<li class="clearfix">
+					<span class="userPhoto floatleft"><img src="../../img/3.jpg"></span>
+					<p class="mart15"><span class="font16 marl10">Bruce Zhang</span></p>
+					<span class="addBtn">加好友</span>
+				</li>
+				<li class="clearfix">
+					<span class="userPhoto floatleft"><img src="../../img/2.jpg"></span>
+					<p class="mart15"><span class="font16 marl10">Bruce Zhang</span></p>
+					<span class="addBtn">加好友</span>
+				</li>
+				<li class="clearfix">
+					<span class="userPhoto floatleft"><img src="../../img/3.jpg"></span>
+					<p class="mart15"><span class="font16 marl10">Bruce Zhang</span></p>
+					<span class="addBtn">加好友</span>
+				</li>
+			</ul>
+		</div>
+	</body>
+
+</html>
