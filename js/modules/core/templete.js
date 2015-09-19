@@ -94,15 +94,15 @@ define(function(require, exports, module) {
 		commentItem.append('</li>\n');
 		return commentItem.toString();
 	};
-	exports.contactItem = function(addFlag) {
+	exports.contactPlannerItem = function(addFlag) {
 		var contactItem = new StringBuilder();
-		contactItem.append('<li class="clearfix">\n');
+		contactItem.append('<li class="clearfix" userId="{userId}" mobilePhone="{mobilePhone}">\n');
 		contactItem.append('<span class="userPhoto floatleft"><img src="{phone}"></span>\n');
 		contactItem.append('<p class="mart15"><span class="font16 marl10">{name}</span></p>\n');
 		if(addFlag){
-			contactItem.append('<span class="addBtn nobg noboder color-b">已添加</span>\n');
+			contactItem.append('<span class="addBtn">{text}</span>\n');
 		}else{
-			contactItem.append('<span class="addBtn">加好友</span>\n');
+			contactItem.append('<span class="addBtn nobg noboder color-b">{text}</span>\n');
 		}
 		contactItem.append('</li>\n');
 		return contactItem.toString();

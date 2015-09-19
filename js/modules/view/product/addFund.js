@@ -26,6 +26,7 @@ define(function(require, exports, module) {
 						if (jsonData['result'] == '0') {
 							$windowManager.reloadOtherWindow('product_user', true);
 							window.setTimeout(function() {
+								$nativeUIManager.wattingClose();
 								$windowManager.close();
 							}, 300);
 						} else {

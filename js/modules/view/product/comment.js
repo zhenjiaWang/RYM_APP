@@ -38,6 +38,7 @@ define(function(require, exports, module) {
 										}));
 										$nativeUIManager.wattingTitle('评论成功!');
 										window.setTimeout(function() {
+											$('#content').val('');
 											$nativeUIManager.wattingClose();
 										}, 1000);
 									}

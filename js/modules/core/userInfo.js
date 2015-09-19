@@ -30,6 +30,12 @@ define(function(require, exports, module) {
 			return $.trim(plus.storage.getItem(key));
 		}
 	};
+	exports.clear = function(key) {
+		if (plus.storage) {
+			plus.storage.clear();
+		}
+	};
+	
 	exports.isAuthorize = function() {
 		var flag = false;
 		if (plus.storage) {

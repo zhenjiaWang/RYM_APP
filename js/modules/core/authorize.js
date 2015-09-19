@@ -89,11 +89,9 @@ define(function(require, exports, module) {
 										plus.runtime.setBadgeNumber(0);
 									}, function() {});
 									plus.push.clear();
-									$userInfo.removeItem('password');
-									$userInfo.removeItem('companyCount');
-									$controlWindow.lunchWindowShow();
-									$windowManager.getLaunchWindow().loadURL('login.html');
-									$controlWindow.activeWindowClose();
+									$userInfo.clear();
+									$windowManager.getLaunchWindow().loadURL('../login.html');
+									$windowManager.close();
 									$nativeUIManager.wattingClose();
 								}
 							} else {

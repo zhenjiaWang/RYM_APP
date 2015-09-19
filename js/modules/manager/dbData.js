@@ -5,11 +5,17 @@ define(function(require, exports, module) {
 	var $nativeUIManager = require('manager/nativeUI');
 	loadContacts = function(callback, i, c) {
 		if (i == c) {
-			$webSQLManager.query('SELECT  ID, NAME,PHOTO,MOBILE_PHONE,QP,JP  FROM  PHONE_CONTACTS ORDER BY NAME', [], function(dbResult) {
-				if (dbResult) {
-					if (typeof callback == 'function') {
-						callback(dbResult);
-					}
+			$webSQLManager.query('SELECT  DISTINCT(JP)  FROM  PHONE_CONTACTS', [], function(keyWordResult) {
+				if (keyWordResult) {
+					$webSQLManager.query('SELECT  ID, NAME,PHOTO,MOBILE_PHONE,QP,JP  FROM  PHONE_CONTACTS ORDER BY NAME limit 0,50', [], function(dbResult) {
+						if (dbResult) {
+							if (typeof callback == 'function') {
+								callback(dbResult,keyWordResult);
+							}
+						}
+					}, function(msg) {
+						$nativeUIManager.alert('提示', msg, 'OK', function() {});
+					});
 				}
 			}, function(msg) {
 				$nativeUIManager.alert('提示', msg, 'OK', function() {});
@@ -19,7 +25,7 @@ define(function(require, exports, module) {
 	exports.searchContactsByKeyword = function(searchKey, callback) {
 		$webSQLManager.connect();
 		if ($webSQLManager.isSupport()) {
-			$webSQLManager.query("SELECT  ID, NAME,PHOTO,MOBILE_PHONE,QP,JP  FROM  PHONE_CONTACTS WHERE NAME LIKE ? OR MOBILE_PHONE LIKE ?  ORDER BY  NAME", ['%' + searchKey + '%'], function(dbResult) {
+			$webSQLManager.query("SELECT  ID, NAME,PHOTO,MOBILE_PHONE,QP,JP  FROM  PHONE_CONTACTS WHERE NAME LIKE ?   ORDER BY  NAME", ['%' + searchKey + '%'], function(dbResult) {
 				if (dbResult) {
 					if (typeof callback == 'function') {
 						callback(dbResult);
@@ -59,6 +65,8 @@ define(function(require, exports, module) {
 								var photo = '../../img/photodf.png';
 								var id = c.id;
 								var mobilePhone = false;
+								var QP = '';
+								var JP = '';
 								if (c.photos) {
 									photo = c.photos[0].value;
 									photo = plus.io.convertLocalFileSystemURL(photo);
@@ -67,21 +75,38 @@ define(function(require, exports, module) {
 									$(c.phoneNumbers).each(function(pi, phone) {
 										if (phone['type'] == 'mobile') {
 											mobilePhone = phone['value'];
+											if(mobilePhone){
+												mobilePhone=mobilePhone.replaceAll('\\+86','');
+												mobilePhone=mobilePhone.replaceAll('-','');
+											}
 										}
 									});
 								}
+								if (name) {
+									var QPS = makePy(name);
+									if (QPS && QPS.length > 0) {
+										QP = QPS[0];
+										if (QP && QP.length > 0) {
+											JP = QP.substring(0, 1);
+											JP=JP.toUpperCase();
+											var jpAscii = JP.charCodeAt();
+											if (jpAscii >= 48 && jpAscii <= 57) {
+												JP='0~9';
+											}
+										}
+									}
+								}
 								if (name && mobilePhone && id) {
 									$webSQLManager.insert('insert  into  PHONE_CONTACTS (ID, NAME,PHOTO,MOBILE_PHONE,QP,JP ) values(?,?,?,?,?,?)', [
-										id, name, photo, mobilePhone, '', ''
+										id, name, photo, mobilePhone, QP, JP
 									], function() {
 										_index += 1;
-										//console.info('insert into ='+id+'=='+name+'=='+mobilePhone);
 										loadContacts(callback, _index, contactsSize);
 									}, function(msg) {
 										alert(msg)
 									});
-								}else{
-									contactsSize-=1;
+								} else {
+									contactsSize -= 1;
 								}
 							});
 						} else {

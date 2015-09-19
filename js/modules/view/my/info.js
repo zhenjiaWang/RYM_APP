@@ -62,8 +62,8 @@ define(function(require, exports, module) {
 		task.start();
 	};
 	bindEvent = function() {
-		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.close();
+		$common.touchSE($('#logoutBtn'), function(event, startTouch, o) {}, function(event, o) {
+			$authorize.logout();
 		});
 		$common.touchSE($('li', '#editUL'), function(event, startTouch, o) {}, function(event, o) {
 			var dir = $(o).attr('dir');
@@ -197,6 +197,9 @@ define(function(require, exports, module) {
 
 		});
 		loadData();
+		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
+			$windowManager.close();
+		});
 	};
 	if (window.plus) {
 		plusReady();

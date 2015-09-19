@@ -195,6 +195,7 @@ define(function(require, exports, module) {
 			window.setTimeout(function() {
 				var passed = $validator.isPassed();
 				if (passed) {
+					$nativeUIManager.watting('请稍等...');
 					$.ajax({
 						type: 'POST',
 						url: $common.getRestApiURL() + '/common/reg/planner',
@@ -208,18 +209,24 @@ define(function(require, exports, module) {
 						success: function(jsonData) {
 							if (jsonData) {
 								if (jsonData['result'] == '0') {
+									$userInfo.putJson(jsonData);
+									$userInfo.put('authorize', '0');
+									$nativeUIManager.wattingClose();
 									$windowManager.close();
 									$windowManager.loadOtherWindow($windowManager.getLaunchWindowId(), 'home.html', false);
 								} else {
+									$nativeUIManager.wattingClose();
 									$nativeUIManager.alert('提示', '注册失败', '重新注册', function() {});
 								}
 							}
 						},
 						error: function(XMLHttpRequest, textStatus, errorThrown) {
+							$nativeUIManager.wattingClose();
 							$nativeUIManager.alert('提示', '注册失败', '重新注册', function() {});
 						}
 					});
 				} else {
+					$nativeUIManager.wattingClose();
 					$nativeUIManager.alert('提示', '请检查申请信息是否填写完毕', 'OK', function() {});
 				}
 			}, 500);
