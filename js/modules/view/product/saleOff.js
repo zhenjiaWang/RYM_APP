@@ -6,6 +6,7 @@ define(function(require, exports, module) {
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
 	var $templete = require('core/templete');
+	var currentWindow;
 	onRefresh = function() {
 		window.setTimeout(function() {
 			loadData(function() {

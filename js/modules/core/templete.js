@@ -97,7 +97,7 @@ define(function(require, exports, module) {
 	exports.contactPlannerItem = function(addFlag) {
 		var contactItem = new StringBuilder();
 		contactItem.append('<li class="clearfix" userId="{userId}" mobilePhone="{mobilePhone}">\n');
-		contactItem.append('<span class="userPhoto floatleft"><img src="{phone}"></span>\n');
+		contactItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		contactItem.append('<p class="mart15"><span class="font16 marl10">{name}</span></p>\n');
 		if(addFlag){
 			contactItem.append('<span class="addBtn">{text}</span>\n');
@@ -107,4 +107,23 @@ define(function(require, exports, module) {
 		contactItem.append('</li>\n');
 		return contactItem.toString();
 	};
+	exports.friendPlannerItem = function() {
+		var friendItem = new StringBuilder();
+		friendItem.append('<section class="personBoard" uid="{userId}">\n');
+		friendItem.append('<div class="userInfo mart5 clearfix">\n');
+		friendItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
+		friendItem.append('<div class="floatleft marl15 font13">\n');
+		friendItem.append('<p class="font17">{userName}</p>\n');
+		friendItem.append('<p>{orgName}</p>\n');
+		friendItem.append('<p class="font11"><i class="icon {textClass}"></i>{text}</p>\n');
+		friendItem.append('</div>\n');
+		friendItem.append('<div class="floatright alignright color-6">\n');
+		friendItem.append('<p><em>{follow}</em><i class="icon icon-3 marl5"></i></p>\n');
+		friendItem.append('<p class="mart10"><em>{friends}</em><i class="icon icon-4 marl5"></i></p>\n');
+		friendItem.append('</div>\n');
+		friendItem.append('</div>\n');
+		friendItem.append('<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i><span class="txt_hidden">{signature}</span></div>\n');
+		friendItem.append('</section>\n');
+		return friendItem.toString();
+	};	
 });

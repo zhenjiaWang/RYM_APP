@@ -50,20 +50,43 @@ define(function(require, exports, module) {
 					}
 				} else {
 					if (!$('#plusBtn').hasClass('current')) {
-						if (dir == 'friend') {
-							$windowManager.loadOtherWindow('header', 'friend/header.html');
+						var oldDir = $('span.current', '#footerAction').attr('dir');
+						var lang = $('span[dir="' + dir + '"]', '#footerAction').attr('lang');
+						if (lang) {
 							$('span.current', '#footerAction').removeClass('current');
-							$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
-						} else if (dir == 'customer') {
-							$('span.current', '#footerAction').removeClass('current');
-							$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
-						} else if (dir == 'tip') {
-							$('span.current', '#footerAction').removeClass('current');
-							$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
-						} else if (dir == 'room') {
-							$windowManager.loadOtherWindow('header', 'product/header.html');
-							$('span.current', '#footerAction').removeClass('current');
-							$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
+							$('span[dir="'+dir+'"]', '#footerAction').addClass('current');
+							if (lang == "1") {
+								if (dir == 'room') {
+									$controlWindow.windowShow('product_header');
+									$controlWindow.windowShow('product_user');
+								} else if (dir == 'friend') {
+									$controlWindow.windowShow('friend_header');
+									$controlWindow.windowShow('friend_list');
+								}
+							} else if (lang == "0") {
+								if (dir == 'friend') {
+									var historyHead = plus.webview.create("friend/header.html", "friend_header", {
+										top: "0px",
+										bottom: "50px"
+									});
+									historyHead.addEventListener("loaded", function() { //叶面加载完成后才显示
+										$windowManager.current().append(historyHead);
+										$('span[dir="friend"]', '#footerAction').attr('lang', '1');
+									}, false);
+								}
+							}
+							window.setTimeout(function() {
+								if (oldDir) {
+									if (oldDir == 'room') {
+										$controlWindow.windowHide('product_header');
+										$controlWindow.windowHide('product_user');
+									} else if (oldDir == 'friend') {
+										$controlWindow.windowHide('friend_header');
+										$controlWindow.windowHide('friend_list');
+									}
+									
+								}
+							}, 500);
 						}
 					}
 				}
@@ -71,7 +94,7 @@ define(function(require, exports, module) {
 		});
 	};
 	loadWebview = function() {
-		var workHead = plus.webview.create("product/header.html", "header", {
+		var workHead = plus.webview.create("product/header.html", "product_header", {
 			top: "0px",
 			bottom: "50px",
 			scrollIndicator: 'vertical'
@@ -80,6 +103,7 @@ define(function(require, exports, module) {
 			$windowManager.current().append(workHead);
 			if ($('span.current', '#footerAction').size() == 0) {
 				$('span', '#footerAction').first().addClass('current');
+				$('span[dir="room"]', '#footerAction').attr('lang', '1');
 			}
 		}, false);
 	}

@@ -9,13 +9,14 @@ define(function(require, exports, module) {
 		var imgTop = $('#imgMain').css('top');
 		if (imgTop) {
 			if (imgTop == '0px') {
-				$('#contentMain').animate({
+				$('#contentMain').css({
 					top: '0'
 				});
-				$('#imgMain').animate({
+				$('#imgMain').css({
 					top: '100%'
 				});
 				$('#showImgBtn').show();
+				$('.goTop').hide();
 			}
 		}
 	};
@@ -27,22 +28,27 @@ define(function(require, exports, module) {
 				showImgFlag = false;
 			},
 			function(startX, startY, endX, endY, event, moveTouch, o) {
-				var y = endY - startY;
-				if (y != 0) {
-					if (y < -40) {
-						showImgFlag = true;
+				if ($('#showImgBtn').is(':visible')) {
+					var y = endY - startY;
+					if (y != 0) {
+						if (y < -40) {
+							showImgFlag = true;
+						}
 					}
 				}
 			},
 			function(startX, startY, endX, endY, event, o) {
-				if (endY < startY && showImgFlag) {
-					$('#showImgBtn').hide();
-					$('#contentMain').animate({
-						top: '-100%'
-					});
-					$('#imgMain').animate({
-						top: '0'
-					});
+				if ($('#showImgBtn').is(':visible')) {
+					if (endY < startY && showImgFlag) {
+						$('#showImgBtn').hide();
+						$('#contentMain').css({
+							top: '-100%'
+						});
+						$('#imgMain').css({
+							top: '0'
+						});
+						$('.goTop').show();
+					}
 				}
 			});
 	};

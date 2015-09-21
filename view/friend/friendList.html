@@ -17,17 +17,18 @@
 			seajs.config({
 				base: "../../js/modules/"
 			});
-			seajs.use('view/friend/list');
+			seajs.use('view/friend/friendList');
 		</script>
 		<body>
 			<div class="main bgwhite">
 				<!--搜索begin-->
-				<div class="searchBar" style="margin-top:-45px;" title="默认不显示，下拉页面时候改margin-top为0显示出来，上滑的时候改成-45隐藏">
-					<input type="text" class="langTxt font14 " placeholder="手机号/姓名/昵称" title="当input foucs和不为空的时候加current">
+				<div class="searchBar" style="margin-top:0px;" >
+					<input type="text" class="langTxt font14 " placeholder="手机号/姓名">
 				</div>
 				<!--搜索over-->
-				<div class="friend_list mart10 marl10">
-					<section class="personBoard">
+				<p class="p-bt10 p-top10 color-a font14 aligncenter" id="blank" style="display: none;">当前无同业好友</p>
+				<div class="friend_list mart10 marl10" id="friendUL">
+					<!--<section class="personBoard">
 						<div class="userInfo mart5 clearfix">
 							<span class="userPhoto floatleft"><img src="../../img/1.jpg"></span>
 							<div class="floatleft marl15 font13">
@@ -71,7 +72,7 @@
 							</div>
 						</div>
 						<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i>走路太骚会摔跤，得瑟过劲必闪腰</div>
-					</section>
+					</section>-->
 				</div>
 			</div>
 			<!--底部弹出begin-->

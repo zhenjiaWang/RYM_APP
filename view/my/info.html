@@ -18,38 +18,40 @@
 			seajs.use('view/my/info');
 		</script>
 	</head>
+	<body style="padding-top: 50px;">
 	<header class="header">
 		<span class="icon icon-back floatleft" id="backBtn"></span>
 		<!--<span class="headerBtn prev_step aligncenter">上一步</span>-->
 		<h1 class="aligncenter font17">个人信息</h1>
 	</header>
-	<div class="main" style="top: 50px;">
-		<ul class="inputList mart15" id="editUL">
-			<li class="clearfix" dir="headImgUrl">
-				<span class="lable mart10">头像</span>
-				<span class="alignright placeTxt"><span class="userPhoto"><img src=""></span></span>
-			</li>
-			<li class="clearfix" dir="userName">
-				<span class="lable">真实姓名</span>
-				<span class="alignright placeTxt"></span>
-			</li>
-			<li class="clearfix" dir="orgName">
-				<span class="lable">所在机构</span>
-				<span class="alignright placeTxt"></span>
-			</li>
-			<li class="clearfix" dir="plannerNo">
-				<span class="lable">工号</span>
-				<span class="alignright placeTxt"></span>
-			</li>
-			<!--<li class="clearfix" dir="reCode">
+	
+		<div class="main" style="top: 50px;">
+			<ul class="inputList mart15" id="editUL">
+				<li class="clearfix" dir="headImgUrl">
+					<span class="lable mart10">头像</span>
+					<span class="alignright placeTxt"><span class="userPhoto"><img src=""></span></span>
+				</li>
+				<li class="clearfix" dir="userName">
+					<span class="lable">真实姓名</span>
+					<span class="alignright placeTxt"></span>
+				</li>
+				<li class="clearfix" dir="orgName">
+					<span class="lable">所在机构</span>
+					<span class="alignright placeTxt"></span>
+				</li>
+				<li class="clearfix" dir="plannerNo">
+					<span class="lable">工号</span>
+					<span class="alignright placeTxt"></span>
+				</li>
+				<!--<li class="clearfix" dir="reCode">
 				<span class="lable">二维码</span>
 				<span class="alignright placeTxt"><img src="../../img/code.png" width="18"></span>
 			</li>-->
-			<li class="clearfix" dir="signature">
-				<span class="lable">签名</span>
-				<span class="alignright placeTxt txt_hidden" style="width:70%;"></span>
-			</li>
-			<li class="clearfix" dir="password">
+				<li class="clearfix" dir="signature">
+					<span class="lable">签名</span>
+					<span class="alignright placeTxt txt_hidden" style="width:70%;"></span>
+				</li>
+				<li class="clearfix" dir="password">
 					<span class="lable">修改密码</span>
 					<span class="alignright placeTxt"></span>
 				</li>
@@ -57,9 +59,9 @@
 					<span class="lable">绑定微信号</span>
 					<span class="alignright placeTxt"></span>
 				</li>
-		</ul>
-		<span class="btn btnNormal btnOut mart20" id="logoutBtn">退出登录</span>
-	</div>
+			</ul>
+			<span class="btn btnNormal btnOut mart20" id="logoutBtn">退出登录</span>
+		</div>
 	</body>
 
 </html>

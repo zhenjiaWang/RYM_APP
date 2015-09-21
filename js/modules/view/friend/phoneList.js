@@ -8,6 +8,7 @@ define(function(require, exports, module) {
 	var $templete = require('core/templete');
 	var $dbData = require('manager/dbData');
 	var staticKeyWordResult = false;
+	var currentWindow;
 	buildContact = function(dbResult, keyWordResult, wordFlag) {
 		if (dbResult && keyWordResult) {
 			staticKeyWordResult = keyWordResult;
@@ -60,12 +61,16 @@ define(function(require, exports, module) {
 												var planner = contact['planner'];
 												var text = contact['text'];
 												var addFlag = contact['addFlag'];
-												sb.append(String.formatmodel($templete.contactPlannerItem(addFlag == '0'), {
-													name: row['NAME'],
-													mobilePhone: row['MOBILE_PHONE'],
-													userId: contact['userId'],
-													text: text
-												}));
+												if ($userInfo.get('mobilePhone') != row['MOBILE_PHONE']) {
+													sb.append(String.formatmodel($templete.contactPlannerItem(addFlag == '0'), {
+														name: row['NAME'],
+														mobilePhone: row['MOBILE_PHONE'],
+														userId: contact['userId'],
+														headImgUrl: contact['headImgUrl'],
+														text: text
+													}));
+												}
+
 											}
 										}
 									}
@@ -134,7 +139,7 @@ define(function(require, exports, module) {
 		});
 
 		$common.touchSE($('.addBtn'), function(event, startTouch, o) {}, function(event, o) {
-			if (!$(o).hasClass('nobg')) {
+			if (!$(o).hasClass('nobg')&&!$(o).hasClass('addDone')) {
 				var li = $(o).closest('li');
 				var friendId = $(li).attr('userId');
 				if (friendId) {
@@ -152,8 +157,7 @@ define(function(require, exports, module) {
 								if (jsonData) {
 									if (jsonData['result'] == '0') {
 										$nativeUIManager.wattingTitle('关注成功!');
-										$(o).text(jsonData['text']);
-										$(o).removeClass('nobg').removeClass('noboder').removeClass('color-b');
+										$(o).text(jsonData['text']).addClass('addDone');
 										window.setTimeout(function() {
 											$nativeUIManager.wattingClose();
 										}, 1000);

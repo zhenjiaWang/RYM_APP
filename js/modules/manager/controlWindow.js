@@ -16,31 +16,19 @@ define(function(require, exports, module) {
 			}
 		}
 	};
-	exports.platformWindowHide = function() {
-		var platformHeadWindow = $windowManager.getById('platform_head');
-		var platformListWindow = $windowManager.getById('platform_list');
-		if (platformHeadWindow) {
-			if (platformHeadWindow.isVisible()) {
-				platformHeadWindow.hide();
-			}
-		}
-		if (platformListWindow) {
-			if (platformListWindow.isVisible()) {
-				platformListWindow.hide();
+	exports.windowHide = function(winId) {
+		var hideWindow = $windowManager.getById(winId);
+		if (hideWindow) {
+			if (hideWindow.isVisible()) {
+				hideWindow.hide();
 			}
 		}
 	};
-	exports.platformWindowShow = function() {
-		var platformHeadWindow = $windowManager.getById('platform_head');
-		var platformListWindow = $windowManager.getById('platform_list');
-		if (platformHeadWindow) {
-			if (!platformHeadWindow.isVisible()) {
-				platformHeadWindow.show();
-			}
-		}
-		if (platformListWindow) {
-			if (!platformListWindow.isVisible()) {
-				platformListWindow.show();
+	exports.windowShow = function(winId) {
+		var showWindow = $windowManager.getById(winId);
+		if (showWindow) {
+			if (!showWindow.isVisible()) {
+				showWindow.show();
 			}
 		}
 	};
@@ -137,38 +125,24 @@ define(function(require, exports, module) {
 		}
 	};
 	exports.activeWindowClose = function() {
-		var platformHeadWindow = $windowManager.getById('platform_head');
-		var platformListWindow = $windowManager.getById('platform_list');
-		var historyHeadWindow = $windowManager.getById('history_head');
-		var historyReqListWindow = $windowManager.getById('history_reqList');
-		var historyTaskListWindow = $windowManager.getById('history_taskList');
-		var historyManageListWindow = $windowManager.getById('history_manageList');
-		var historyShareListWindow = $windowManager.getById('history_shareList');
-		var logoutWindow = $windowManager.getById('logout');
-		if (platformHeadWindow) {
-			platformHeadWindow.close();
+		var productHeaderWindow = $windowManager.getById('product_header');
+		var productUserWindow = $windowManager.getById('product_user');
+		var friendHeaderWindow = $windowManager.getById('friend_header');
+		var friendListListWindow = $windowManager.getById('friend_list');
+		
+		if (productHeaderWindow) {
+			productHeaderWindow.close();
 		}
-		if (platformListWindow) {
-			platformListWindow.close();
+		if (productUserWindow) {
+			productUserWindow.close();
 		}
-		if (historyHeadWindow) {
-			historyHeadWindow.close();
+		if (friendHeaderWindow) {
+			friendHeaderWindow.close();
 		}
-		if (historyReqListWindow) {
-			historyReqListWindow.close();
+		if (friendListListWindow) {
+			friendListListWindow.close();
 		}
-		if (historyTaskListWindow) {
-			historyTaskListWindow.close();
-		}
-		if (historyManageListWindow) {
-			historyManageListWindow.close();
-		}
-		if (historyShareListWindow) {
-			historyShareListWindow.close();
-		}
-		if (logoutWindow) {
-			logoutWindow.close();
-		}
+		
 	};
 
 	exports.attListWindowHide = function() {

@@ -5,46 +5,43 @@ define(function(require, exports, module) {
 	var $windowManager = require('manager/window');
 	var $templete = require('core/templete');
 	var showImgFlag = false;
-	goTop = function() {
-		var imgTop = $('#imgMain').css('top');
-		if (imgTop) {
-			if (imgTop == '0px') {
-				$('#contentMain').animate({
-					top: '0'
-				});
-				$('#imgMain').animate({
-					top: '100%'
-				});
-				$('#showImgBtn').show();
-			}
-		}
-	};
 	bindEvent = function() {
-		$common.touchSE($('.goTop', '#imgMain'), function(event, startTouch, o) {}, function(event, o) {
-			goTop();
-		});
-		$common.touchSME($('#contentMain'), function(startX, startY, endX, endY, event, startTouch, o) {
-				showImgFlag = false;
-			},
-			function(startX, startY, endX, endY, event, moveTouch, o) {
-				var y = endY - startY;
-				if (y != 0) {
-					if (y < -40) {
-						showImgFlag = true;
+		$common.switchOS(function() {
+			$common.touchSME($('#contentMain'), function(startX, startY, endX, endY, event, startTouch, o) {
+					showImgFlag = false;
+				},
+				function(startX, startY, endX, endY, event, moveTouch, o) {
+					if ($('#showImgBtn').is(':visible')) {
+						var y = endY - startY;
+						if (y != 0) {
+							if (y < -40) {
+								showImgFlag = true;
+							}
+						}
 					}
-				}
-			},
-			function(startX, startY, endX, endY, event, o) {
-				if (endY < startY && showImgFlag) {
-					$('#showImgBtn').hide();
-					$('#contentMain').animate({
-						top: '-100%'
-					});
-					$('#imgMain').animate({
-						top: '0'
-					});
-				}
+
+				},
+				function(startX, startY, endX, endY, event, o) {
+					if ($('#showImgBtn').is(':visible')) {
+						if (endY < startY && showImgFlag) {
+							$nativeUIManager.watting('请稍等...');
+							$windowManager.create('product_img', 'img.html', 'slide-in-bottom', true, function(show) {
+								$nativeUIManager.wattingClose();
+								show();
+							});
+						}
+					}
+				});
+		}, function() {
+			$common.touchSE($('#showImgBtn'), function(event, startTouch, o) {}, function(event, o) {
+				$nativeUIManager.watting('请稍等...');
+				$windowManager.create('product_img', 'img.html', 'slide-in-bottom', true, function(show) {
+					$nativeUIManager.wattingClose();
+					show();
+				});
 			});
+		});
+
 	};
 	loadData = function() {
 		var productView = $userInfo.get('productView');
@@ -64,11 +61,14 @@ define(function(require, exports, module) {
 					$('#fundType').text(fund['fundType']);
 					var attArray = jsonData['attArray'];
 					if (attArray && $(attArray).size() > 0) {
+						$userInfo.put('attImg', JSON.stringify(attArray));
+						$common.switchOS(function() {
+
+						}, function() {
+							$('p', '#showImgBtn').text('点击查看图片详情');
+						});
 						$('#showImgBtn').show();
 						$('#contentMain').css('bottom', '50px');
-						$(attArray).each(function(i, o) {
-							$('.imgDetail', '#imgMain').append('<p><img src="' + o['imgSrc'] + '"></p>\n');
-						});
 					}
 					$('#contentMain').show();
 					pullToRefreshEvent();
@@ -84,7 +84,7 @@ define(function(require, exports, module) {
 			height: "50px",
 			range: "200px",
 			contentdown: {
-				caption: "下拉回到产品详情"
+				caption: ""
 			},
 			contentover: {
 				caption: ""
@@ -93,7 +93,6 @@ define(function(require, exports, module) {
 				caption: ""
 			}
 		}, function() {
-			goTop();
 			currentWindow.endPullToRefresh();
 		});
 	};

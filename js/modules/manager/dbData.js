@@ -68,8 +68,8 @@ define(function(require, exports, module) {
 								var QP = '';
 								var JP = '';
 								if (c.photos) {
-									photo = c.photos[0].value;
-									photo = plus.io.convertLocalFileSystemURL(photo);
+									//photo = c.photos[0].value;
+									//photo = plus.io.convertLocalFileSystemURL(photo);
 								}
 								if (c.phoneNumbers) {
 									$(c.phoneNumbers).each(function(pi, phone) {
@@ -78,6 +78,7 @@ define(function(require, exports, module) {
 											if(mobilePhone){
 												mobilePhone=mobilePhone.replaceAll('\\+86','');
 												mobilePhone=mobilePhone.replaceAll('-','');
+												mobilePhone=mobilePhone.replaceAll(' ','');
 											}
 										}
 									});

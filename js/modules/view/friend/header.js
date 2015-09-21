@@ -13,7 +13,7 @@ define(function(require, exports, module) {
 		});
 	};
 	loadWebview = function() {
-		var friendListWin = plus.webview.create("list.html", "friend_list", {
+		var friendListWin = plus.webview.create("friendList.html", "friend_list", {
 			top: "50px",
 			bottom: "0px",
 			scrollIndicator: 'vertical'

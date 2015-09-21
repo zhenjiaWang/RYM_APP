@@ -8,6 +8,7 @@ define(function(require, exports, module) {
 	var $templete = require('core/templete');
 	var server = "/common/common/uploadData";
 	var files = [];
+	var currentWindow;
 	onRefresh = function() {
 		window.setTimeout(function() {
 			loadData(function() {

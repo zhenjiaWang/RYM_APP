@@ -213,7 +213,7 @@ define(function(require, exports, module) {
 									$userInfo.put('authorize', '0');
 									$nativeUIManager.wattingClose();
 									$windowManager.close();
-									$windowManager.loadOtherWindow($windowManager.getLaunchWindowId(), 'home.html', false);
+									$windowManager.loadOtherWindow($windowManager.getLaunchWindowId(), 'home.html', true);
 								} else {
 									$nativeUIManager.wattingClose();
 									$nativeUIManager.alert('提示', '注册失败', '重新注册', function() {});

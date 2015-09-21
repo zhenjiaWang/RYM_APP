@@ -90,9 +90,10 @@ define(function(require, exports, module) {
 									}, function() {});
 									plus.push.clear();
 									$userInfo.clear();
-									$windowManager.getLaunchWindow().loadURL('../login.html');
-									$windowManager.close();
 									$nativeUIManager.wattingClose();
+									$controlWindow.activeWindowClose();
+									$windowManager.close();
+									$windowManager.loadOtherWindow($windowManager.getLaunchWindowId(), '../login.html', true);
 								}
 							} else {
 								$nativeUIManager.wattingTitle('错误,请稍后再试');

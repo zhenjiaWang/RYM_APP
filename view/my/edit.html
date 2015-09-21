@@ -20,21 +20,24 @@
 			seajs.use('view/my/edit');
 		</script>
 	</head>
-	<header class="header">
-		<span class="icon icon-back floatleft" id="backBtn"></span>
-		<!--<span class="headerBtn prev_step aligncenter">上一步</span>-->
-		<h1 class="aligncenter font17"></h1>
-		<!--<span class="headerBtn aligncenter">下一步</span>-->
-		<span class="headerBtn aligncenter" id="saveBtn">保存</span>
-	</header>
-	<div class="main" style="top: 50px;">
-		<ul class="inputList mart15">
-			<li class="clearfix" controlType="text">
-				<input type="text" id="codeValue" name="codeValue" class="LineInt" placeholder="请输入..." />
-				<label class="lableTxt" style="width: 100%;"></label>
-			</li>
-		</ul>
-	</div>
+
+	<body style="padding-top: 50px;">
+		<header class="header">
+			<span class="icon icon-back floatleft" id="backBtn"></span>
+			<!--<span class="headerBtn prev_step aligncenter">上一步</span>-->
+			<h1 class="aligncenter font17"></h1>
+			<!--<span class="headerBtn aligncenter">下一步</span>-->
+			<div class="next_step" id="saveBtn"><span class="headerBtn aligncenter">保存</span></div>
+		</header>
+
+		<div class="main" style="top: 50px;">
+			<ul class="inputList mart15">
+				<li class="clearfix" controlType="text">
+					<input type="text" id="codeValue" name="codeValue" class="LineInt" placeholder="请输入..." />
+					<label class="lableTxt" style="width: 100%;"></label>
+				</li>
+			</ul>
+		</div>
 	</body>
 
 </html>

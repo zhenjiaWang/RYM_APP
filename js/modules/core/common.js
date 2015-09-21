@@ -27,7 +27,7 @@ define(function(require, exports, module) {
 		return type == networkInfo.CONNECTION_ETHERNET || type == networkInfo.CONNECTION_WIFI || type == networkInfo.CONNECTION_CELL2G || type == networkInfo.CONNECTION_CELL3G || type == networkInfo.CONNECTION_CELL4G;
 	};
 	exports.getRestApiURL = function() {
-		return "http://192.168.1.108:8080";
+		return "http://10.1.10.240:8080";
 	};
 	exports.switchOS = function(IOS, ANDROID) {
 		switch (plus.os.name) {
