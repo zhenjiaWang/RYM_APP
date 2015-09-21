@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" /> 
+		<meta name="apple-touch-fullscreen" content="yes"/>
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"> 
+		<title>评论</title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+		<script type="text/javascript" src="../../js/support.js"></script>
+		<script type="text/javascript" src='../../js/autosize.js'></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/product/commentFooter');
+		</script>
+	</head>
+	<body>
+		<footer class="footer footerInner clearfix " style="height:auto;min-height:49px;">
+			<div class="commentInt floatleft color-9"  style="position: absolute;display: none;" id="replyTip"></div>
+			<div id="content" name="content" class="commentInt floatleft" contenteditable="true"></div>
+			<a class="btnSend floatleft" href="javascript:;">发 送</a>
+		</footer>
+	</body>
+</html>

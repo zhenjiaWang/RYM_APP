@@ -7,95 +7,107 @@ define(function(require, exports, module) {
 	var $templete = require('core/templete');
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
-	var editor = false;
-	bindEvent = function() {
-		$common.touchSE($('.btnSend'), function(event, startTouch, o) {}, function(event, o) {
-			var content = $('#content').text();
-			if (content && content != '') {
-				$nativeUIManager.watting('请稍等...');
-				$common.refreshToken(function(tokenId) {
-					$.ajax({
-						type: 'POST',
-						url: $common.getRestApiURL() + '/product/info/addComment',
-						dataType: 'json',
-						data: {
-							id: id,
-							content: content,
-							userId: $('#content').attr('replyUserId'),
-							'org.guiceside.web.jsp.taglib.Token': tokenId
-						},
-						success: function(jsonData) {
-							if (jsonData) {
-								if (jsonData['result'] == '0') {
-									var commentObj = jsonData['commentObj'];
-									if (commentObj) {
-										if (!$('#commentUL').is(':visible')) {
-											$('#commentUL').show();
-										}
-										$('#commentUL').prepend(String.formatmodel($templete.commentItem(commentObj['replyFlag']), {
-											userId: commentObj['userId'],
-											headImgUrl: commentObj['headImgUrl'],
-											userName: commentObj['userName'],
-											dateTime: commentObj['dateTime'],
-											content: commentObj['content'],
-											replyFlag: commentObj['replyFlag'],
-											replyUserName: commentObj['replyUserName']
-										}));
-										$nativeUIManager.wattingTitle('评论成功!');
-										window.setTimeout(function() {
-											$('#content').attr('replyUserId', '').text('');
-											$nativeUIManager.wattingClose();
-										}, 1000);
-									}
-								} else {
-									$nativeUIManager.wattingClose();
-									$nativeUIManager.alert('提示', '发表评论失败', 'OK', function() {});
+	var nextIndex = 0;
+	var currentWindow;
+	reset = function() {
+		var commentFooterWin = $windowManager.getById('product_commentFooter');
+		if (commentFooterWin) {
+			commentFooterWin.evalJS('reset()');
+		}
+	};
+	sendComment = function(content, replyUserId, callback) {
+		$nativeUIManager.watting('请稍等...');
+		$common.refreshToken(function(tokenId) {
+			$.ajax({
+				type: 'POST',
+				url: $common.getRestApiURL() + '/product/info/addComment',
+				dataType: 'json',
+				data: {
+					id: id,
+					content: content,
+					userId: replyUserId,
+					'org.guiceside.web.jsp.taglib.Token': tokenId
+				},
+				success: function(jsonData) {
+					if (jsonData) {
+						if (jsonData['result'] == '0') {
+							var commentObj = jsonData['commentObj'];
+							if (commentObj) {
+								if (!$('#commentUL').is(':visible')) {
+									$('#commentUL').show();
 								}
+								$('#commentUL').prepend(String.formatmodel($templete.commentItem(commentObj['replyFlag']), {
+									userId: commentObj['userId'],
+									headImgUrl: commentObj['headImgUrl'],
+									userName: commentObj['userName'],
+									dateTime: commentObj['dateTime'],
+									content: commentObj['content'],
+									replyFlag: commentObj['replyFlag'],
+									replyUserName: commentObj['replyUserName']
+								}));
+								$nativeUIManager.wattingTitle('评论成功!');
+								window.setTimeout(function() {
+									if (typeof callback == 'function') {
+										callback();
+									}
+									var commentCount=$('em','#commentCount').text();
+									if(commentCount){
+										commentCount=parseInt(commentCount);
+										$('em','#commentCount').text(commentCount+1);
+									}
+									$nativeUIManager.wattingClose();
+								}, 1000);
 							}
-						},
-						error: function(XMLHttpRequest, textStatus, errorThrown) {
+						} else {
 							$nativeUIManager.wattingClose();
 							$nativeUIManager.alert('提示', '发表评论失败', 'OK', function() {});
 						}
-					});
-				});
-			} else {
-				$nativeUIManager.alert('提示', '请先输入评论内容', 'OK', function() {});
-			}
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					$nativeUIManager.wattingClose();
+					$nativeUIManager.alert('提示', '发表评论失败', 'OK', function() {});
+				}
+			});
 		});
-
-
+	}
+	onRefresh = function() {
+		nextIndex = 0;
+		$('#commentUL').attr('nextIndex', 0);
+		window.setTimeout(function() {
+			loadData(function() {
+				currentWindow.endPullToRefresh();
+			});
+		}, 500);
+	};
+	pullToRefreshEvent = function() {
+		currentWindow = $windowManager.current();
+		currentWindow.setPullToRefresh({
+			support: true,
+			height: "50px",
+			range: "200px",
+			contentdown: {
+				caption: "下拉可以刷新"
+			},
+			contentover: {
+				caption: "释放立即刷新"
+			},
+			contentrefresh: {
+				caption: "正在刷新..."
+			}
+		}, onRefresh);
+	};
+	bindEvent = function() {
 		$common.touchSE($('li', '#commentUL'), function(event, startTouch, o) {}, function(event, o) {
 			var userName = $(o).attr('userName');
 			var userId = $(o).attr('userId');
 			if (userId && userName) {
-				$keyManager.openSoftKeyboard(function() {
-					$('#replyTip').text('回复 ' + userName).show();
-					$('#content').attr('replyUserId', userId).text('').get(0).focus();
-				});
-			}
-		});
-		$('#content').off('keydown').on('keydown', function(e) {
-			e = (e) ? e : ((window.event) ? window.event : "")
-			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
-			if (keyCode) {
-				var value = $(this).text();
-				if (value && value != '') {
-					$('#replyTip').hide();
+				var commentFooterWin = $windowManager.getById('product_commentFooter');
+				if (commentFooterWin) {
+					commentFooterWin.evalJS('reply("' + userId + '","' + userName + '")');
 				}
 			}
 		});
-		$('#content').off('keyup').on('keyup', function(e) {
-			e = (e) ? e : ((window.event) ? window.event : "")
-			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
-			if (keyCode) {
-				var value = $(this).text();
-				if (value == '') {
-					$('#replyTip').show();
-				}
-			}
-		});
-
 
 		$common.touchSE($('#likeAction'), function(event, startTouch, o) {}, function(event, o) {
 			$(o).hide();
@@ -133,9 +145,26 @@ define(function(require, exports, module) {
 				});
 			});
 		});
+		document.addEventListener("plusscrollbottom", function() {
+			var next = $('#commentUL').attr('nextIndex');
+			if (next) {
+				if (next > 0) {
+					nextIndex = next;
+					$nativeUIManager.watting('正在加载更多...');
+					$('#commentUL').attr('nextIndex', 0);
+					window.setTimeout(function() {
+						loadData(function() {
+							$nativeUIManager.wattingClose();
+						}, true);
+					}, 500);
+				}
+			}
+		});
 	};
-	loadData = function() {
-		$nativeUIManager.watting('正在加载评论');
+	loadData = function(callback, append) {
+		if (!callback) {
+			$nativeUIManager.watting('正在加载评论...');
+		}
 		$.ajax({
 			type: 'POST',
 			url: $common.getRestApiURL() + '/product/info/commentView',
@@ -155,6 +184,7 @@ define(function(require, exports, module) {
 						} else {
 							$('#likeAction').show();
 						}
+						$('.commentTop').show();
 						var commentArray = jsonData['commentArray'];
 						if (commentArray && $(commentArray).size() > 0) {
 							var sb = new StringBuilder();
@@ -174,15 +204,46 @@ define(function(require, exports, module) {
 						} else {
 							$('#blank').show();
 						}
+						if (append) {
+							$('#commentUL').append(sb.toString());
+						} else {
+							$('#commentUL').empty().append(sb.toString());
+						}
+						nextIndex = 0;
+						$('#commentUL').attr('nextIndex', 0);
+						var page = jsonData['page'];
+						if (page) {
+							$('em','#commentCount').text(page['totalRecord']);
+							if (page['hasNextPage'] == true) {
+								$('#commentUL').attr('nextIndex', page['nextIndex']);
+							}
+						}
+						pullToRefreshEvent();
 						bindEvent();
+						if (!callback) {
+							$nativeUIManager.wattingClose();
+						}
+						if (typeof callback == 'function') {
+							callback();
+						}
 					} else {
-						$nativeUIManager.wattingClose();
+						if (!callback) {
+							$nativeUIManager.wattingClose();
+						}
+						if (typeof callback == 'function') {
+							callback();
+						}
 						$nativeUIManager.alert('提示', '加载评论失败', 'OK', function() {});
 					}
 				}
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				$nativeUIManager.wattingClose();
+				if (!callback) {
+					$nativeUIManager.wattingClose();
+				}
+				if (typeof callback == 'function') {
+					callback();
+				}
 				$nativeUIManager.alert('提示', '加载评论失败', 'OK', function() {});
 			}
 		});
@@ -194,10 +255,6 @@ define(function(require, exports, module) {
 
 		});
 		loadData();
-		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.close();
-		});
-		//autosize($('#content'));
 	};
 	if (window.plus) {
 		plusReady();

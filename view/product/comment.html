@@ -20,26 +20,22 @@
 			seajs.use('view/product/comment');
 		</script>
 	</head>
-	<body style="padding-top: 50px;">
-		<header class="header">
-			<span class="icon icon-back floatleft" id="backBtn"></span>
-			<h1 class="aligncenter font17" style="left:70px;right:70px;">评论</h1>
-		</header>
-		<div class="main" style="top: 50px;bottom: 50px;">
-			<section class="commentTop">
-				<span><i class="icon icon-con"></i>15</span>
+	<body>
+		<div class="main" >
+			<section class="commentTop" style="display: none;">
+				<span id="commentCount"><i class="icon icon-con"></i><em>0</em></span>
 				<span id="likeSpan"><i class="icon icon-zan"></i><em>0</em></span>
 				<span class="floatright font14" id="likeAction" style="display: none;">赞一个</span>
 			</section>
 			<p class="p-bt10 p-top10 color-a font14 aligncenter" id="blank" style="display: none;">当前暂无评论</p>
-			<ul class="inputList feedList" style="display: none;" id="commentUL">
+			<ul class="inputList feedList"  id="commentUL" style="display: none;">
 				
 			</ul>
 		</div>
-		<footer class="footer footerInner clearfix " style="height:auto;min-height:49px;">
+		<!--<footer class="footer footerInner clearfix " style="height:auto;min-height:49px;">
 			<div class="commentInt floatleft color-9"  style="position: absolute;display: none;" id="replyTip"></div>
 			<div id="content" name="content" class="commentInt floatleft" contenteditable="true"></div>
 			<a class="btnSend floatleft" href="javascript:;">发 送</a>
-		</footer>
+		</footer>-->
 	</body>
 </html>
