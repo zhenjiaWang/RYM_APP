@@ -3,12 +3,14 @@ define(function(require, exports, module) {
 	var $userInfo = require('core/userInfo');
 	var $nativeUIManager = require('manager/nativeUI');
 	var $windowManager = require('manager/window');
+	var $keyManager = require('manager/key');
 	var $templete = require('core/templete');
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
+	var editor = false;
 	bindEvent = function() {
 		$common.touchSE($('.btnSend'), function(event, startTouch, o) {}, function(event, o) {
-			var content = $('#content').val();
+			var content = $('#content').text();
 			if (content && content != '') {
 				$nativeUIManager.watting('请稍等...');
 				$common.refreshToken(function(tokenId) {
@@ -19,6 +21,7 @@ define(function(require, exports, module) {
 						data: {
 							id: id,
 							content: content,
+							userId: $('#content').attr('replyUserId'),
 							'org.guiceside.web.jsp.taglib.Token': tokenId
 						},
 						success: function(jsonData) {
@@ -29,16 +32,18 @@ define(function(require, exports, module) {
 										if (!$('#commentUL').is(':visible')) {
 											$('#commentUL').show();
 										}
-										$('#commentUL').prepend(String.formatmodel($templete.commentItem(),{
-											userId:commentObj['userId'],
-											headImgUrl:commentObj['headImgUrl'],
-											userName:commentObj['userName'],
-											dateTime:commentObj['dateTime'],
-											content:commentObj['content']
+										$('#commentUL').prepend(String.formatmodel($templete.commentItem(commentObj['replyFlag']), {
+											userId: commentObj['userId'],
+											headImgUrl: commentObj['headImgUrl'],
+											userName: commentObj['userName'],
+											dateTime: commentObj['dateTime'],
+											content: commentObj['content'],
+											replyFlag: commentObj['replyFlag'],
+											replyUserName: commentObj['replyUserName']
 										}));
 										$nativeUIManager.wattingTitle('评论成功!');
 										window.setTimeout(function() {
-											$('#content').val('');
+											$('#content').attr('replyUserId', '').text('');
 											$nativeUIManager.wattingClose();
 										}, 1000);
 									}
@@ -54,11 +59,44 @@ define(function(require, exports, module) {
 						}
 					});
 				});
-			}else{
+			} else {
 				$nativeUIManager.alert('提示', '请先输入评论内容', 'OK', function() {});
 			}
 		});
-		
+
+
+		$common.touchSE($('li', '#commentUL'), function(event, startTouch, o) {}, function(event, o) {
+			var userName = $(o).attr('userName');
+			var userId = $(o).attr('userId');
+			if (userId && userName) {
+				$keyManager.openSoftKeyboard(function() {
+					$('#replyTip').text('回复 ' + userName).show();
+					$('#content').attr('replyUserId', userId).text('').get(0).focus();
+				});
+			}
+		});
+		$('#content').off('keydown').on('keydown', function(e) {
+			e = (e) ? e : ((window.event) ? window.event : "")
+			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
+			if (keyCode) {
+				var value = $(this).text();
+				if (value && value != '') {
+					$('#replyTip').hide();
+				}
+			}
+		});
+		$('#content').off('keyup').on('keyup', function(e) {
+			e = (e) ? e : ((window.event) ? window.event : "")
+			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
+			if (keyCode) {
+				var value = $(this).text();
+				if (value == '') {
+					$('#replyTip').show();
+				}
+			}
+		});
+
+
 		$common.touchSE($('#likeAction'), function(event, startTouch, o) {}, function(event, o) {
 			$(o).hide();
 			$common.refreshToken(function(tokenId) {
@@ -117,21 +155,23 @@ define(function(require, exports, module) {
 						} else {
 							$('#likeAction').show();
 						}
-						var commentArray=jsonData['commentArray'];
-						if(commentArray&&$(commentArray).size()>0){
+						var commentArray = jsonData['commentArray'];
+						if (commentArray && $(commentArray).size() > 0) {
 							var sb = new StringBuilder();
-							$(commentArray).each(function(i,o){
-								sb.append(String.formatmodel($templete.commentItem(),{
-											userId:o['userId'],
-											headImgUrl:o['headImgUrl'],
-											userName:o['userName'],
-											dateTime:o['dateTime'],
-											content:o['content']
-										}));
+							$(commentArray).each(function(i, o) {
+								sb.append(String.formatmodel($templete.commentItem(o['replyFlag']), {
+									userId: o['userId'],
+									headImgUrl: o['headImgUrl'],
+									userName: o['userName'],
+									dateTime: o['dateTime'],
+									content: o['content'],
+									replyFlag: o['replyFlag'],
+									replyUserName: o['replyUserName']
+								}));
 							});
 							$('#commentUL').show();
 							$('#commentUL').empty().append(sb.toString());
-						}else{
+						} else {
 							$('#blank').show();
 						}
 						bindEvent();
@@ -157,7 +197,7 @@ define(function(require, exports, module) {
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});
-		autosize($('#content'));
+		//autosize($('#content'));
 	};
 	if (window.plus) {
 		plusReady();

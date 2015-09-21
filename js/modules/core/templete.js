@@ -18,7 +18,7 @@ define(function(require, exports, module) {
 		selectItem.append('<li uid="{uid}"  index="{index}" type="{action}" class="clearfix" style="top:{top}px;">\n');
 		if (moveFlag) {
 			selectItem.append('<span class="tips {typeClass} strong">{typeName}</span>\n');
-		}else{
+		} else {
 			selectItem.append('<span class="icon icon-{action}"></span>\n');
 		}
 		selectItem.append('<span class="lable txt_hidden block">{name}</span>\n');
@@ -80,13 +80,18 @@ define(function(require, exports, module) {
 		fundItem.append('</div>\n');
 		return fundItem.toString();
 	};
-	exports.commentItem = function() {
+	exports.commentItem = function(replyFlag) {
 		var commentItem = new StringBuilder();
-		commentItem.append('<li class="clearfix" userId="{userId}">\n');
+		commentItem.append('<li class="clearfix" userId="{userId}" userName="{userName}">\n');
 		commentItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		commentItem.append('<div class="marl60 marr10">\n');
 		commentItem.append('<p class="font12 alignright clearfix">\n');
-		commentItem.append('<span class="font17 floatleft">{userName}</span>\n');
+		console.info(replyFlag);
+		if (replyFlag == '0') {
+			commentItem.append('<span class="font17 floatleft"><em class="nameSpan">{userName}</em>回复<em class="nameSpan">{replyUserName}</em></span>\n');
+		} else {
+			commentItem.append('<span class="font17 floatleft">{userName}</span>\n');
+		}
 		commentItem.append('<span class="color-a">{dateTime}</span>\n');
 		commentItem.append('</p>\n');
 		commentItem.append('<p class="font14 color-9">{content}</p>\n');
@@ -99,9 +104,9 @@ define(function(require, exports, module) {
 		contactItem.append('<li class="clearfix" userId="{userId}" mobilePhone="{mobilePhone}">\n');
 		contactItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		contactItem.append('<p class="mart15"><span class="font16 marl10">{name}</span></p>\n');
-		if(addFlag){
+		if (addFlag) {
 			contactItem.append('<span class="addBtn">{text}</span>\n');
-		}else{
+		} else {
 			contactItem.append('<span class="addBtn nobg noboder color-b">{text}</span>\n');
 		}
 		contactItem.append('</li>\n');
@@ -125,5 +130,28 @@ define(function(require, exports, module) {
 		friendItem.append('<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i><span class="txt_hidden">{signature}</span></div>\n');
 		friendItem.append('</section>\n');
 		return friendItem.toString();
-	};	
+	};
+	exports.relationPlannerItem = function() {
+		var relationPlannerItem = new StringBuilder();
+		relationPlannerItem.append('<section class="UserCard" userId="{userId}" saleCount="{saleCount}">\n');
+		relationPlannerItem.append('<span class="icon-new"></span>\n');
+		relationPlannerItem.append('<div class="UserBg "><img src="{headImgUrl}"></div>\n');
+		relationPlannerItem.append('<p class="font14 aligncenter" style="margin-top:-25px;">{userName}</p>\n');
+		relationPlannerItem.append('<p class="font10 aligncenter color-8">在售中: {saleCount}</p>\n');
+		relationPlannerItem.append('<p><img src="../../img/w-bg1.png" width="100%"></p>\n');
+		relationPlannerItem.append('<table width="100%" class="mart10">\n');
+		relationPlannerItem.append('<tr>\n');
+		relationPlannerItem.append('<th>理财</th>\n');
+		relationPlannerItem.append('<th>信托/资管</th>\n');
+		relationPlannerItem.append('<th>基金</th>\n');
+		relationPlannerItem.append('</tr>\n');
+		relationPlannerItem.append('<tr>\n');
+		relationPlannerItem.append('<td>6.45%</td>\n');
+		relationPlannerItem.append('<td>6.45%</td>\n');
+		relationPlannerItem.append('<td>股票型</td>\n');
+		relationPlannerItem.append('</tr>\n');
+		relationPlannerItem.append('</table>\n');
+		relationPlannerItem.append('</section>\n');
+		return relationPlannerItem.toString();
+	};
 });

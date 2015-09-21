@@ -1,17 +1,14 @@
 define(function(require, exports, module) {
 	var $common = require('core/common');
 	var $userInfo = require('core/userInfo');
-	var $authorize = require('core/authorize');
 	var $nativeUIManager = require('manager/nativeUI');
 	var $windowManager = require('manager/window');
-	var $controlWindow = require('manager/controlWindow');
-	var $keyManager = require('manager/key');
 	var $templete = require('core/templete');
 	var nextIndex = 0;
 	var currentWindow;
 	onRefresh = function() {
 		nextIndex = 0;
-		$('.workData').attr('nextIndex', 0);
+		$('#plannerUL').attr('nextIndex', 0);
 		window.setTimeout(function() {
 			loadData(function() {
 				currentWindow.endPullToRefresh();
@@ -34,49 +31,6 @@ define(function(require, exports, module) {
 				caption: "正在刷新..."
 			}
 		}, onRefresh);
-	};
-	showAddTools = function() {
-		$('.footerMask').css('bottom', '0px');
-		$('#bottomPop').addClass('current');
-	};
-	hideAddTools = function() {
-		$('.footerMask').css('bottom', '-99px');
-		$('#bottomPop').removeClass('current');
-	};
-	bindEvent = function() {
-		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('product_add', '../product/add.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
-		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('product_relation', '../product/send.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
-		document.addEventListener("plusscrollbottom", function() {
-			var next = $('#friendUL').attr('nextIndex');
-			if (next) {
-				if (next > 0) {
-					nextIndex = next;
-					$nativeUIManager.watting('正在加载更多...');
-					$('#friendUL').attr('nextIndex', 0);
-					window.setTimeout(function() {
-						loadData(function() {
-							$nativeUIManager.wattingClose();
-						}, true);
-					}, 500);
-				}
-			}
-		});
 	};
 	loadData = function(callback, append) {
 		if (!callback) {
@@ -102,32 +56,27 @@ define(function(require, exports, module) {
 								} else if (o['state'] == '2') {
 									textClass = 'icon-7';
 								}
-								sb.append(String.formatmodel($templete.friendPlannerItem(), {
+								sb.append(String.formatmodel($templete.relationPlannerItem(), {
 									userId: o['userId'],
 									userName: o['userName'],
 									headImgUrl: o['headImgUrl'],
-									orgName: o['orgName'],
-									text: o['text'],
-									follow: o['follow'],
-									friends: o['friends'],
-									signature: o['signature'],
-									textClass: textClass
+									saleCount: o['saleCount']
 								}));
 							});
 						} else {
 							$('#blank').show();
 						}
 						if (append) {
-							$('#friendUL').append(sb.toString());
+							$('#plannerUL').append(sb.toString());
 						} else {
-							$('#friendUL').empty().append(sb.toString());
+							$('#plannerUL').empty().append(sb.toString());
 						}
 						nextIndex = 0;
-						$('#friendUL').attr('nextIndex', 0);
+						$('#plannerUL').attr('nextIndex', 0);
 						var page = jsonData['page'];
 						if (page) {
 							if (page['hasNextPage'] == true) {
-								$('#friendUL').attr('nextIndex', page['nextIndex']);
+								$('#plannerUL').attr('nextIndex', page['nextIndex']);
 							}
 						}
 						pullToRefreshEvent();
@@ -160,6 +109,23 @@ define(function(require, exports, module) {
 			}
 		});
 	};
+	bindEvent = function() {
+		document.addEventListener("plusscrollbottom", function() {
+			var next = $('#plannerUL').attr('nextIndex');
+			if (next) {
+				if (next > 0) {
+					nextIndex = next;
+					$nativeUIManager.watting('正在加载更多...');
+					$('#plannerUL').attr('nextIndex', 0);
+					window.setTimeout(function() {
+						loadData(function() {
+							$nativeUIManager.wattingClose();
+						}, true);
+					}, 500);
+				}
+			}
+		});
+	};
 	plusReady = function() {
 		$common.switchOS(function() {
 			$('body').addClass('Ios_scroll');
@@ -167,6 +133,9 @@ define(function(require, exports, module) {
 
 		});
 		loadData();
+		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
+			$windowManager.close();
+		});
 	};
 	if (window.plus) {
 		plusReady();
