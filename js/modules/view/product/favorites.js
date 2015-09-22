@@ -59,7 +59,7 @@ define(function(require, exports, module) {
 			});
 		});
 		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('product_relation', 'send.html', false, true, function(show) {
+			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
 				show();
 				var lunchWindow = $windowManager.getLaunchWindow();
 				if (lunchWindow) {

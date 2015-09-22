@@ -186,8 +186,8 @@ define(function(require, exports, module) {
 						}
 						$('.commentTop').show();
 						var commentArray = jsonData['commentArray'];
+						var sb = new StringBuilder();
 						if (commentArray && $(commentArray).size() > 0) {
-							var sb = new StringBuilder();
 							$(commentArray).each(function(i, o) {
 								sb.append(String.formatmodel($templete.commentItem(o['replyFlag']), {
 									userId: o['userId'],
@@ -200,7 +200,6 @@ define(function(require, exports, module) {
 								}));
 							});
 							$('#commentUL').show();
-							$('#commentUL').empty().append(sb.toString());
 						} else {
 							$('#blank').show();
 						}

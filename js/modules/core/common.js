@@ -27,7 +27,7 @@ define(function(require, exports, module) {
 		return type == networkInfo.CONNECTION_ETHERNET || type == networkInfo.CONNECTION_WIFI || type == networkInfo.CONNECTION_CELL2G || type == networkInfo.CONNECTION_CELL3G || type == networkInfo.CONNECTION_CELL4G;
 	};
 	exports.getRestApiURL = function() {
-		return "http://192.168.1.108:8080";
+		return "http://devbj.mingdao.com";
 	};
 	exports.switchOS = function(IOS, ANDROID) {
 		switch (plus.os.name) {
@@ -68,21 +68,22 @@ define(function(require, exports, module) {
 						startFunction(event, startTouch, o);
 					}
 					$(o).off('touchmove').on('touchmove', function() {
-						var moveTouch = event.touches[0];
-						endX = moveTouch.pageX;
-						endY = moveTouch.pageY;
-						x = endX - startX;
-						y = endY - startY;
-						if (y != 0) {
-							if (y > 40 || y < -40) {
-								trueTouch = true;
-							}
-						} else if (x != 0 ) {
-							if (x > 40 || x < -40) {
-								trueTouch = true;
+						if (!trueTouch) {
+							var moveTouch = event.touches[0];
+							endX = moveTouch.pageX;
+							endY = moveTouch.pageY;
+							x = endX - startX;
+							y = endY - startY;
+							if (y != 0) {
+								if (y > 20 || y < -20) {
+									trueTouch = true;
+								}
+							} else if (x != 0) {
+								if (x > 20 || x < -20) {
+									trueTouch = true;
+								}
 							}
 						}
-
 					});
 					$(o).off('touchend').on('touchend', function() {
 						if (!trueTouch) {

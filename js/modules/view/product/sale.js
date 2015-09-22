@@ -249,6 +249,7 @@ define(function(require, exports, module) {
 												sb.append(String.formatmodel($templete.fundItem(relationYn), {
 													productId: o['productId'],
 													userId: o['userId'],
+													relationUserName:o['relationUserName'],
 													viewCount: o['viewCount'],
 													relationCount: o['relationCount'],
 													uid: uid,
@@ -265,6 +266,7 @@ define(function(require, exports, module) {
 												sb.append(String.formatmodel($templete.trustItem(relationYn), {
 													productId: o['productId'],
 													userId: o['userId'],
+													relationUserName:o['relationUserName'],
 													viewCount: o['viewCount'],
 													relationCount: o['relationCount'],
 													uid: uid,

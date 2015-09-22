@@ -9,12 +9,13 @@ define(function(require, exports, module) {
 	var $dbData = require('manager/dbData');
 	var staticKeyWordResult = false;
 	var currentWindow;
-	buildContact = function(dbResult, keyWordResult, wordFlag) {
+	buildContact = function(dbResult, keyWordResult) {
 		if (dbResult && keyWordResult) {
 			staticKeyWordResult = keyWordResult;
 			var sb = new StringBuilder();
 			var keyWordResultRows = keyWordResult.rows.length;
 			if (keyWordResultRows && keyWordResultRows > 0) {
+				$('.checkWord').show();
 				$('td', '.wordList').addClass('noData');
 				$('td', '.wordList').each(function() {
 					$(this).attr('dir', $('span', this).text());
@@ -23,11 +24,6 @@ define(function(require, exports, module) {
 					var row = keyWordResult.rows.item(i);
 					if (row) {
 						var jp = row['JP'];
-						if (wordFlag) {
-							if (i == 0) {
-								$('.checkWord').text(jp);
-							}
-						}
 						if (jp) {
 							$('td[dir="' + jp + '"]', '.wordList').removeClass('noData');
 						}
@@ -95,7 +91,7 @@ define(function(require, exports, module) {
 	onRefresh = function() {
 		window.setTimeout(function() {
 			$dbData.refreshContacts(function(dbResult, keyWordResult) {
-				buildContact(dbResult, keyWordResult, true);
+				buildContact(dbResult, keyWordResult);
 				currentWindow.endPullToRefresh();
 			}, function() {
 				currentWindow.endPullToRefresh();
@@ -122,7 +118,7 @@ define(function(require, exports, module) {
 	search = function(key) {
 		$nativeUIManager.watting('正在搜索...');
 		$dbData.searchContactsByKeyword(key, function(dbResult) {
-			buildContact(dbResult, staticKeyWordResult, true);
+			buildContact(dbResult, staticKeyWordResult);
 		});
 	};
 	bindEvent = function() {
@@ -131,15 +127,13 @@ define(function(require, exports, module) {
 			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
 			if (keyCode == 13) {
 				var value = $(this).val();
-				if (value && value != '') {
-					search(value);
-				}
+				search(value);
 				$('#keyword').trigger('blur');
 			}
 		});
 
 		$common.touchSE($('.addBtn'), function(event, startTouch, o) {}, function(event, o) {
-			if (!$(o).hasClass('nobg')&&!$(o).hasClass('addDone')) {
+			if (!$(o).hasClass('nobg') && !$(o).hasClass('addDone')) {
 				var li = $(o).closest('li');
 				var friendId = $(li).attr('userId');
 				if (friendId) {
@@ -191,7 +185,7 @@ define(function(require, exports, module) {
 				if (dir) {
 					$nativeUIManager.watting('正在加载...');
 					$dbData.searchContactsByJP(dir, function(dbResult) {
-						buildContact(dbResult, staticKeyWordResult, false);
+						buildContact(dbResult, staticKeyWordResult);
 						$('.checkWord').text(dir);
 					});
 					$('.wordList').removeClass('current');
@@ -201,7 +195,8 @@ define(function(require, exports, module) {
 				$('.wordList').removeClass('current');
 				$nativeUIManager.watting('正在加载...');
 				$dbData.getContactsList(function(dbResult, keyWordResult) {
-					buildContact(dbResult, keyWordResult, true);
+					buildContact(dbResult, keyWordResult);
+					$('.checkWord').text('筛选');
 				}, function() {
 					$nativeUIManager.wattingClose();
 				});
@@ -211,7 +206,7 @@ define(function(require, exports, module) {
 	loadData = function() {
 		$nativeUIManager.watting('正在加载...');
 		$dbData.getContactsList(function(dbResult, keyWordResult) {
-			buildContact(dbResult, keyWordResult, true);
+			buildContact(dbResult, keyWordResult);
 		}, function() {
 			$nativeUIManager.wattingClose();
 		});

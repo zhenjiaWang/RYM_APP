@@ -16,21 +16,24 @@
 			seajs.config({
 				base: "../../js/modules/"
 			});
-			seajs.use('view/product/order');
+			seajs.use('view/relation/send');
 		</script>
-		<style>
-			body{ -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;}
-		</style>
 	</head>
-	<body>
+	<body >
 		<header class="header">
 			<span class="icon icon-back floatleft" id="backBtn"></span>
-			<h1 class="aligncenter font17">调整产品顺序</h1>
+			<h1 class="aligncenter font17">上架产品</h1>
 			<div class="next_step" id="sendBtn"><span class="headerBtn aligncenter">发布</span></div>
 		</header>
-		<div class="main" style="position: absolute;bottom: 0px;top: 60px;">
+		<div class="main p-bt10" style="position: absolute;bottom: 0px;top: 60px;">
 			<ul class="inputList productList mart15" id="productSaleNumUL">
 			</ul>
+			<form name="editForm" id="editForm">
+				<input type="hidden" id="org.guiceside.web.jsp.taglib.Token" name="org.guiceside.web.jsp.taglib.Token"/>
+				<input type="hidden" id="numSeq" name="numSeq"/>
+				<input type="hidden" id="relationUserId" name="relationUserId"/>
+				<input type="hidden" id="relationNumSeq" name="relationNumSeq"/>
+			</form>
 		</div>
 	</body>
 </html>

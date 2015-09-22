@@ -19,62 +19,60 @@
 			});
 			seajs.use('view/friend/friendList');
 		</script>
+
 		<body>
 			<div class="main bgwhite">
 				<!--搜索begin-->
-				<div class="searchBar" style="margin-top:0px;" >
-					<input type="text" class="langTxt font14 " placeholder="手机号/姓名" id="keyword" name="keyword">
-				</div>
+				<form onsubmit="return false;">
+					<div class="searchBar" style="margin-top:0px;">
+						<input type="search" class="langTxt font14 " placeholder="手机号/姓名" id="keyword" name="keyword">
+					</div>
+				</form>
 				<!--搜索over-->
 				<p class="p-bt10 p-top10 color-a font14 aligncenter" id="blank" style="display: none;">当前无同业好友</p>
 				<div class="friend_list mart10 marl10" id="friendUL">
-					<!--<section class="personBoard">
-						<div class="userInfo mart5 clearfix">
-							<span class="userPhoto floatleft"><img src="../../img/1.jpg"></span>
-							<div class="floatleft marl15 font13">
-								<p class="font17">Bruce Zhang</p>
-								<p>北京银行西城支行</p>
-								<p class="font11"><i class="icon icon-7"></i>互相关注</p>
-							</div>
-							<div class="floatright alignright color-6">
-								<p>168<i class="icon icon-3 marl5"></i></p>
-								<p class="mart10">2882<i class="icon icon-4 marl5"></i></p>
-							</div>
-						</div>
-						<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i>走路太骚会摔跤，得瑟过劲必闪腰</div>
-					</section>
-					<section class="personBoard">
-						<div class="userInfo mart5 clearfix">
-							<span class="userPhoto floatleft"><img src="../../img/1.jpg"></span>
-							<div class="floatleft marl15 font13">
-								<p class="font17">liu dehua</p>
-								<p>北京银行西城支行</p>
-								<p class="font11"><i class="icon icon-8"></i>我已关注</p>
-							</div>
-							<div class="floatright alignright color-6">
-								<p>168<i class="icon icon-3 marl5"></i></p>
-								<p class="mart10">2882<i class="icon icon-4 marl5"></i></p>
-							</div>
-						</div>
-						<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i>走路太骚会摔跤，得瑟过劲必闪腰</div>
-					</section>
-					<section class="personBoard">
-						<div class="userInfo mart5 clearfix">
-							<span class="userPhoto floatleft"><img src="../../img/1.jpg"></span>
-							<div class="floatleft marl15 font13">
-								<p class="font17">Bruce Zhang</p>
-								<p>北京银行西城支行</p>
-								<p class="font11"><i class="icon icon-9"></i>关注了我</p>
-							</div>
-							<div class="floatright alignright color-6">
-								<p>168<i class="icon icon-3 marl5"></i></p>
-								<p class="mart10">2882<i class="icon icon-4 marl5"></i></p>
-							</div>
-						</div>
-						<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i>走路太骚会摔跤，得瑟过劲必闪腰</div>
-					</section>-->
 				</div>
+				<p class="checkWord marl10 font14 color-8" style="display: none;">筛选</p>
 			</div>
+			<section class="wordList">
+				<table>
+					<tr>
+						<td><span>A</span></td>
+						<td><span>B</span></td>
+						<td><span>C</span></td>
+						<td><span>D</span></td>
+						<td><span>E</span></td>
+						<td><span>F</span></td>
+						<td><span>G</span></td>
+						<td><span>H</span></td>
+					</tr>
+					<tr>
+						<td><span>I</span></td>
+						<td><span>J</span></td>
+						<td><span>K</span></td>
+						<td><span>L</span></td>
+						<td><span>M</span></td>
+						<td><span>N</span></td>
+						<td><span>O</span></td>
+						<td><span>P</span></td>
+					</tr>
+					<tr>
+						<td><span>Q</span></td>
+						<td><span>R</span></td>
+						<td><span>S</span></td>
+						<td><span>T</span></td>
+						<td><span>U</span></td>
+						<td><span>V</span></td>
+						<td><span>W</span></td>
+						<td><span>X</span></td>
+					</tr>
+					<tr>
+						<td><span>Y</span></td>
+						<td><span>Z</span></td>
+						<td colspan="6"><span>0~9</span></td>
+					</tr>
+				</table>
+			</section>
 			<!--底部弹出begin-->
 			<footer class="footer footerMask" style="height:99px;bottom:-99px;"></footer>
 			<div class="bottomPop aligncenter nobg" id="bottomPop">

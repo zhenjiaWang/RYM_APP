@@ -23,6 +23,9 @@ define(function(require, exports, module) {
 	plusReady = function() {
 		loadWebview();
 		bindEvent();
+		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
+			$windowManager.close();
+		});
 	};
 	if (window.plus) {
 		plusReady();

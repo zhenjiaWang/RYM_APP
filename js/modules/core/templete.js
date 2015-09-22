@@ -30,12 +30,12 @@ define(function(require, exports, module) {
 	};
 	exports.trustItem = function(relationYn) {
 		var trustItem = new StringBuilder();
-		trustItem.append('<div class="oneCard" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
+		trustItem.append('<div class="oneCard" numSeq="{numSeq}" productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
 		trustItem.append('<p class="font11 title color-a alignright">\n');
 		trustItem.append('<span class="tips tips-x floatleft strong">{typeName}</span>\n');
 		trustItem.append('<span class="floatleft marl5">{updateTime}</span>\n');
 		if (relationYn && relationYn == 'Y') {
-			trustItem.append('<span>关联自<em>{relationUser}</em></span>\n');
+			trustItem.append('<span>关联自<em>{relationUserName}</em></span>\n');
 		}
 		trustItem.append('</p>\n');
 		trustItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong">{name}<span class="tip font12">在售</span></p>\n');
@@ -56,12 +56,12 @@ define(function(require, exports, module) {
 	};
 	exports.fundItem = function(relationYn) {
 		var fundItem = new StringBuilder();
-		fundItem.append('<div class="oneCard" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
+		fundItem.append('<div class="oneCard" numSeq="{numSeq}"  productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
 		fundItem.append('<p class="font11 title color-a alignright">\n');
 		fundItem.append('<span class="tips tips-j floatleft strong">{typeName}</span>\n');
 		fundItem.append('<span class="floatleft marl5">{updateTime}</span>\n');
 		if (relationYn && relationYn == 'Y') {
-			fundItem.append('<span>关联自<em>{relationUser}</em></span>\n');
+			fundItem.append('<span>关联自<em>{relationUserName}</em></span>\n');
 		}
 		fundItem.append('</p>\n');
 		fundItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong">{name}<span class="tip font12">在售</span></p>\n');

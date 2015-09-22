@@ -11,7 +11,7 @@ define(function(require, exports, module) {
 	var currentWindow;
 	onRefresh = function() {
 		nextIndex = 0;
-		$('.workData').attr('nextIndex', 0);
+		$('#friendUL').attr('nextIndex', 0);
 		window.setTimeout(function() {
 			loadData(function() {
 				currentWindow.endPullToRefresh();
@@ -44,6 +44,16 @@ define(function(require, exports, module) {
 		$('#bottomPop').removeClass('current');
 	};
 	bindEvent = function() {
+		$('#keyword').off('keydown').on('keydown', function(e) {
+			e = (e) ? e : ((window.event) ? window.event : "")
+			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
+			if (keyCode == 13) {
+				var value = $(this).val();
+				loadData();
+				$('.checkWord').text('筛选');
+				$('#keyword').trigger('blur');
+			}
+		});
 		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.create('product_add', '../product/add.html', false, true, function(show) {
 				show();
@@ -54,13 +64,37 @@ define(function(require, exports, module) {
 			});
 		});
 		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('product_relation', '../product/send.html', false, true, function(show) {
+			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
 				show();
 				var lunchWindow = $windowManager.getLaunchWindow();
 				if (lunchWindow) {
 					lunchWindow.evalJS('plusRest()');
 				}
 			});
+		});
+		$common.touchSE($('.checkWord'), function(event, startTouch, o) {}, function(event, o) {
+			if (!$('.wordList').hasClass('current')) {
+				$('.wordList').addClass('current');
+			} else {
+				$('.wordList').removeClass('current');
+			}
+		});
+		$common.touchSE($('td', '.wordList'), function(event, startTouch, o) {}, function(event, o) {
+			if (!$('span', o).hasClass('current')) {
+				$('td', '.wordList').find('span').removeClass('current');
+				$('span', o).addClass('current');
+				var dir = $(o).attr('dir');
+				if (dir) {
+					loadData();
+					$('.wordList').removeClass('current');
+					$('.checkWord').text('dir');
+				}
+			} else {
+				$('span', o).removeClass('current');
+				$('.wordList').removeClass('current');
+				$('.checkWord').text('筛选');
+				loadData();
+			}
 		});
 		document.addEventListener("plusscrollbottom", function() {
 			var next = $('#friendUL').attr('nextIndex');
@@ -87,14 +121,27 @@ define(function(require, exports, module) {
 			url: $common.getRestApiURL() + '/social/friendPlanner',
 			dataType: 'json',
 			data: {
-				start: nextIndex > 0 ? nextIndex : ''
+				start: nextIndex > 0 ? nextIndex : '',
+				keyword: $('#keyword').val(),
+				userFirst: $('span.current', '.wordList').closest('td').attr('dir')
 			},
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
+						$('td', '.wordList').addClass('noData');
+						$('td', '.wordList').each(function() {
+							$(this).attr('dir', $('span', this).text());
+						});
+						var firstArray = jsonData['firstArray'];
+						if (firstArray && $(firstArray).size() > 0) {
+							$(firstArray).each(function(i, jp) {
+								$('td[dir="' + jp + '"]', '.wordList').removeClass('noData');
+							});
+						}
 						var friendPlannerArray = jsonData['friendPlannerArray'];
 						var sb = new StringBuilder();
 						if (friendPlannerArray && $(friendPlannerArray).size() > 0) {
+							$('.checkWord').show();
 							$(friendPlannerArray).each(function(i, o) {
 								var textClass = '';
 								if (o['state'] == '1') {

@@ -32,10 +32,10 @@ define(function(require, exports, module) {
 				caption: "下拉回到产品详情"
 			},
 			contentover: {
-				caption: ""
+				caption: "释放回到产品详情"
 			},
 			contentrefresh: {
-				caption: ""
+				caption: "正在关闭..."
 			}
 		}, function() {
 			currentWindow.endPullToRefresh();

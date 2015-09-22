@@ -54,7 +54,7 @@ define(function(require, exports, module) {
 						var lang = $('span[dir="' + dir + '"]', '#footerAction').attr('lang');
 						if (lang) {
 							$('span.current', '#footerAction').removeClass('current');
-							$('span[dir="'+dir+'"]', '#footerAction').addClass('current');
+							$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
 							if (lang == "1") {
 								if (dir == 'room') {
 									$controlWindow.windowShow('product_header');
@@ -84,7 +84,7 @@ define(function(require, exports, module) {
 										$controlWindow.windowHide('friend_header');
 										$controlWindow.windowHide('friend_list');
 									}
-									
+
 								}
 							}, 500);
 						}

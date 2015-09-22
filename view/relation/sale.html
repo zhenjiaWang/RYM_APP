@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+		<title>理财室-在售中</title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+		<script type="text/javascript" src="../../js/support.js"></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/relation/sale');
+		</script>
+	</head>
+
+	<body>
+		<div class="main" style="padding-top: 50px;">
+			<header class="header">
+				<span class="icon icon-back floatleft" id="backBtn"></span>
+				<h1 class="aligncenter font17">选择关联产品</h1>
+			</header>
+			<p class="p-bt10 p-top10 color-a font14 aligncenter" id="blank" style="display: none;">当前无产品</p>
+			<div class="cardBox"></div>
+		</div>
+	</body>
+
+</html>
