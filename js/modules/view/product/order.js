@@ -183,7 +183,7 @@ define(function(require, exports, module) {
 											typeClass = 'tips-x';
 										}
 									}
-									sb.append(String.formatmodel($templete.saleNumItem(true), {
+									sb.append(String.formatmodel($templete.saleNumItem(typeId!=undefined), {
 										action: o['action'],
 										name: o['name'],
 										index: o['index'],
