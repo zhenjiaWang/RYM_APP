@@ -283,6 +283,7 @@ define(function(require, exports, module) {
 								});
 								$('.cardBox').empty().append(sb.toString());
 							} else {
+								$('.cardBox').empty();
 								$('#blank').show();
 							}
 						}
