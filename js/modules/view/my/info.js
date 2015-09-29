@@ -7,6 +7,7 @@ define(function(require, exports, module) {
 	var $controlWindow = require('manager/controlWindow');
 	var server = "/common/common/uploadData";
 	var files = [];
+	var auths = null;
 	upload = function() {
 		if (files.length <= 0) {
 			plus.nativeUI.alert("没有添加上传文件！");
@@ -61,6 +62,16 @@ define(function(require, exports, module) {
 		}
 		task.start();
 	};
+	getAuthUserInfo = function(s) {
+		var authUserInfo = false;
+		s.getUserInfo(function(e) {
+			authUserInfo = s.userInfo;
+			return authUserInfo;
+		}, function(e) {
+			$nativeUIManager.alert('提示', '获取用户信息失败', 'OK', function() {});
+			return authUserInfo;
+		});
+	};
 	bindEvent = function() {
 		$common.touchSE($('#logoutBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$authorize.logout();
@@ -89,6 +100,92 @@ define(function(require, exports, module) {
 					$windowManager.create('my_edit', 'edit.html?code=' + dir + '&value=' + value, false, true, function(show) {
 						show();
 					});
+				} else if (dir == 'wechat') {
+					var lang = $(o).find('span').first().attr('lang');
+					if (lang) {
+						if (lang == 'bind') {
+							$nativeUIManager.watting('请稍等...');
+							var s = auths[0];
+							if (!s.authResult) {
+								s.login(function(e) {
+									$nativeUIManager.wattingClose();
+									var authUserInfo = getAuthUserInfo(s);
+									if (authUserInfo) {
+										value = authUserInfo['openid'];
+										$nativeUIManager.watting('请稍等...');
+										$common.refreshToken(function(tokenId) {
+											$.ajax({
+												type: 'POST',
+												url: $common.getRestApiURL() + '/sys/planner/bindWechat',
+												dataType: 'json',
+												data: {
+													'org.guiceside.web.jsp.taglib.Token': tokenId,
+													codeValue: value
+												},
+												success: function(jsonData) {
+													if (jsonData) {
+														if (jsonData['result'] == '0') {
+															$nativeUIManager.wattingTitle('绑定成功!');
+															window.setTimeout(function() {
+																$nativeUIManager.wattingClose();
+															}, 1000);
+														} else {
+															$nativeUIManager.wattingClose();
+															$nativeUIManager.alert('提示', '绑定失败', 'OK', function() {});
+														}
+													}
+												},
+												error: function(XMLHttpRequest, textStatus, errorThrown) {
+													$nativeUIManager.wattingClose();
+													$nativeUIManager.alert('提示', '绑定失败', 'OK', function() {});
+												}
+											});
+										});
+									}
+								}, function(e) {
+									$nativeUIManager.alert('提示', '登录认证失败', 'OK', function() {});
+								});
+							} else {
+
+							}
+						} else if (lang == 'unbind') {
+							var s = auths[0];
+							if (s.authResult) {
+								s.logout(function(e) {
+									$nativeUIManager.watting('请稍等...');
+									$common.refreshToken(function(tokenId) {
+										$.ajax({
+											type: 'POST',
+											url: $common.getRestApiURL() + '/sys/planner/unbindWechat',
+											dataType: 'json',
+											data: {
+												'org.guiceside.web.jsp.taglib.Token': tokenId
+											},
+											success: function(jsonData) {
+												if (jsonData) {
+													if (jsonData['result'] == '0') {
+														$nativeUIManager.wattingTitle('解绑成功!');
+														window.setTimeout(function() {
+															$nativeUIManager.wattingClose();
+														}, 1000);
+													} else {
+														$nativeUIManager.wattingClose();
+														$nativeUIManager.alert('提示', '解绑失败', 'OK', function() {});
+													}
+												}
+											},
+											error: function(XMLHttpRequest, textStatus, errorThrown) {
+												$nativeUIManager.wattingClose();
+												$nativeUIManager.alert('提示', '解绑失败', 'OK', function() {});
+											}
+										});
+									});
+								}, function(e) {
+									$nativeUIManager.alert('提示', '解绑失败', 'OK', function() {});
+								});
+							}
+						}
+					}
 				} else if (dir == 'headImgUrl') {
 					window.setTimeout(function() {
 						files = [];
@@ -172,6 +269,14 @@ define(function(require, exports, module) {
 						$('li[dir="plannerNo"]', '#editUL').find('span').last().text(jsonData['plannerNo']);
 						$('li[dir="signature"]', '#editUL').find('span').last().text(jsonData['signature']);
 						$('li[dir="orgName"]', '#editUL').find('span').last().text(jsonData['orgName']);
+						var openID = jsonData['wechat'];
+						if (openID) {
+							if (openID == '-1') {
+								$('li[dir="wechat"]', '#editUL').find('span').first().text('绑定微信号').attr('lang', 'bind');
+							} else {
+								$('li[dir="wechat"]', '#editUL').find('span').first().text('解绑微信号').attr('lang', 'unbind');
+							}
+						}
 						var headImgUrl = jsonData['headImgUrl'];
 						if (headImgUrl) {
 							$('img', '.userPhoto').attr('src', headImgUrl);
@@ -199,6 +304,11 @@ define(function(require, exports, module) {
 		loadData();
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
+		});
+		plus.oauth.getServices(function(services) {
+			auths = services;
+		}, function(e) {
+			$('li[dir="wechat"]', '#editUL').remove();
 		});
 	};
 	if (window.plus) {
