@@ -272,7 +272,6 @@ define(function(require, exports, module) {
 						$('li[dir="orgName"]', '#editUL').find('span').last().text(jsonData['orgName']);
 						var openID = jsonData['openID'];
 						if (openID) {
-							alert('openID='+openID);
 							if (openID == '-1') {
 								$('li[dir="wechat"]', '#editUL').find('span').first().text('绑定微信号').attr('lang', 'bind');
 							} else {
