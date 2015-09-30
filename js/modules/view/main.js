@@ -5,11 +5,23 @@ define(function(require, exports, module) {
 	var $windowManager = require('manager/window');
 	plusReady = function() {
 		if ($userInfo.isAuthorize()) {
-			$authorize.login($userInfo.get('mobilePhone'), $userInfo.get('password'), function() {
-				$windowManager.load('home.html');
-			}, function() {
-				$windowManager.load('login.html');
-			});
+			var authorizeType = $userInfo.get('authorizeType');
+			if (authorizeType) {
+				if (authorizeType == 'pwd') {
+					$authorize.login($userInfo.get('mobilePhone'), $userInfo.get('password'), function() {
+						$windowManager.load('home.html');
+					}, function() {
+						$windowManager.load('login.html');
+					});
+				}else if(authorizeType=='weChat'){
+					$authorize.loginWechat($userInfo.get('openId'), function() {
+						$windowManager.load('home.html');
+					}, function() {
+						$windowManager.load('login.html');
+					});
+				}
+			}
+
 		} else {
 			$windowManager.load('login.html');
 		}

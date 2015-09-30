@@ -31,6 +31,44 @@ define(function(require, exports, module) {
 			}
 		});
 	}
+	exports.loginWechat = function(openId, successCallback, errorCallback) {
+		var pushInfo = $pushManager.pushInfo();
+		var deviceToken = pushInfo['token'];
+		var clientId = pushInfo['clientid']
+		$.ajax({
+			type: 'POST',
+			url: $common.getRestApiURL() + '/common/authorize/loginWeChat',
+			dataType: 'json',
+			data: {
+				openId: openId,
+				deviceToken: deviceToken,
+				clientId: clientId,
+				osName: plus.os.name
+			},
+			success: function(jsonData) {
+				if (jsonData) {
+					if (jsonData['result'] == '0') {
+						$userInfo.putJson(jsonData);
+						$userInfo.put('authorize','0');
+						if (typeof successCallback == 'function') {
+							successCallback(jsonData);
+						}
+					} else {
+						$userInfo.put('authorize','-1');
+						if (typeof errorCallback == 'function') {
+							errorCallback(jsonData['errorMsg']);
+						}
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				if (typeof errorCallback == 'function') {
+					$userInfo.put('authorize','-1');
+					errorCallback('网络错误');
+				}
+			}
+		});
+	};
 	exports.login = function(mobilePhone, password, successCallback, errorCallback) {
 		var pushInfo = $pushManager.pushInfo();
 		var deviceToken = pushInfo['token'];
@@ -50,7 +88,6 @@ define(function(require, exports, module) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
 						$userInfo.putJson(jsonData);
-						$userInfo.put('authorize','0');
 						if (typeof successCallback == 'function') {
 							successCallback(jsonData);
 						}

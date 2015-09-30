@@ -6,9 +6,9 @@ define(function(require, exports, module) {
 		if (window.localStorage) {
 			if (localStorageJson) {
 				for (var key in localStorageJson) {
-					if(typeof localStorageJson[key]=='object'){
+					if (typeof localStorageJson[key] == 'object') {
 						plus.storage.setItem(key, JSON.stringify(localStorageJson[key]));
-					}else{
+					} else {
 						plus.storage.setItem(key, localStorageJson[key].toString());
 					}
 				}
@@ -35,17 +35,30 @@ define(function(require, exports, module) {
 			plus.storage.clear();
 		}
 	};
-	
+
 	exports.isAuthorize = function() {
 		var flag = false;
 		if (plus.storage) {
 			var authorize = plus.storage.getItem('authorize');
 			if (authorize && authorize == '0') {
-				var mobilePhone = plus.storage.getItem('mobilePhone');
-				var password = plus.storage.getItem('password');
-				if (mobilePhone && password) {
-					if ($.trim(mobilePhone).length > 0 && $.trim(password).length > 0) {
-						flag = true;
+				var authorizeType = plus.storage.getItem('authorizeType');
+				if (authorizeType) {
+					if (authorizeType == 'pwd') {
+						var mobilePhone = plus.storage.getItem('mobilePhone');
+						var password = plus.storage.getItem('password');
+						if (mobilePhone && password) {
+							if ($.trim(mobilePhone).length > 0 && $.trim(password).length > 0) {
+								flag = true;
+							}
+						}
+					} else if (authorizeType == 'weChat') {
+						var openId = plus.storage.getItem('openId');
+						var mobilePhone = plus.storage.getItem('mobilePhone');
+						if (mobilePhone && openId) {
+							if ($.trim(mobilePhone).length > 0 && $.trim(openId).length > 0) {
+								flag = true;
+							}
+						}
 					}
 				}
 			}
