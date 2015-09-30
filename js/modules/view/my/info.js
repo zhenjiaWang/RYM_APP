@@ -102,6 +102,7 @@ define(function(require, exports, module) {
 					});
 				} else if (dir == 'wechat') {
 					var lang = $(o).find('span').first().attr('lang');
+					alert(lang);
 					if (lang) {
 						if (lang == 'bind') {
 							$nativeUIManager.watting('请稍等...');
@@ -269,8 +270,9 @@ define(function(require, exports, module) {
 						$('li[dir="plannerNo"]', '#editUL').find('span').last().text(jsonData['plannerNo']);
 						$('li[dir="signature"]', '#editUL').find('span').last().text(jsonData['signature']);
 						$('li[dir="orgName"]', '#editUL').find('span').last().text(jsonData['orgName']);
-						var openID = jsonData['wechat'];
+						var openID = jsonData['openID'];
 						if (openID) {
+							alert('openID='+openID);
 							if (openID == '-1') {
 								$('li[dir="wechat"]', '#editUL').find('span').first().text('绑定微信号').attr('lang', 'bind');
 							} else {
@@ -307,6 +309,7 @@ define(function(require, exports, module) {
 		});
 		plus.oauth.getServices(function(services) {
 			auths = services;
+			alert('oauth success');
 		}, function(e) {
 			$('li[dir="wechat"]', '#editUL').remove();
 		});
