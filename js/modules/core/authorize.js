@@ -12,7 +12,6 @@ define(function(require, exports, module) {
 			url: $common.getRestApiURL() + '/common/authorize/timeout',
 			dataType: 'json',
 			data: {
-				'oaToken': $userInfo.get('token'),
 				appCheck: '1215'
 			},
 			success: function(jsonData) {

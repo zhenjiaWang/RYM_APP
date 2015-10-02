@@ -7,6 +7,7 @@ define(function(require, exports, module) {
 	var $templete = require('core/templete');
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
+	var userId=queryMap.get('userId');
 	var nextIndex = 0;
 	var currentWindow;
 	reset = function() {
@@ -15,7 +16,7 @@ define(function(require, exports, module) {
 			commentFooterWin.evalJS('reset()');
 		}
 	};
-	sendComment = function(content, replyUserId, callback) {
+	sendComment = function(content, replyUserId, uid,callback) {
 		$nativeUIManager.watting('请稍等...');
 		$common.refreshToken(function(tokenId) {
 			$.ajax({
@@ -24,8 +25,9 @@ define(function(require, exports, module) {
 				dataType: 'json',
 				data: {
 					id: id,
+					userId:uid,
 					content: content,
-					userId: replyUserId,
+					replyUserId: replyUserId,
 					'org.guiceside.web.jsp.taglib.Token': tokenId
 				},
 				success: function(jsonData) {
@@ -46,6 +48,7 @@ define(function(require, exports, module) {
 									replyUserName: commentObj['replyUserName']
 								}));
 								$nativeUIManager.wattingTitle('评论成功!');
+								bindEvent();
 								window.setTimeout(function() {
 									if (typeof callback == 'function') {
 										callback();
@@ -110,6 +113,7 @@ define(function(require, exports, module) {
 		});
 
 		$common.touchSE($('#likeAction'), function(event, startTouch, o) {}, function(event, o) {
+			$nativeUIManager.watting('请稍等...');
 			$(o).hide();
 			$common.refreshToken(function(tokenId) {
 				$.ajax({
@@ -118,6 +122,7 @@ define(function(require, exports, module) {
 					dataType: 'json',
 					data: {
 						id: id,
+						userId:userId,
 						'org.guiceside.web.jsp.taglib.Token': tokenId
 					},
 					success: function(jsonData) {
@@ -130,16 +135,22 @@ define(function(require, exports, module) {
 									$('#likeSpan').addClass('current');
 									$('#likeSpan').find('em').text(currentLikeCount);
 									$(o).remove();
-									$nativeUIManager.watting('谢谢亲给的赞!', 1000);
+									$nativeUIManager.wattingTitle('谢谢亲给的赞!');
+									window.setTimeout(function(){
+										$nativeUIManager.wattingClose();
+									},1000);
 								}
 							} else if (jsonData['result'] == '1') {
+								$nativeUIManager.wattingClose();
 								$nativeUIManager.alert('提示', '请不要重复点赞!', 'OK', function() {});
 							} else {
+								$nativeUIManager.wattingClose();
 								$nativeUIManager.alert('提示', '点赞失败咯', 'OK', function() {});
 							}
 						}
 					},
 					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						$nativeUIManager.wattingClose();
 						$nativeUIManager.alert('提示', '点赞失败咯', 'OK', function() {});
 					}
 				});
@@ -170,7 +181,8 @@ define(function(require, exports, module) {
 			url: $common.getRestApiURL() + '/product/info/commentView',
 			dataType: 'json',
 			data: {
-				id: id
+				id: id,
+				userId:userId
 			},
 			success: function(jsonData) {
 				if (jsonData) {
@@ -181,7 +193,9 @@ define(function(require, exports, module) {
 						if (likeCount > 0) {
 							$('#likeSpan').addClass('current');
 							$('#likeSpan').find('em').text(likeCount);
-						} else {
+						}
+						var myLikeCount = jsonData['myLikeCount'];
+						if (myLikeCount == 0) {
 							$('#likeAction').show();
 						}
 						$('.commentTop').show();

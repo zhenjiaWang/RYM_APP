@@ -14,6 +14,21 @@ define(function(require, exports, module) {
 			}
 		}
 	};
+	showSaleByUserId = function(userId) {
+		var dir = $('span.current', '#footerAction').attr('dir');
+		if (dir) {
+			if (dir == 'friend') {
+				$('span.current', '#footerAction').removeClass('current');
+				$('span[dir="room"]', '#footerAction').addClass('current');
+				$controlWindow.windowShow('product_header');
+				$windowManager.loadOtherWindow('product_header', 'product/header.html?userId=' + userId);
+				window.setTimeout(function() {
+					$controlWindow.windowHide('friend_header');
+					$controlWindow.windowHide('friend_list');
+				}, 500);
+			}
+		}
+	};
 	bindEvent = function() {
 		$common.androidBack(function() {
 			$nativeUIManager.confirm('提示', '你确定登出理财任意门?', ['确定', '取消'], function() {
@@ -23,11 +38,11 @@ define(function(require, exports, module) {
 		$common.touchSE($('span', '#footerAction'), function(event, startTouch, o) {}, function(event, o) {
 			var dir = $(o).attr('dir');
 			if (dir) {
-				if(dir=='tip'){
+				if (dir == 'tip') {
 					$nativeUIManager.alert('提示', '和微信一起开放', 'OK', function() {});
 					return false;
 				}
-				if(dir=='customer'){
+				if (dir == 'customer') {
 					$nativeUIManager.alert('提示', '和微信一起开放', 'OK', function() {});
 					return false;
 				}
@@ -120,9 +135,9 @@ define(function(require, exports, module) {
 	plusReady = function() {
 		loadWebview();
 		bindEvent();
-		//		document.addEventListener("resume", function() {
-		//			$authorize.timeout();
-		//		}, false);
+		document.addEventListener("resume", function() {
+			$authorize.timeout();
+		}, false);
 		plus.navigator.closeSplashscreen();
 	};
 	if (window.plus) {

@@ -8,8 +8,10 @@ define(function(require, exports, module) {
 	var $keyManager = require('manager/key');
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
+	var uid = queryMap.get('userId');
 	reset = function() {
 		$('#content').attr('replyUserId', '').text('');
+		$('#replyTip').text('').hide();
 	};
 	reply = function(userId, userName) {
 		$nativeUIManager.watting();
@@ -28,7 +30,7 @@ define(function(require, exports, module) {
 				var replyUserId = $('#content').attr('replyUserId');
 				var commentWindow = $windowManager.getById('product_comment');
 				if (commentWindow) {
-					commentWindow.evalJS('sendComment("' + content + '","' + replyUserId + '",reset)');
+					commentWindow.evalJS('sendComment("' + content + '","' + replyUserId + '","' + uid + '",reset)');
 				}
 			} else {
 				$nativeUIManager.alert('提示', '请先输入评论内容', 'OK', function() {});
@@ -54,9 +56,15 @@ define(function(require, exports, module) {
 				}
 			}
 		});
+		$('#content').off('blur').on('blur', function(e) {
+			var value = $(this).text();
+			if (value && value != '') {
+				$('#replyTip').hide();
+			}
+		});
 	};
 	loadWebview = function() {
-		var commontFooter = plus.webview.create("commentHeader.html?id=" + id, "product_commentHeader", {
+		var commontFooter = plus.webview.create("commentHeader.html?id=" + id + '&userId=' + uid, "product_commentHeader", {
 			top: "0px",
 			bottom: "50px",
 			scrollIndicator: 'vertical'

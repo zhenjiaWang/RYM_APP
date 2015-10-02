@@ -9,6 +9,12 @@ define(function(require, exports, module) {
 	var server = "/common/common/uploadData";
 	var files = [];
 	var currentWindow;
+	var queryMap = parseURL();
+	var userId = queryMap.get('userId');
+	clear=function(){
+		$('.main').hide();
+		$('.cardBox').empty();
+	};
 	onRefresh = function() {
 		window.setTimeout(function() {
 			loadData(function() {
@@ -119,9 +125,9 @@ define(function(require, exports, module) {
 			event.stopPropagation();
 			var card = $(o).closest('.oneCard');
 			if (card) {
-				var uid = $(card).attr('uid');
-				if (uid) {
-					$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + uid, false, true, function(show) {
+				var productId = $(card).attr('productId');
+				if (productId) {
+					$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + productId+'&userId='+userId, false, true, function(show) {
 						show();
 					});
 				}
@@ -210,7 +216,7 @@ define(function(require, exports, module) {
 			url: $common.getRestApiURL() + '/product/info/saleListData',
 			dataType: 'json',
 			data: {
-				userId: $userInfo.get('userId')
+				userId: userId
 			},
 			success: function(jsonData) {
 				if (jsonData) {
@@ -240,13 +246,14 @@ define(function(require, exports, module) {
 									var typeId = o['typeId'];
 									var relationYn = o['relationYn'];
 									var uid = o['uid'];
+									var endFlag = o['endFlag'];
 									if (typeId && relationYn && uid) {
 										if (typeId == 1) {
 
 										} else if (typeId == 2) {
 											var fundObj = o['fund'];
 											if (fundObj) {
-												sb.append(String.formatmodel($templete.fundItem(relationYn), {
+												sb.append(String.formatmodel($templete.fundItem(relationYn,endFlag), {
 													productId: o['productId'],
 													userId: o['userId'],
 													relationUserName: o['relationUserName'],
@@ -263,7 +270,7 @@ define(function(require, exports, module) {
 										} else if (typeId == 3) {
 											var trustObj = o['trust'];
 											if (trustObj) {
-												sb.append(String.formatmodel($templete.trustItem(relationYn), {
+												sb.append(String.formatmodel($templete.trustItem(relationYn,endFlag), {
 													productId: o['productId'],
 													userId: o['userId'],
 													relationUserName: o['relationUserName'],

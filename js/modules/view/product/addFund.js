@@ -106,35 +106,10 @@ define(function(require, exports, module) {
 	};
 	loadOrg = function(orgCompany) {
 		$nativeUIManager.watting('请稍等...');
-		$.ajax({
-			type: 'POST',
-			url: $common.getRestApiURL() + '/common/common/orgList',
-			dataType: 'json',
-			data: {
-				orgCompany: orgCompany
-			},
-			success: function(jsonData) {
-				if (jsonData) {
-					if (jsonData['result'] == '0') {
-						var orgList = jsonData['orgList'];
-						if (orgList && $(orgList).size() > 0) {
-							$userInfo.put("selectList", JSON.stringify(orgList));
-							var controlValue = $('#productOrgId').val();
-							$windowManager.create('select', 'select.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue, false, true, function(show) {
-								show();
-								$nativeUIManager.wattingClose();
-							});
-						}
-					} else {
-						$nativeUIManager.wattingClose();
-						$nativeUIManager.alert('提示', '获取数据失败', 'OK', function() {});
-					}
-				}
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				$nativeUIManager.wattingClose();
-				$nativeUIManager.alert('提示', '获取数据失败', 'OK', function() {});
-			}
+		var controlValue = $('#productOrgId').val();
+		$windowManager.create('selectOrg', 'selectOrg.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue, false, true, function(show) {
+			show();
+			$nativeUIManager.wattingClose();
 		});
 	};
 	loadFundType = function() {
@@ -269,7 +244,7 @@ define(function(require, exports, module) {
 												plus.zip.compressImage({
 														src: entry.toLocalURL(),
 														dst: '_www/wzj.jpg',
-														quality: 80
+														quality: 40
 													},
 													function(event) {
 														files.push({
@@ -292,7 +267,7 @@ define(function(require, exports, module) {
 											plus.zip.compressImage({
 													src: entry.toLocalURL(),
 													dst: '_www/wzj.jpg',
-													quality: 80
+													quality: 40
 												},
 												function(event) {
 													files.push({

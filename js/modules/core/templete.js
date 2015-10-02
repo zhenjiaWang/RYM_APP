@@ -28,7 +28,7 @@ define(function(require, exports, module) {
 		selectItem.append('</li>\n');
 		return selectItem.toString();
 	};
-	exports.trustItem = function(relationYn) {
+	exports.trustItem = function(relationYn, endFlag) {
 		var trustItem = new StringBuilder();
 		trustItem.append('<div class="oneCard" numSeq="{numSeq}" productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
 		trustItem.append('<p class="font11 title color-a alignright">\n');
@@ -38,7 +38,15 @@ define(function(require, exports, module) {
 			trustItem.append('<span>关联自<em>{relationUserName}</em></span>\n');
 		}
 		trustItem.append('</p>\n');
-		trustItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong">{name}<span class="tip font12">在售</span></p>\n');
+		trustItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong">{name}');
+		if (endFlag) {
+			if (endFlag == 'Y') {
+				trustItem.append('<span class="tip tip-over font12">募集期结束</span>\n');
+			} else if (endFlag == 'N') {
+				trustItem.append('<span class="tip font12">在售</span>\n');
+			}
+		}
+		trustItem.append('</p>\n');
 		trustItem.append('<div class="clearfix mart5">\n');
 		trustItem.append('<span class="font14 floatleft inlineblock marl10 p-top25 color-9">期限:<em class="color-6">{dayLimit}天</em></span>\n');
 		trustItem.append('<div class="floatright alignright marr10">\n');
@@ -54,7 +62,7 @@ define(function(require, exports, module) {
 		trustItem.append('</div>\n');
 		return trustItem.toString();
 	};
-	exports.fundItem = function(relationYn) {
+	exports.fundItem = function(relationYn, endFlag) {
 		var fundItem = new StringBuilder();
 		fundItem.append('<div class="oneCard" numSeq="{numSeq}"  productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
 		fundItem.append('<p class="font11 title color-a alignright">\n');
@@ -64,7 +72,15 @@ define(function(require, exports, module) {
 			fundItem.append('<span>关联自<em>{relationUserName}</em></span>\n');
 		}
 		fundItem.append('</p>\n');
-		fundItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong">{name}<span class="tip font12">在售</span></p>\n');
+		fundItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong">{name}');
+		if (endFlag) {
+			if (endFlag == 'Y') {
+				fundItem.append('<span class="tip tip-over font12">募集期结束</span>\n');
+			} else if (endFlag == 'N') {
+				fundItem.append('<span class="tip font12">在售</span>\n');
+			}
+		}
+		fundItem.append('</p>\n');
 		fundItem.append('<div class="clearfix mart5">\n');
 		fundItem.append('<span class="font14 floatleft inlineblock marl10 p-top25 color-9">无期限</span>\n');
 		fundItem.append('<div class="floatright alignright marr10">\n');

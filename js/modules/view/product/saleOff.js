@@ -7,6 +7,8 @@ define(function(require, exports, module) {
 	var $controlWindow = require('manager/controlWindow');
 	var $templete = require('core/templete');
 	var currentWindow;
+	var queryMap = parseURL();
+	var userId = queryMap.get('userId');
 	onRefresh = function() {
 		window.setTimeout(function() {
 			loadData(function() {
@@ -67,6 +69,18 @@ define(function(require, exports, module) {
 				}
 			});
 		});
+		$common.touchSE($('.commentBtn', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
+			event.stopPropagation();
+			var card = $(o).closest('.oneCard');
+			if (card) {
+				var productId = $(card).attr('productId');
+				if (productId) {
+					$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + productId+'&userId='+userId, false, true, function(show) {
+						show();
+					});
+				}
+			}
+		});
 	};
 	loadData = function(callback) {
 		if (!callback) {
@@ -77,7 +91,7 @@ define(function(require, exports, module) {
 			url: $common.getRestApiURL() + '/product/info/saleOffListData',
 			dataType: 'json',
 			data: {
-				userId: $userInfo.get('userId')
+				userId: userId
 			},
 			success: function(jsonData) {
 				if (jsonData) {

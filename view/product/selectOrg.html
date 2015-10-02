@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
-
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		<meta name="apple-touch-fullscreen" content="yes" />
-		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
-		<title>个人信息-姓名修改</title>
+		<meta name="apple-touch-fullscreen" content="yes"/>
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"> 
+		<title>选择项列表</title>
 		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
 		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
 		<script type="text/javascript" src="../../js/sea.js"></script>
@@ -17,27 +16,24 @@
 			seajs.config({
 				base: "../../js/modules/"
 			});
-			seajs.use('view/my/edit');
+			seajs.use('view/product/selectOrg');
 		</script>
 	</head>
-
 	<body >
 		<header class="header">
 			<span class="icon icon-back floatleft" id="backBtn"></span>
-			<!--<span class="headerBtn prev_step aligncenter">上一步</span>-->
 			<h1 class="aligncenter font17"></h1>
-			<!--<span class="headerBtn aligncenter">下一步</span>-->
-			<div class="next_step" id="saveBtn"><span class="headerBtn aligncenter">保存</span></div>
 		</header>
-
 		<div class="main" style="position: absolute;bottom: 0px;top: 50px;">
-			<ul class="inputList mart15">
-				<li class="clearfix" controlType="text">
-					<input type="text" id="codeValue" name="codeValue" class="LineInt" placeholder="请输入..." />
-					<label class="lableTxt" style="width: 100%;"></label>
-				</li>
+			<!--搜索begin-->
+				<form onsubmit="return false;">
+					<div class="searchBar" style="margin-top:0px;">
+						<input type="search" class="langTxt font14 " placeholder="机构名称" id="keyword" name="keyword">
+					</div>
+				</form>
+				<!--搜索over-->
+			<ul class="inputList checkList" id="selectItemUL">
 			</ul>
 		</div>
 	</body>
-
 </html>

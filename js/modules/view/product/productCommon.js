@@ -8,6 +8,7 @@ define(function(require, exports, module) {
 	var productId;
 	var userId;
 	var productTab;
+	var productNumSeq;
 	onActionCommon = function() {
 		$nativeUIManager.watting('请选择发布栏位...');
 		window.setTimeout(function() {
@@ -219,6 +220,41 @@ define(function(require, exports, module) {
 			}
 		});
 	};
+	relationExist = function(productId,productName,userId,numSeq) {
+		$nativeUIManager.watting('请稍等...');
+		$.ajax({
+			type: 'POST',
+			url: $common.getRestApiURL() + '/product/info/relationExist',
+			dataType: 'json',
+			data: {
+				id: productId
+			},
+			success: function(jsonData) {
+				if (jsonData) {
+					if (jsonData['result'] == '0') {
+						$nativeUIManager.wattingClose();
+						$nativeUIManager.watting('请选择发布栏位...');
+						window.setTimeout(function() {
+							$windowManager.create('relation_send', '../relation/send.html?productName=' + productName + '&userId=' + userId + '&numSeq=' + numSeq, false, true, function(show) {
+								show();
+								$nativeUIManager.wattingClose();
+							});
+						}, 1500);
+					} else if (jsonData['result'] == '1') {
+						$nativeUIManager.wattingClose();
+						$nativeUIManager.alert('提示', '该产品已经存在于在售列表', 'OK', function() {});
+					} else {
+						$nativeUIManager.wattingClose();
+						$nativeUIManager.alert('提示', '关联产品失败', 'OK', function() {});
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				$nativeUIManager.wattingClose();
+				$nativeUIManager.alert('提示', '关联产品失败', 'OK', function() {});
+			}
+		});
+	};
 	offActionCommon = function() {
 		$nativeUIManager.watting('请稍等...');
 		$common.refreshToken(function(tokenId) {
@@ -321,12 +357,13 @@ define(function(require, exports, module) {
 			});
 		});
 	};
-	exports.showMoreAction = function(id, tab, name, pid, uid) {
+	exports.showMoreAction = function(id, tab, name, pid, numSeq,uid) {
 		ID = id;
 		productName = name;
 		productId = pid;
 		userId = uid;
 		productTab = tab;
+		productNumSeq=numSeq;
 		$.ajax({
 			type: 'POST',
 			url: $common.getRestApiURL() + '/product/info/viewMore',
@@ -356,6 +393,8 @@ define(function(require, exports, module) {
 												}, function() {});
 											} else if (moreAction == 'newOnSale') {
 												newOnExist(ID);
+											}else if (moreAction == 'relation') {
+												relationExist(productId,productName,userId,productNumSeq);
 											} else if (moreAction == 'favorites') {
 												$nativeUIManager.confirm('提示', '你确定要收藏当前产品吗?', ['确定', '取消'], function() {
 													favoritesExist();

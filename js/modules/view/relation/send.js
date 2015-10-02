@@ -17,7 +17,6 @@ define(function(require, exports, module) {
 			$('#numSeq').val(num);
 			$('#relationUserId').val(userId);
 			$('#relationNumSeq').val(numSeq);
-			alert($('#editForm').serialize().replace(/\+/g, " "))
 			$.ajax({
 				type: 'POST',
 				url: $common.getRestApiURL() + '/product/info/relationAction',

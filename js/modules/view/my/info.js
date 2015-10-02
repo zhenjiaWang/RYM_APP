@@ -63,8 +63,11 @@ define(function(require, exports, module) {
 		task.start();
 	};
 	bindEvent = function() {
-		$common.touchSE($('#logoutBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$authorize.logout();
+		$common.touchSE($('#logoutBtn'), function(event, startTouch, o) {
+			$nativeUIManager.confirm('提示', '你确定要退出登录吗?', ['确定', '取消'], function() {
+				$authorize.logout();
+			},function(){});
+		}, function(event, o) {
 		});
 		$common.touchSE($('li', '#editUL'), function(event, startTouch, o) {}, function(event, o) {
 			var dir = $(o).attr('dir');
@@ -75,7 +78,7 @@ define(function(require, exports, module) {
 					$windowManager.create('my_edit', 'edit.html?code=' + dir + '&value=' + value, false, true, function(show) {
 						show();
 					});
-				}else if (dir == 'password') {
+				} else if (dir == 'password') {
 					$nativeUIManager.alert('提示', '暂停功能方便测试', 'OK', function() {});
 				} else if (dir == 'plannerNo') {
 					value = $(o).find('span').last().text();
@@ -96,85 +99,91 @@ define(function(require, exports, module) {
 					var lang = $(o).find('span').first().attr('lang');
 					if (lang) {
 						if (lang == 'bind') {
-							document.addEventListener("pause", function() {
-								setTimeout(function() {
-									$nativeUIManager.wattingClose();
-								}, 2000);
-							}, false);
-							$nativeUIManager.watting('请稍等...');
-							var s = auths[0];
-							s.login(function(e) {
-								if (s.authResult) {
-									value = s.authResult['openid'];
-									if (value) {
-										$common.refreshToken(function(tokenId) {
-											$.ajax({
-												type: 'POST',
-												url: $common.getRestApiURL() + '/sys/planner/bindWeChat',
-												dataType: 'json',
-												data: {
-													'org.guiceside.web.jsp.taglib.Token': tokenId,
-													codeValue: value
-												},
-												success: function(jsonData) {
-													if (jsonData) {
-														if (jsonData['result'] == '0') {
-															$nativeUIManager.wattingTitle('绑定成功!');
-															window.setTimeout(function() {
-																$nativeUIManager.wattingClose();
-															}, 1000);
-														} else {
-															$nativeUIManager.wattingClose();
-															$nativeUIManager.alert('提示', '绑定失败', 'OK', function() {});
-														}
-													}
-												},
-												error: function(XMLHttpRequest, textStatus, errorThrown) {
-													$nativeUIManager.wattingClose();
-													$nativeUIManager.alert('提示', '绑定失败', 'OK', function() {});
-												}
-											});
-										});
-									} else {
+							$nativeUIManager.confirm('提示', '你确定要绑定微信帐号?', ['确定', '取消'], function() {
+								document.addEventListener("pause", function() {
+									setTimeout(function() {
 										$nativeUIManager.wattingClose();
-									}
-								}
-							}, function(e) {
-								$nativeUIManager.wattingClose();
-							});
-						} else if (lang == 'unbind') {
-							var s = auths[0];
-							s.logout(function(e) {
+									}, 2000);
+								}, false);
 								$nativeUIManager.watting('请稍等...');
-								$common.refreshToken(function(tokenId) {
-									$.ajax({
-										type: 'POST',
-										url: $common.getRestApiURL() + '/sys/planner/unbindWeChat',
-										dataType: 'json',
-										data: {
-											'org.guiceside.web.jsp.taglib.Token': tokenId
-										},
-										success: function(jsonData) {
-											if (jsonData) {
-												if (jsonData['result'] == '0') {
-													$nativeUIManager.wattingTitle('解绑成功!');
-													window.setTimeout(function() {
+								var s = auths[0];
+								s.login(function(e) {
+									if (s.authResult) {
+										value = s.authResult['openid'];
+										if (value) {
+											$common.refreshToken(function(tokenId) {
+												$.ajax({
+													type: 'POST',
+													url: $common.getRestApiURL() + '/sys/planner/bindWeChat',
+													dataType: 'json',
+													data: {
+														'org.guiceside.web.jsp.taglib.Token': tokenId,
+														codeValue: value
+													},
+													success: function(jsonData) {
+														if (jsonData) {
+															if (jsonData['result'] == '0') {
+																$nativeUIManager.wattingTitle('绑定成功!');
+																window.setTimeout(function() {
+																	$nativeUIManager.wattingClose();
+																}, 1000);
+															} else {
+																$nativeUIManager.wattingClose();
+																$nativeUIManager.alert('提示', '绑定失败', 'OK', function() {});
+															}
+														}
+													},
+													error: function(XMLHttpRequest, textStatus, errorThrown) {
 														$nativeUIManager.wattingClose();
-													}, 1000);
-												} else {
-													$nativeUIManager.wattingClose();
-													$nativeUIManager.alert('提示', '解绑失败', 'OK', function() {});
-												}
-											}
-										},
-										error: function(XMLHttpRequest, textStatus, errorThrown) {
+														$nativeUIManager.alert('提示', '绑定失败', 'OK', function() {});
+													}
+												});
+											});
+										} else {
 											$nativeUIManager.wattingClose();
-											$nativeUIManager.alert('提示', '解绑失败', 'OK', function() {});
 										}
-									});
+									}
+								}, function(e) {
+									$nativeUIManager.wattingClose();
 								});
-							}, function(e) {
-								$nativeUIManager.alert('提示', '解绑失败', 'OK', function() {});
+							}, function() {});
+						} else if (lang == 'unbind') {
+							$nativeUIManager.confirm('提示', '你确定要解绑微信帐号?', ['确定', '取消'], function() {
+								var s = auths[0];
+								s.logout(function(e) {
+									$nativeUIManager.watting('请稍等...');
+									$common.refreshToken(function(tokenId) {
+										$.ajax({
+											type: 'POST',
+											url: $common.getRestApiURL() + '/sys/planner/unbindWeChat',
+											dataType: 'json',
+											data: {
+												'org.guiceside.web.jsp.taglib.Token': tokenId
+											},
+											success: function(jsonData) {
+												if (jsonData) {
+													if (jsonData['result'] == '0') {
+														$nativeUIManager.wattingTitle('解绑成功!');
+														window.setTimeout(function() {
+															$nativeUIManager.wattingClose();
+														}, 1000);
+													} else {
+														$nativeUIManager.wattingClose();
+														$nativeUIManager.alert('提示', '解绑失败', 'OK', function() {});
+													}
+												}
+											},
+											error: function(XMLHttpRequest, textStatus, errorThrown) {
+												$nativeUIManager.wattingClose();
+												$nativeUIManager.alert('提示', '解绑失败', 'OK', function() {});
+											}
+										});
+									});
+								}, function(e) {
+									$nativeUIManager.alert('提示', '解绑失败', 'OK', function() {});
+								});
+							}, function() {
+
 							});
 						}
 					}

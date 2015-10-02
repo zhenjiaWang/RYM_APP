@@ -54,6 +54,19 @@ define(function(require, exports, module) {
 				$('#keyword').trigger('blur');
 			}
 		});
+		$common.touchSE($('.personBoard', '#friendUL'), function(event, startTouch, o) {}, function(event, o) {
+			var userId = $(o).attr('uid');
+			if (userId) {
+				$nativeUIManager.watting('请稍后...');
+				window.setTimeout(function() {
+					var homeWindow = $windowManager.getLaunchWindow();
+					if (homeWindow) {
+						$nativeUIManager.wattingClose();
+						homeWindow.evalJS('showSaleByUserId("' + userId + '")');
+					}
+				}, 500);
+			}
+		});
 		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.create('product_add', '../product/add.html', false, true, function(show) {
 				show();

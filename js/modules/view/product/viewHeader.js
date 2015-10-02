@@ -13,16 +13,16 @@ define(function(require, exports, module) {
 	var productId;
 	var userId;
 	var productName;
+	var numSeq;
 	onAction = function(numSeq) {
 		$productCommon.onProductSale(id, numSeq);
 	};
 	newOnAction = function(numSeq) {
-		alert('newOnAction');
 		$productCommon.newOnProductSale(id, numSeq);
 	};
 	bindEvent = function() {
 		$common.touchSE($('#moreBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$productCommon.showMoreAction(id, tab, productName, productId, userId);
+			$productCommon.showMoreAction(id, tab, productName, productId, numSeq,userId);
 		});
 	};
 	loadData = function() {
@@ -43,6 +43,7 @@ define(function(require, exports, module) {
 							productName = productInfo['name'];
 							productId = productInfo['productId'];
 							userId = productInfo['userId'];
+							numSeq=productInfo['numSeq'];
 							$userInfo.put('productView', JSON.stringify(jsonData));
 							var viewUrl='';
 							if(typeId){
