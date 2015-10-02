@@ -6,6 +6,9 @@ define(function(require, exports, module) {
 	var $userInfo = require('core/userInfo');
 	var $validator = require('core/validator');
 	var intervalObj = false;
+	var queryMap = parseURL();
+	var openId = queryMap.get('openId');
+	var mobilePhone = queryMap.get('mobilePhone');
 	getVerifyCode = function(mobilePhone, callback) {
 		$nativeUIManager.watting('请稍等...');
 		$.ajax({
@@ -20,10 +23,10 @@ define(function(require, exports, module) {
 					if (jsonData['result'] == '0') {
 						if (typeof callback == 'function') {
 							callback();
-							$nativeUIManager.wattingTitle('验证码已发送!');
+							$nativeUIManager.wattingTitle('验证码已发送!请记住['+jsonData['verifyCode']+']');
 							window.setTimeout(function() {
 								$nativeUIManager.wattingClose();
-							}, 1000);
+							}, 5000);
 						}
 					}
 				}
@@ -203,6 +206,7 @@ define(function(require, exports, module) {
 						data: {
 							mobilePhone: $('#mobilePhone').val(),
 							verifyCode: $('#verifyCode').val(),
+							openId: $('#openId').val(),
 							userName: $('#userName').val(),
 							password: $('#password').val()
 						},
@@ -233,6 +237,13 @@ define(function(require, exports, module) {
 		});
 	};
 	plusReady = function() {
+		if(openId){
+			$('#openId').val(openId);
+			if(mobilePhone&&mobilePhone!=undefined&&mobilePhone!='undefined'){
+				$('#mobilePhone').val(mobilePhone).attr('readonly','readonly');
+			}
+			alert(openId)
+		}
 		bindEvent();
 		bindValidate();
 	};

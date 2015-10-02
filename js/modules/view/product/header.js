@@ -11,18 +11,18 @@ define(function(require, exports, module) {
 				show();
 			});
 		});
-		$common.touchSE($('li','#plannerSaleTab'), function(event, startTouch, o) {}, function(event, o) {
-			if(!$(o).hasClass('current')){
-				$('li','#plannerSaleTab').removeClass('current');
+		$common.touchSE($('li', '#plannerSaleTab'), function(event, startTouch, o) {}, function(event, o) {
+			if (!$(o).hasClass('current')) {
+				$('li', '#plannerSaleTab').removeClass('current');
 				$(o).addClass('current');
-				var dir=$(o).attr('dir');
-				if(dir){
-					if(dir=='sale'){
-						$windowManager.loadOtherWindow('product_user','sale.html');
-					}else if(dir=='favorites'){
-						$windowManager.loadOtherWindow('product_user','favorites.html');
-					}else if(dir=='saleOff'){
-						$windowManager.loadOtherWindow('product_user','saleOff.html');
+				var dir = $(o).attr('dir');
+				if (dir) {
+					if (dir == 'sale') {
+						$windowManager.loadOtherWindow('product_user', 'sale.html');
+					} else if (dir == 'favorites') {
+						$windowManager.loadOtherWindow('product_user', 'favorites.html');
+					} else if (dir == 'saleOff') {
+						$windowManager.loadOtherWindow('product_user', 'saleOff.html');
 					}
 				}
 			}
@@ -36,7 +36,7 @@ define(function(require, exports, module) {
 				function(index) {
 					if (index > 0) {
 						if (index == 1) {
-
+							$nativeUIManager.alert('提示', '微信浏览域名没办法用，暂关闭', 'OK', function() {});
 						} else if (index == 2) {
 							$windowManager.create('product_order', 'order.html', false, true, function(show) {
 								show();
@@ -56,8 +56,8 @@ define(function(require, exports, module) {
 		if (productUserWin) {
 			productUserWin.addEventListener("loaded", function() {
 				$windowManager.current().append(productUserWin);
-				if($('li.current','#plannerSaleTab').size()==0){
-					$('li','#plannerSaleTab').first().addClass('current');
+				if ($('li.current', '#plannerSaleTab').size() == 0) {
+					$('li', '#plannerSaleTab').first().addClass('current');
 				}
 			}, false);
 		}

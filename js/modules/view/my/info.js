@@ -75,6 +75,8 @@ define(function(require, exports, module) {
 					$windowManager.create('my_edit', 'edit.html?code=' + dir + '&value=' + value, false, true, function(show) {
 						show();
 					});
+				}else if (dir == 'password') {
+					$nativeUIManager.alert('提示', '暂停功能方便测试', 'OK', function() {});
 				} else if (dir == 'plannerNo') {
 					value = $(o).find('span').last().text();
 					$windowManager.create('my_edit', 'edit.html?code=' + dir + '&value=' + value, false, true, function(show) {

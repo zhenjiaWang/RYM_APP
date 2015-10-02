@@ -27,6 +27,11 @@ define(function(require, exports, module) {
 			window.setTimeout(function() {
 				$nativeUIManager.wattingClose();
 			}, 1000);
+		}, function(openId, mobilePhone) {
+			$nativeUIManager.wattingClose();
+			$windowManager.create('reg', 'reg.html?openId=' + openId + '&mobilePhone=' + mobilePhone, false, true, function(show) {
+				show();
+			});
 		});
 	};
 

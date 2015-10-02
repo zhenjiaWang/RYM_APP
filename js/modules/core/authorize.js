@@ -31,7 +31,7 @@ define(function(require, exports, module) {
 			}
 		});
 	}
-	exports.loginWechat = function(openId, successCallback, errorCallback) {
+	exports.loginWechat = function(openId, successCallback, errorCallback,openCallback) {
 		var pushInfo = $pushManager.pushInfo();
 		var deviceToken = pushInfo['token'];
 		var clientId = pushInfo['clientid']
@@ -53,7 +53,12 @@ define(function(require, exports, module) {
 						if (typeof successCallback == 'function') {
 							successCallback(jsonData);
 						}
-					} else {
+					}if (jsonData['result'] == '1') {
+						$userInfo.put('authorize','-1');
+						if (typeof openCallback == 'function') {
+							openCallback(jsonData['openId'],jsonData['mobilePhone']);
+						}
+					}else {
 						$userInfo.put('authorize','-1');
 						if (typeof errorCallback == 'function') {
 							errorCallback(jsonData['errorMsg']);

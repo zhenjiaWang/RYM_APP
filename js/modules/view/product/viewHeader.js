@@ -16,6 +16,10 @@ define(function(require, exports, module) {
 	onAction = function(numSeq) {
 		$productCommon.onProductSale(id, numSeq);
 	};
+	newOnAction = function(numSeq) {
+		alert('newOnAction');
+		$productCommon.newOnProductSale(id, numSeq);
+	};
 	bindEvent = function() {
 		$common.touchSE($('#moreBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$productCommon.showMoreAction(id, tab, productName, productId, userId);

@@ -12,8 +12,9 @@ define(function(require, exports, module) {
 				show();
 			});
 		});
-		
-
+		$common.touchSE($('#investorBtn'), function(event, startTouch, o) {}, function(event, o) {
+			$nativeUIManager.alert('提示', '和微信一起开放', 'OK', function() {});
+		});
 		$common.touchSE($('.addBtn'), function(event, startTouch, o) {}, function(event, o) {
 			if (!$(o).hasClass('nobg')&&!$(o).hasClass('addDone')) {
 				var li = $(o).closest('li');

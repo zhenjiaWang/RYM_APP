@@ -18,7 +18,8 @@ define(function(require, exports, module) {
 				function(index) {
 					if (index > 0) {
 						if (index == 1) {
-							$windowManager.load('addFinancial.html?typeId=1&typeName=理财');
+							$nativeUIManager.alert('提示', '理财产品添加多个逻辑有变化，微信显示出现问题，过两天开放', 'OK', function() {});
+							//$windowManager.load('addFinancial.html?typeId=1&typeName=理财');
 						} else if (index == 2) {
 							$windowManager.load('addFund.html?typeId=2&typeName=基金');
 						} else if (index == 3) {
