@@ -262,7 +262,7 @@ define(function(require, exports, module) {
 				$validator.check('expireDate');
 			}, function() {});
 		});
-		
+
 		$common.touchSE($('#uploadBtn'), function(event, startTouch, o) {}, function(event, o) {
 			var imgCount = $('div', '#imgUL').find('img').size();
 			if (imgCount < 6) {
@@ -367,9 +367,13 @@ define(function(require, exports, module) {
 			id: 'purchaseAmount',
 			required: true,
 			pattern: [{
+				type: 'blank',
+				exp: '!=',
+				msg: '请输入起购金额'
+			}, {
 				type: 'number',
 				exp: '==',
-				msg: '请输入起购金额'
+				msg: '起购金额格式不正确'
 			}]
 		}, {
 			id: 'startDate',
@@ -391,9 +395,13 @@ define(function(require, exports, module) {
 			id: 'accrualDay',
 			required: true,
 			pattern: [{
+				type: 'blank',
+				exp: '!=',
+				msg: '请输入计息天数'
+			}, {
 				type: 'int',
 				exp: '==',
-				msg: '请输入计息天数'
+				msg: '计息天数格式不正确'
 			}]
 		}, {
 			id: 'expireDate',
@@ -402,6 +410,18 @@ define(function(require, exports, module) {
 				type: 'blank',
 				exp: '!=',
 				msg: '请选择到期日'
+			}]
+		}, {
+			id: 'yield',
+			required: true,
+			pattern: [{
+				type: 'blank',
+				exp: '!=',
+				msg: '请输入预期收益率'
+			}, {
+				type: 'number',
+				exp: '==',
+				msg: '预期收益率格式不正确'
 			}]
 		}, {
 			id: 'remarks',

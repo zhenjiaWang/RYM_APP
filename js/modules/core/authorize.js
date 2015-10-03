@@ -30,7 +30,7 @@ define(function(require, exports, module) {
 			}
 		});
 	}
-	exports.loginWechat = function(openId, successCallback, errorCallback,openCallback) {
+	exports.loginWechat = function(openId, successCallback, errorCallback, openCallback) {
 		var pushInfo = $pushManager.pushInfo();
 		var deviceToken = pushInfo['token'];
 		var clientId = pushInfo['clientid']
@@ -48,17 +48,17 @@ define(function(require, exports, module) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
 						$userInfo.putJson(jsonData);
-						$userInfo.put('authorize','0');
+						$userInfo.put('authorize', '0');
 						if (typeof successCallback == 'function') {
 							successCallback(jsonData);
 						}
-					}if (jsonData['result'] == '1') {
-						$userInfo.put('authorize','-1');
+					}else if (jsonData['result'] == '1') {
+						$userInfo.put('authorize', '-1');
 						if (typeof openCallback == 'function') {
-							openCallback(jsonData['openId'],jsonData['mobilePhone']);
+							openCallback(jsonData['openId'], jsonData['mobilePhone']);
 						}
-					}else {
-						$userInfo.put('authorize','-1');
+					} else {
+						$userInfo.put('authorize', '-1');
 						if (typeof errorCallback == 'function') {
 							errorCallback(jsonData['errorMsg']);
 						}
@@ -67,7 +67,7 @@ define(function(require, exports, module) {
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
 				if (typeof errorCallback == 'function') {
-					$userInfo.put('authorize','-1');
+					$userInfo.put('authorize', '-1');
 					errorCallback('网络错误');
 				}
 			}
@@ -96,7 +96,7 @@ define(function(require, exports, module) {
 							successCallback(jsonData);
 						}
 					} else {
-						$userInfo.put('authorize','-1');
+						$userInfo.put('authorize', '-1');
 						if (typeof errorCallback == 'function') {
 							errorCallback(jsonData['errorMsg']);
 						}
@@ -105,7 +105,7 @@ define(function(require, exports, module) {
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
 				if (typeof errorCallback == 'function') {
-					$userInfo.put('authorize','-1');
+					$userInfo.put('authorize', '-1');
 					errorCallback('网络错误');
 				}
 			}
@@ -125,17 +125,15 @@ define(function(require, exports, module) {
 					success: function(jsonData) {
 						if (jsonData) {
 							if (jsonData['result'] == '0') {
-								if (window.plus) {
-									$common.switchOS(function() {
-										plus.runtime.setBadgeNumber(0);
-									}, function() {});
-									plus.push.clear();
-									$userInfo.clear();
-									$nativeUIManager.wattingClose();
-									$controlWindow.activeWindowClose();
-									$windowManager.close();
-									$windowManager.loadOtherWindow($windowManager.getLaunchWindowId(), '../login.html', true);
-								}
+								$common.switchOS(function() {
+									plus.runtime.setBadgeNumber(0);
+								}, function() {});
+								plus.push.clear();
+								$userInfo.clear();
+								$controlWindow.activeWindowClose();
+								$nativeUIManager.wattingClose();
+								$windowManager.close();
+								$windowManager.loadOtherWindow($windowManager.getLaunchWindowId(), '../login.html', true);
 							} else {
 								$nativeUIManager.wattingTitle('错误,请稍后再试');
 								window.setTimeout(function() {

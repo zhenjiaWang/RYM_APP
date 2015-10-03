@@ -188,7 +188,7 @@ define(function(require, exports, module) {
 			}
 		});
 	};
-	newOnExist = function(id) {
+	newOnExist = function() {
 		$nativeUIManager.watting('请稍等...');
 		$.ajax({
 			type: 'POST',
@@ -220,7 +220,7 @@ define(function(require, exports, module) {
 			}
 		});
 	};
-	relationExist = function(productId,productName,userId,numSeq) {
+	relationExist = function(productId, productName, userId, numSeq) {
 		$nativeUIManager.watting('请稍等...');
 		$.ajax({
 			type: 'POST',
@@ -252,6 +252,37 @@ define(function(require, exports, module) {
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
 				$nativeUIManager.wattingClose();
 				$nativeUIManager.alert('提示', '关联产品失败', 'OK', function() {});
+			}
+		});
+	};
+	offExist = function() {
+		$nativeUIManager.watting('请稍等...');
+		$.ajax({
+			type: 'POST',
+			url: $common.getRestApiURL() + '/product/info/offExist',
+			dataType: 'json',
+			data: {
+				id: ID
+			},
+			success: function(jsonData) {
+				if (jsonData) {
+					if (jsonData['result'] == '0') {
+						$nativeUIManager.wattingClose();
+						$nativeUIManager.confirm('提示', '你确定要下架当前产品吗?', ['确定', '取消'], function() {
+							offActionCommon();
+						}, function() {});
+					} else if (jsonData['result'] == '1') {
+						$nativeUIManager.wattingClose();
+						$nativeUIManager.alert('提示', '该产品已经存在下游关系，暂时禁止下架', 'OK', function() {});
+					} else {
+						$nativeUIManager.wattingClose();
+						$nativeUIManager.alert('提示', '下架产品失败', 'OK', function() {});
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				$nativeUIManager.wattingClose();
+				$nativeUIManager.alert('提示', '下架产品失败', 'OK', function() {});
 			}
 		});
 	};
@@ -357,13 +388,13 @@ define(function(require, exports, module) {
 			});
 		});
 	};
-	exports.showMoreAction = function(id, tab, name, pid, numSeq,uid) {
+	exports.showMoreAction = function(id, tab, name, pid, numSeq, uid) {
 		ID = id;
 		productName = name;
 		productId = pid;
 		userId = uid;
 		productTab = tab;
-		productNumSeq=numSeq;
+		productNumSeq = numSeq;
 		$.ajax({
 			type: 'POST',
 			url: $common.getRestApiURL() + '/product/info/viewMore',
@@ -384,17 +415,15 @@ define(function(require, exports, module) {
 										var moreAction = moreActionObj[index + ''];
 										if (moreAction) {
 											if (moreAction == 'offSale') {
-												$nativeUIManager.confirm('提示', '你确定要下架当前产品吗?', ['确定', '取消'], function() {
-													offActionCommon();
-												}, function() {});
+												offExist();
 											} else if (moreAction == 'onSale') {
 												$nativeUIManager.confirm('提示', '你确定要上架当前产品吗?', ['确定', '取消'], function() {
 													onActionCommon();
 												}, function() {});
 											} else if (moreAction == 'newOnSale') {
-												newOnExist(ID);
-											}else if (moreAction == 'relation') {
-												relationExist(productId,productName,userId,productNumSeq);
+												newOnExist();
+											} else if (moreAction == 'relation') {
+												relationExist(productId, productName, userId, productNumSeq);
 											} else if (moreAction == 'favorites') {
 												$nativeUIManager.confirm('提示', '你确定要收藏当前产品吗?', ['确定', '取消'], function() {
 													favoritesExist();
@@ -403,17 +432,17 @@ define(function(require, exports, module) {
 												$nativeUIManager.confirm('提示', '你确定要取消收藏当前产品吗?', ['确定', '取消'], function() {
 													favoritesCancelActionCommon();
 												}, function() {});
-											}else if (moreAction == 'lock') {
+											} else if (moreAction == 'lock') {
 												$nativeUIManager.confirm('提示', '你确定要锁定产品，解除关联关系?', ['确定', '取消'], function() {
 													lockActionCommon();
 												}, function() {});
-											}else if (moreAction == 'unLock') {
+											} else if (moreAction == 'unLock') {
 												$nativeUIManager.confirm('提示', '你确定要解锁产品，恢复关联关系?', ['确定', '取消'], function() {
 													unLockActionCommon();
 												}, function() {});
-											}else if (moreAction == 'share') {
+											} else if (moreAction == 'share') {
 												$nativeUIManager.alert('提示', '微信浏览域名没办法用，暂关闭', 'OK', function() {});
-											}else if (moreAction == 'edit') {
+											} else if (moreAction == 'edit') {
 												$nativeUIManager.alert('提示', '测试需要监控原始数据，暂关闭', 'OK', function() {});
 											}
 										}

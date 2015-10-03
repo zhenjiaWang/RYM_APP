@@ -25,7 +25,6 @@ define(function(require, exports, module) {
 				$('li', '#plannerSaleTab').removeClass('current');
 				$(o).addClass('current');
 				var dir = $(o).attr('dir');
-				alert(dir);
 				if (dir) {
 					if (dir == 'sale') {
 						$windowManager.loadOtherWindow('product_user', 'sale.html?userId=' + userId);

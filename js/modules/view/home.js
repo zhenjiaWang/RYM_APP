@@ -35,7 +35,9 @@ define(function(require, exports, module) {
 				plus.runtime.quit();
 			}, function() {});
 		});
-		$common.touchSE($('span', '#footerAction'), function(event, startTouch, o) {}, function(event, o) {
+		$common.touchSE($('span', '#footerAction'), function(event, startTouch, o) {
+			
+		}, function(event, o) {
 			var dir = $(o).attr('dir');
 			if (dir) {
 				if (dir == 'tip') {
@@ -99,18 +101,15 @@ define(function(require, exports, module) {
 										}, false);
 									}
 								}
-								window.setTimeout(function() {
-									if (oldDir) {
-										if (oldDir == 'room') {
-											$controlWindow.windowHide('product_header');
-											$controlWindow.windowHide('product_user');
-										} else if (oldDir == 'friend') {
-											$controlWindow.windowHide('friend_header');
-											$controlWindow.windowHide('friend_list');
-										}
-
+								if (oldDir) {
+									if (oldDir == 'room') {
+										$controlWindow.windowHide('product_header');
+										$controlWindow.windowHide('product_user');
+									} else if (oldDir == 'friend') {
+										$controlWindow.windowHide('friend_header');
+										$controlWindow.windowHide('friend_list');
 									}
-								}, 500);
+								}
 							}
 						}
 					}
