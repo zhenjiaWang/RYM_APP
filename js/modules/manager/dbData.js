@@ -7,10 +7,10 @@ define(function(require, exports, module) {
 		if (i == c) {
 			$webSQLManager.query('SELECT  DISTINCT(JP)  FROM  PHONE_CONTACTS', [], function(keyWordResult) {
 				if (keyWordResult) {
-					$webSQLManager.query('SELECT  ID, NAME,PHOTO,MOBILE_PHONE,QP,JP  FROM  PHONE_CONTACTS ORDER BY NAME limit 0,50', [], function(dbResult) {
+					$webSQLManager.query('SELECT  ID, NAME,PHOTO,MOBILE_PHONE,QP,JP  FROM  PHONE_CONTACTS ORDER BY QP limit 0,50', [], function(dbResult) {
 						if (dbResult) {
 							if (typeof callback == 'function') {
-								callback(dbResult,keyWordResult);
+								callback(dbResult, keyWordResult);
 							}
 						}
 					}, function(msg) {
@@ -62,6 +62,7 @@ define(function(require, exports, module) {
 							var _index = 0;
 							$(contacts).each(function(i, c) {
 								var name = c.displayName;
+
 								var photo = '../../img/photodf.png';
 								var id = c.id;
 								var mobilePhone = false;
@@ -75,10 +76,19 @@ define(function(require, exports, module) {
 									$(c.phoneNumbers).each(function(pi, phone) {
 										if (phone['type'] == 'mobile') {
 											mobilePhone = phone['value'];
-											if(mobilePhone){
-												mobilePhone=mobilePhone.replaceAll('\\+86','');
-												mobilePhone=mobilePhone.replaceAll('-','');
-												mobilePhone=mobilePhone.replaceAll(' ','');
+											if (mobilePhone) {
+												mobilePhone = mobilePhone.replaceAll('\\+86', '');
+												mobilePhone = mobilePhone.replaceAll('-', '');
+												mobilePhone = mobilePhone.replaceAll(' ', '');
+												return false;
+											}
+										} else if (phone['type'] == 'other') {
+											mobilePhone = phone['value'];
+											if (mobilePhone) {
+												mobilePhone = mobilePhone.replaceAll('\\+86', '');
+												mobilePhone = mobilePhone.replaceAll('-', '');
+												mobilePhone = mobilePhone.replaceAll(' ', '');
+												return false;
 											}
 										}
 									});
@@ -89,10 +99,10 @@ define(function(require, exports, module) {
 										QP = QPS[0];
 										if (QP && QP.length > 0) {
 											JP = QP.substring(0, 1);
-											JP=JP.toUpperCase();
+											JP = JP.toUpperCase();
 											var jpAscii = JP.charCodeAt();
 											if (jpAscii >= 48 && jpAscii <= 57) {
-												JP='0~9';
+												JP = '0~9';
 											}
 										}
 									}

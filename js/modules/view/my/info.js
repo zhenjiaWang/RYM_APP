@@ -255,7 +255,6 @@ define(function(require, exports, module) {
 		});
 	};
 	loadData = function() {
-		$nativeUIManager.watting('正在加载...');
 		$.ajax({
 			type: 'POST',
 			url: $common.getRestApiURL() + '/sys/planner',
@@ -266,6 +265,7 @@ define(function(require, exports, module) {
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
+						$('li[dir="mobilePhone"]', '#editUL').find('span').last().text(jsonData['mobilePhone']);
 						$('li[dir="userName"]', '#editUL').find('span').last().text(jsonData['userName']);
 						$('li[dir="plannerNo"]', '#editUL').find('span').last().text(jsonData['plannerNo']);
 						$('li[dir="signature"]', '#editUL').find('span').last().text(jsonData['signature']);
@@ -282,16 +282,13 @@ define(function(require, exports, module) {
 						if (headImgUrl) {
 							$('img', '.userPhoto').attr('src', headImgUrl);
 						}
-						$nativeUIManager.wattingClose();
 						bindEvent();
 					} else {
-						$nativeUIManager.wattingClose();
 						$nativeUIManager.alert('提示', '获取信息失败', 'OK', function() {});
 					}
 				}
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				$nativeUIManager.wattingClose();
 				$nativeUIManager.alert('提示', '获取信息失败', 'OK', function() {});
 			}
 		});
@@ -305,6 +302,10 @@ define(function(require, exports, module) {
 		loadData();
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
+			var productUserWin=$windowManager.getById('product_user');
+			if(productUserWin){
+				productUserWin.evalJS('reloadMyInfo()');
+			}
 		});
 		plus.oauth.getServices(function(services) {
 			auths = services;

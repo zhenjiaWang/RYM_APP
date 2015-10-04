@@ -170,4 +170,32 @@ define(function(require, exports, module) {
 		relationPlannerItem.append('</section>\n');
 		return relationPlannerItem.toString();
 	};
+	exports.friendFollowPlannerItem = function(newFlag) {
+		var relationPlannerItem = new StringBuilder();
+		relationPlannerItem.append('<section class="UserCard" userId="{userId}" saleCount="{saleCount}">\n');
+		if(newFlag){
+			relationPlannerItem.append('<span class="icon-new"></span>\n');
+			relationPlannerItem.append('<span class="rightBtn rightBtnAdd"></span>\n');
+		}else{
+			relationPlannerItem.append('<span class="rightBtn">共同好友</span>\n');
+		}
+		relationPlannerItem.append('<div class="UserBg "><img src="{headImgUrl}"></div>\n');
+		relationPlannerItem.append('<p class="font14 aligncenter" style="margin-top:-25px;">{userName}</p>\n');
+		relationPlannerItem.append('<p class="font10 aligncenter color-8">在售中: {saleCount}</p>\n');
+		relationPlannerItem.append('<p><img src="../../img/w-bg1.png" width="100%"></p>\n');
+		relationPlannerItem.append('<table width="100%" class="mart10">\n');
+		relationPlannerItem.append('<tr>\n');
+		relationPlannerItem.append('<th>理财</th>\n');
+		relationPlannerItem.append('<th>信托/资管</th>\n');
+		relationPlannerItem.append('<th>基金</th>\n');
+		relationPlannerItem.append('</tr>\n');
+		relationPlannerItem.append('<tr>\n');
+		relationPlannerItem.append('<td>6.45%</td>\n');
+		relationPlannerItem.append('<td>6.45%</td>\n');
+		relationPlannerItem.append('<td>股票型</td>\n');
+		relationPlannerItem.append('</tr>\n');
+		relationPlannerItem.append('</table>\n');
+		relationPlannerItem.append('</section>\n');
+		return relationPlannerItem.toString();
+	};
 });

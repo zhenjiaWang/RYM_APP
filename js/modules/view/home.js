@@ -8,25 +8,20 @@ define(function(require, exports, module) {
 	plusRest = function() {
 		if ($('#plusBtn').hasClass('current')) {
 			$('#plusBtn').removeClass('current');
-			var productSaleWindow = $windowManager.getById('product_user');
-			if (productSaleWindow) {
-				productSaleWindow.evalJS('hideAddTools()');
+			var dir = $('span.current', '#footerAction').attr('dir');
+			if (dir) {
+				var currentProductWinId = false;
+				if (dir == 'room') {
+					currentProductWinId = 'product_user';
+				} else if (dir == 'friend') {
+					currentProductWinId='friend_list';
+				}
+				var productWindow = $windowManager.getById(currentProductWinId);
+				if (productWindow) {
+					productWindow.evalJS('hideAddTools()');
+				}
 			}
-		}
-	};
-	showSaleByUserId = function(userId) {
-		var dir = $('span.current', '#footerAction').attr('dir');
-		if (dir) {
-			if (dir == 'friend') {
-				$('span.current', '#footerAction').removeClass('current');
-				$('span[dir="room"]', '#footerAction').addClass('current');
-				$controlWindow.windowShow('product_header');
-				$windowManager.loadOtherWindow('product_header', 'product/header.html?userId=' + userId);
-				window.setTimeout(function() {
-					$controlWindow.windowHide('friend_header');
-					$controlWindow.windowHide('friend_list');
-				}, 500);
-			}
+
 		}
 	};
 	bindEvent = function() {
@@ -36,7 +31,7 @@ define(function(require, exports, module) {
 			}, function() {});
 		});
 		$common.touchSE($('span', '#footerAction'), function(event, startTouch, o) {
-			
+
 		}, function(event, o) {
 			var dir = $(o).attr('dir');
 			if (dir) {

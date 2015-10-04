@@ -6,10 +6,13 @@ define(function(require, exports, module) {
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
 	var $templete = require('core/templete');
+	var nextIndex = 0;
 	var currentWindow;
 	var queryMap = parseURL();
 	var userId = queryMap.get('userId');
 	onRefresh = function() {
+		nextIndex = 0;
+		$('.cardBox').attr('nextIndex', 0);
 		window.setTimeout(function() {
 			loadData(function() {
 				currentWindow.endPullToRefresh();
@@ -81,8 +84,23 @@ define(function(require, exports, module) {
 				}
 			}
 		});
+		document.addEventListener("plusscrollbottom", function() {
+			var next = $('.cardBox').attr('nextIndex');
+			if (next) {
+				if (next > 0) {
+					nextIndex = next;
+					$nativeUIManager.watting('正在加载更多...');
+					$('.cardBox').attr('nextIndex', 0);
+					window.setTimeout(function() {
+						loadData(function() {
+							$nativeUIManager.wattingClose();
+						}, true);
+					}, 500);
+				}
+			}
+		});
 	};
-	loadData = function(callback) {
+	loadData = function(callback,append) {
 		if (!callback) {
 			$nativeUIManager.watting('正在加载...');
 		}
@@ -91,15 +109,15 @@ define(function(require, exports, module) {
 			url: $common.getRestApiURL() + '/product/info/favoritesListData',
 			dataType: 'json',
 			data: {
-				userId: userId
+				userId: userId,
+				start: nextIndex > 0 ? nextIndex : ''
 			},
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
 						var productArray = jsonData['productArray'];
+						var sb = new StringBuilder();
 						if (productArray && $(productArray).size() > 0) {
-							$('#blank').hide();
-							var sb = new StringBuilder();
 							$(productArray).each(function(i, o) {
 								var relationYn = o['relationYn'];
 								var typeId = o['typeId'];
@@ -144,9 +162,22 @@ define(function(require, exports, module) {
 									}
 								}
 							});
-							$('.cardBox').empty().append(sb.toString());
 						} else {
+							$('.cardBox').empty();
 							$('#blank').show();
+						}
+						if (append) {
+							$('.cardBox').append(sb.toString());
+						} else {
+							$('.cardBox').empty().append(sb.toString());
+						}
+						nextIndex = 0;
+						$('.cardBox').attr('nextIndex', 0);
+						var page = jsonData['page'];
+						if (page) {
+							if (page['hasNextPage'] == true) {
+								$('.cardBox').attr('nextIndex', page['nextIndex']);
+							}
 						}
 						pullToRefreshEvent();
 						bindEvent();

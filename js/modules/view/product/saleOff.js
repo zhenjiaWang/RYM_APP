@@ -6,11 +6,14 @@ define(function(require, exports, module) {
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
 	var $templete = require('core/templete');
+	var nextIndex = 0;
 	var currentWindow;
 	var queryMap = parseURL();
 	var userId = queryMap.get('userId');
 	onRefresh = function() {
 		window.setTimeout(function() {
+			nextIndex = 0;
+			$('.cardBox').attr('nextIndex', 0);
 			loadData(function() {
 				currentWindow.endPullToRefresh();
 			});
@@ -75,14 +78,29 @@ define(function(require, exports, module) {
 			if (card) {
 				var productId = $(card).attr('productId');
 				if (productId) {
-					$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + productId+'&userId='+userId, false, true, function(show) {
+					$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + productId + '&userId=' + userId, false, true, function(show) {
 						show();
 					});
 				}
 			}
 		});
+		document.addEventListener("plusscrollbottom", function() {
+			var next = $('.cardBox').attr('nextIndex');
+			if (next) {
+				if (next > 0) {
+					nextIndex = next;
+					$nativeUIManager.watting('正在加载更多...');
+					$('.cardBox').attr('nextIndex', 0);
+					window.setTimeout(function() {
+						loadData(function() {
+							$nativeUIManager.wattingClose();
+						}, true);
+					}, 500);
+				}
+			}
+		});
 	};
-	loadData = function(callback) {
+	loadData = function(callback,append) {
 		if (!callback) {
 			$nativeUIManager.watting('正在加载...');
 		}
@@ -91,15 +109,15 @@ define(function(require, exports, module) {
 			url: $common.getRestApiURL() + '/product/info/saleOffListData',
 			dataType: 'json',
 			data: {
-				userId: userId
+				userId: userId,
+				start: nextIndex > 0 ? nextIndex : ''
 			},
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
 						var productArray = jsonData['productArray'];
+						var sb = new StringBuilder();
 						if (productArray && $(productArray).size() > 0) {
-							$('#blank').hide();
-							var sb = new StringBuilder();
 							$(productArray).each(function(i, o) {
 								var relationYn = o['relationYn'];
 								var typeId = o['typeId'];
@@ -114,8 +132,8 @@ define(function(require, exports, module) {
 											sb.append(String.formatmodel($templete.fundItem(relationYn), {
 												productId: o['productId'],
 												userId: o['userId'],
-												viewCount:o['viewCount'],
-												relationCount:o['relationCount'],
+												viewCount: o['viewCount'],
+												relationCount: o['relationCount'],
 												typeId: typeId,
 												uid: uid,
 												typeName: o['typeName'],
@@ -130,8 +148,8 @@ define(function(require, exports, module) {
 											sb.append(String.formatmodel($templete.trustItem(relationYn), {
 												productId: o['productId'],
 												userId: o['userId'],
-												viewCount:o['viewCount'],
-												relationCount:o['relationCount'],
+												viewCount: o['viewCount'],
+												relationCount: o['relationCount'],
 												typeId: typeId,
 												uid: uid,
 												typeName: o['typeName'],
@@ -144,9 +162,22 @@ define(function(require, exports, module) {
 									}
 								}
 							});
-							$('.cardBox').empty().append(sb.toString());
 						} else {
+							$('.cardBox').empty();
 							$('#blank').show();
+						}
+						if (append) {
+							$('.cardBox').append(sb.toString());
+						} else {
+							$('.cardBox').empty().append(sb.toString());
+						}
+						nextIndex = 0;
+						$('.cardBox').attr('nextIndex', 0);
+						var page = jsonData['page'];
+						if (page) {
+							if (page['hasNextPage'] == true) {
+								$('.cardBox').attr('nextIndex', page['nextIndex']);
+							}
 						}
 						pullToRefreshEvent();
 						bindEvent();

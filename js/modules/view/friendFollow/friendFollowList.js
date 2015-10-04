@@ -7,6 +7,8 @@ define(function(require, exports, module) {
 	var $controlWindow = require('manager/controlWindow');
 	var $keyManager = require('manager/key');
 	var $templete = require('core/templete');
+	var queryMap = parseURL();
+	var userId = queryMap.get('userId');
 	var nextIndex = 0;
 	var currentWindow;
 	onRefresh = function() {
@@ -35,14 +37,6 @@ define(function(require, exports, module) {
 			}
 		}, onRefresh);
 	};
-	showAddTools = function() {
-		$('.footerMask').css('bottom', '0px');
-		$('#bottomPop').addClass('current');
-	};
-	hideAddTools = function() {
-		$('.footerMask').css('bottom', '-99px');
-		$('#bottomPop').removeClass('current');
-	};
 	bindEvent = function() {
 		$('#keyword').off('keydown').on('keydown', function(e) {
 			e = (e) ? e : ((window.event) ? window.event : "")
@@ -54,54 +48,41 @@ define(function(require, exports, module) {
 				$('#keyword').trigger('blur');
 			}
 		});
-		$common.touchSE($('.personBoard', '#friendUL'), function(event, startTouch, o) {}, function(event, o) {
-			var userId = $(o).attr('uid');
-			if (userId) {
-				$windowManager.create('product_header_pop', '../product/headerPop.html?userId='+userId, false, true, function(show) {
-					show();
+		$common.touchSE($('.rightBtnAdd'), function(event, startTouch, o) {}, function(event, o) {
+			var section = $(o).closest('section');
+			var friendId = $(section).attr('userId');
+			if (friendId) {
+				$nativeUIManager.watting('请稍等...');
+				$common.refreshToken(function(tokenId) {
+					$.ajax({
+						type: 'POST',
+						url: $common.getRestApiURL() + '/social/friendPlanner/addFriend',
+						dataType: 'json',
+						data: {
+							'org.guiceside.web.jsp.taglib.Token': tokenId,
+							friendId: friendId
+						},
+						success: function(jsonData) {
+							if (jsonData) {
+								if (jsonData['result'] == '0') {
+									$nativeUIManager.wattingTitle('关注成功!');
+									$('.icon-new',section).remove();
+									$(o).text('共同好友').removeClass('rightBtnAdd').off('touchstart').off('touchend');
+									window.setTimeout(function() {
+										$nativeUIManager.wattingClose();
+									}, 1000);
+								} else {
+									$nativeUIManager.wattingClose();
+									$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+								}
+							}
+						},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+							$nativeUIManager.wattingClose();
+							$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+						}
+					});
 				});
-			}
-		});
-		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('product_add', '../product/add.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
-		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
-		$common.touchSE($('.checkWord'), function(event, startTouch, o) {}, function(event, o) {
-			if (!$('.wordList').hasClass('current')) {
-				$('.wordList').addClass('current');
-			} else {
-				$('.wordList').removeClass('current');
-			}
-		});
-		$common.touchSE($('td', '.wordList'), function(event, startTouch, o) {}, function(event, o) {
-			if (!$('span', o).hasClass('current')) {
-				$('td', '.wordList').find('span').removeClass('current');
-				$('span', o).addClass('current');
-				var dir = $(o).attr('dir');
-				if (dir) {
-					loadData();
-					$('.wordList').removeClass('current');
-					$('.checkWord').text('dir');
-				}
-			} else {
-				$('span', o).removeClass('current');
-				$('.wordList').removeClass('current');
-				$('.checkWord').text('筛选');
-				loadData();
 			}
 		});
 		document.addEventListener("plusscrollbottom", function() {
@@ -126,47 +107,26 @@ define(function(require, exports, module) {
 		}
 		$.ajax({
 			type: 'POST',
-			url: $common.getRestApiURL() + '/social/friendPlanner',
+			url: $common.getRestApiURL() + '/social/friendPlanner/friendList',
 			dataType: 'json',
 			data: {
+				userId: userId,
 				start: nextIndex > 0 ? nextIndex : '',
-				keyword: $('#keyword').val(),
-				userFirst: $('span.current', '.wordList').closest('td').attr('dir')
+				keyword: $('#keyword').val()
 			},
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
-						$('td', '.wordList').addClass('noData');
-						$('td', '.wordList').each(function() {
-							$(this).attr('dir', $('span', this).text());
-						});
-						var firstArray = jsonData['firstArray'];
-						if (firstArray && $(firstArray).size() > 0) {
-							$(firstArray).each(function(i, jp) {
-								$('td[dir="' + jp + '"]', '.wordList').removeClass('noData');
-							});
-						}
-						var friendPlannerArray = jsonData['friendPlannerArray'];
+						var friendArray = jsonData['friendArray'];
 						var sb = new StringBuilder();
-						if (friendPlannerArray && $(friendPlannerArray).size() > 0) {
+						if (friendArray && $(friendArray).size() > 0) {
 							$('.checkWord').show();
-							$(friendPlannerArray).each(function(i, o) {
-								var textClass = '';
-								if (o['state'] == '1') {
-									textClass = 'icon-8';
-								} else if (o['state'] == '2') {
-									textClass = 'icon-7';
-								}
-								sb.append(String.formatmodel($templete.friendPlannerItem(), {
+							$(friendArray).each(function(i, o) {
+								sb.append(String.formatmodel($templete.friendFollowPlannerItem(o['state'] == '-1'), {
 									userId: o['userId'],
 									userName: o['userName'],
 									headImgUrl: o['headImgUrl'],
-									orgName: o['orgName'],
-									text: o['text'],
-									follow: o['follow'],
-									friends: o['friends'],
-									signature: o['signature'],
-									textClass: textClass
+									saleCount: o['saleCount']
 								}));
 							});
 						} else {

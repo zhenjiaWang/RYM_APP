@@ -11,6 +11,7 @@ define(function(require, exports, module) {
 		"_idCard": /^(\d{18,18}|\d{15,15}|\d{17,17}x)$/,
 		"_currency": /^\d+(\.\d+)?$/,
 		"_number": /^\d+$/,
+		"_number1": /^[1-9]\d*([.][1-9]{1})?$/,
 		"_zip": /^[1-9]\d{5}$/,
 		"_qq": /^[1-9]\d{4,8}$/,
 		"_integer": /^[-\+]?\d+$/,

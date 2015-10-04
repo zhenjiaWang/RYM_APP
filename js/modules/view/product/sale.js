@@ -11,7 +11,32 @@ define(function(require, exports, module) {
 	var currentWindow;
 	var queryMap = parseURL();
 	var userId = queryMap.get('userId');
-	clear=function(){
+	reloadMyInfo = function() {
+		$.ajax({
+			type: 'POST',
+			url: $common.getRestApiURL() + '/sys/planner',
+			dataType: 'json',
+			data: {
+				userId: userId
+			},
+			success: function(jsonData) {
+				if (jsonData) {
+					if (jsonData['result'] == '0') {
+						$('#userName').text(jsonData['userName']);
+						$('#plannerNo').text(jsonData['plannerNo']);
+						$('#orgName').text(jsonData['orgName']);
+						$('#signature').text(jsonData['signature']);
+						var headImgUrl = jsonData['headImgUrl'];
+						if (headImgUrl) {
+							$('img', '.userPhoto').attr('src', headImgUrl);
+						}
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {}
+		});
+	};
+	clear = function() {
 		$('.main').hide();
 		$('.cardBox').empty();
 	};
@@ -102,6 +127,20 @@ define(function(require, exports, module) {
 		$('#bottomPop').removeClass('current');
 	};
 	bindEvent = function() {
+		$common.touchSE($('#myFollowDIV'), function(event, startTouch, o) {}, function(event, o) {
+			var followCount = $('#follow').text();
+			if (followCount) {
+				followCount = parseInt(followCount);
+				if (followCount > 0) {
+					if (userId != $userInfo.get('userId')) {
+						var userName = $('#userName').text();
+						$windowManager.create('friendFollow_header', '../friendFollow/header.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
+							show();
+						});
+					}
+				}
+			}
+		});
 		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.create('product_add', 'add.html', false, true, function(show) {
 				show();
@@ -127,7 +166,7 @@ define(function(require, exports, module) {
 			if (card) {
 				var productId = $(card).attr('productId');
 				if (productId) {
-					$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + productId+'&userId='+userId, false, true, function(show) {
+					$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + productId + '&userId=' + userId, false, true, function(show) {
 						show();
 					});
 				}
@@ -239,9 +278,8 @@ define(function(require, exports, module) {
 								$('img', '.userPhoto').attr('src', headImgUrl);
 							}
 							var productArray = jsonData['productArray'];
+							var sb = new StringBuilder();
 							if (productArray && $(productArray).size() > 0) {
-								$('#blank').hide();
-								var sb = new StringBuilder();
 								$(productArray).each(function(i, o) {
 									var typeId = o['typeId'];
 									var relationYn = o['relationYn'];
@@ -253,7 +291,7 @@ define(function(require, exports, module) {
 										} else if (typeId == 2) {
 											var fundObj = o['fund'];
 											if (fundObj) {
-												sb.append(String.formatmodel($templete.fundItem(relationYn,endFlag), {
+												sb.append(String.formatmodel($templete.fundItem(relationYn, endFlag), {
 													productId: o['productId'],
 													userId: o['userId'],
 													relationUserName: o['relationUserName'],
@@ -270,7 +308,7 @@ define(function(require, exports, module) {
 										} else if (typeId == 3) {
 											var trustObj = o['trust'];
 											if (trustObj) {
-												sb.append(String.formatmodel($templete.trustItem(relationYn,endFlag), {
+												sb.append(String.formatmodel($templete.trustItem(relationYn, endFlag), {
 													productId: o['productId'],
 													userId: o['userId'],
 													relationUserName: o['relationUserName'],

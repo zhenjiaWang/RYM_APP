@@ -374,6 +374,10 @@ define(function(require, exports, module) {
 				type: 'number',
 				exp: '==',
 				msg: '起购金额格式不正确'
+			}, {
+				type: 'reg',
+				exp: '_number1',
+				msg: '正整数或者保留一位小数'
 			}]
 		}, {
 			id: 'startDate',
