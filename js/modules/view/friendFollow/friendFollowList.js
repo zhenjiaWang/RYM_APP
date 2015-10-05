@@ -43,9 +43,22 @@ define(function(require, exports, module) {
 			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
 			if (keyCode == 13) {
 				var value = $(this).val();
-				loadData();
-				$('.checkWord').text('筛选');
+				if (value == '') {
+					loadData();
+				}
 				$('#keyword').trigger('blur');
+			}
+		});
+		$('#keyword').off('blur').on('blur', function(e) {
+			var value = $(this).val();
+			if (value == '') {
+				loadData();
+			}
+		});
+		$('#keyword').off('keyup').on('keyup', function(e) {
+			var value = $(this).val();
+			if (value && value != '') {
+				loadData();
 			}
 		});
 		$common.touchSE($('.rightBtnAdd'), function(event, startTouch, o) {}, function(event, o) {
@@ -66,7 +79,7 @@ define(function(require, exports, module) {
 							if (jsonData) {
 								if (jsonData['result'] == '0') {
 									$nativeUIManager.wattingTitle('关注成功!');
-									$('.icon-new',section).remove();
+									$('.icon-new', section).remove();
 									$(o).text('共同好友').removeClass('rightBtnAdd').off('touchstart').off('touchend');
 									window.setTimeout(function() {
 										$nativeUIManager.wattingClose();
@@ -102,6 +115,7 @@ define(function(require, exports, module) {
 		});
 	};
 	loadData = function(callback, append) {
+		$('.checkWord').hide();
 		if (!callback) {
 			$nativeUIManager.watting('正在加载...');
 		}
@@ -120,6 +134,7 @@ define(function(require, exports, module) {
 						var friendArray = jsonData['friendArray'];
 						var sb = new StringBuilder();
 						if (friendArray && $(friendArray).size() > 0) {
+							$('#blank').hide();
 							$('.checkWord').show();
 							$(friendArray).each(function(i, o) {
 								sb.append(String.formatmodel($templete.friendFollowPlannerItem(o['state'] == '-1'), {

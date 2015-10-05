@@ -65,6 +65,7 @@ define(function(require, exports, module) {
 					if (jsonData['result'] == '0') {
 						var friendFollowArray = jsonData['friendFollowArray'];
 						if (friendFollowArray && $(friendFollowArray).size() > 0) {
+							$('#blank').hide();
 							var sb = new StringBuilder();
 							$(friendFollowArray).each(function(i, o) {
 								sb.append(String.formatmodel($templete.contactPlannerItem(true), {

@@ -8,9 +8,8 @@ define(function(require, exports, module) {
 	var $productCommon = require('view/product/productCommon');
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
-	var userId=queryMap.get('userId');
 	loadWebview = function(url) {
-		var productCommentWin = plus.webview.create('comment.html?id=' + id+'&userId='+userId, "product_comment", {
+		var productCommentWin = plus.webview.create('comment.html?id=' + id, "product_comment", {
 			top: "50px",
 			bottom: "0px",
 			scrollIndicator: 'vertical'

@@ -3,14 +3,17 @@ define(function(require, exports, module) {
 	var $userInfo = require('core/userInfo');
 	var $webSQLManager = require('manager/webSQL');
 	var $nativeUIManager = require('manager/nativeUI');
-	loadContacts = function(callback, i, c) {
+	loadContacts = function(callback, i, c,totalCount,start) {
 		if (i == c) {
+			if(!start){
+				start=0;
+			}
 			$webSQLManager.query('SELECT  DISTINCT(JP)  FROM  PHONE_CONTACTS', [], function(keyWordResult) {
 				if (keyWordResult) {
-					$webSQLManager.query('SELECT  ID, NAME,PHOTO,MOBILE_PHONE,QP,JP  FROM  PHONE_CONTACTS ORDER BY QP limit 0,50', [], function(dbResult) {
+					$webSQLManager.query('SELECT  ID, NAME,PHOTO,MOBILE_PHONE,QP,JP  FROM  PHONE_CONTACTS ORDER BY QP limit ?,20', [start], function(dbResult) {
 						if (dbResult) {
 							if (typeof callback == 'function') {
-								callback(dbResult, keyWordResult);
+								callback(dbResult, keyWordResult,totalCount);
 							}
 						}
 					}, function(msg) {
@@ -128,7 +131,7 @@ define(function(require, exports, module) {
 										id, name, photo, mobilePhone, QP, JP
 									], function() {
 										_index += 1;
-										loadContacts(callback, _index, contactsSize);
+										loadContacts(callback, _index, contactsSize,contactsSize);
 									}, function(msg) {
 										alert(msg)
 									});
@@ -164,7 +167,7 @@ define(function(require, exports, module) {
 			});
 		}
 	};
-	exports.getContactsList = function(callback, errorback) {
+	exports.getContactsList = function(callback, errorback,start) {
 		$webSQLManager.connect();
 		if ($webSQLManager.isSupport()) {
 			$webSQLManager.createTable('create table if not exists PHONE_CONTACTS (id TEXT, NAME TEXT,PHOTO TEXT,MOBILE_PHONE TEXT, QP TEXT,JP TEXT)', function() {
@@ -182,7 +185,7 @@ define(function(require, exports, module) {
 										if($(contacts).size()!=count){
 											exports.refreshContacts(callback, errorback);
 										}else{
-											loadContacts(callback, 1, 1);
+											loadContacts(callback, 1, 1,count,start);
 										}
 									}
 								},function(){});

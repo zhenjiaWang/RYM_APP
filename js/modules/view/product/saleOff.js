@@ -76,9 +76,9 @@ define(function(require, exports, module) {
 			event.stopPropagation();
 			var card = $(o).closest('.oneCard');
 			if (card) {
-				var productId = $(card).attr('productId');
-				if (productId) {
-					$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + productId + '&userId=' + userId, false, true, function(show) {
+				var uid = $(card).attr('uid');
+				if (uid) {
+					$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + uid, false, true, function(show) {
 						show();
 					});
 				}
@@ -118,6 +118,7 @@ define(function(require, exports, module) {
 						var productArray = jsonData['productArray'];
 						var sb = new StringBuilder();
 						if (productArray && $(productArray).size() > 0) {
+							$('#blank').hide();
 							$(productArray).each(function(i, o) {
 								var relationYn = o['relationYn'];
 								var typeId = o['typeId'];

@@ -14,8 +14,22 @@ define(function(require, exports, module) {
 			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
 			if (keyCode == 13) {
 				var value = $(this).val();
-				loadData();
+				if (value == '') {
+					loadData();
+				}
 				$('#keyword').trigger('blur');
+			}
+		});
+		$('#keyword').off('blur').on('blur', function(e) {
+			var value = $(this).val();
+			if (value == '') {
+				loadData();
+			}
+		});
+		$('#keyword').off('keyup').on('keyup', function(e) {
+			var value = $(this).val();
+			if (value && value != '') {
+				loadData();
 			}
 		});
 		$common.touchSE($('li', '#selectItemUL'), function(event, startTouch, o) {}, function(event, o) {

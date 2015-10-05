@@ -7,9 +7,11 @@ define(function(require, exports, module) {
 	var $controlWindow = require('manager/controlWindow');
 	var $templete = require('core/templete');
 	var $dbData = require('manager/dbData');
+	var $page = require('manager/page');
 	var staticKeyWordResult = false;
 	var currentWindow;
-	buildContact = function(dbResult, keyWordResult) {
+	var nextIndex = 0;
+	buildContact = function(dbResult, keyWordResult, append, callback) {
 		if (dbResult && keyWordResult) {
 			staticKeyWordResult = keyWordResult;
 			var sb = new StringBuilder();
@@ -38,7 +40,6 @@ define(function(require, exports, module) {
 							mobilePhones += row['MOBILE_PHONE'] + ',';
 						}
 					}
-					$nativeUIManager.wattingTitle('正在匹配...');
 					$.ajax({
 						type: 'POST',
 						url: $common.getRestApiURL() + '/social/friendPlanner/getRegPlanner',
@@ -54,7 +55,6 @@ define(function(require, exports, module) {
 										if (row) {
 											var contact = jsonData[row['MOBILE_PHONE']];
 											if (contact) {
-												console.info(row['QP'])
 												var planner = contact['planner'];
 												var text = contact['text'];
 												var addFlag = contact['addFlag'];
@@ -67,36 +67,66 @@ define(function(require, exports, module) {
 														text: text
 													}));
 												}
-
 											}
 										}
 									}
-									$('#phoneListUL').empty().append(sb.toString());
+									if (append) {
+										$('#phoneListUL').append(sb.toString());
+									} else {
+										$('#phoneListUL').empty().append(sb.toString());
+									}
+									nextIndex = 0;
+									$('#phoneListUL').attr('nextIndex', 0);
 									bindEvent();
+									pullToRefreshEvent();
 									$nativeUIManager.wattingClose();
+									if (typeof callback == 'function') {
+										callback();
+									}
 								} else {
 									$nativeUIManager.wattingClose();
+									if (typeof callback == 'function') {
+										callback();
+									}
 								}
 							}
 						},
 						error: function(XMLHttpRequest, textStatus, errorThrown) {
 							$nativeUIManager.wattingClose();
+							if (typeof callback == 'function') {
+								callback();
+							}
 						}
 					});
 				} else {
-					$('#phoneListUL').empty();
+					$('#phoneListUL').empty().attr('nextIndex', 0);
 					$nativeUIManager.wattingClose();
+					if (typeof callback == 'function') {
+						callback();
+					}
 				}
 			} else {
 				$nativeUIManager.wattingClose();
+				if (typeof callback == 'function') {
+					callback();
+				}
 			}
 		}
 	};
 	onRefresh = function() {
 		window.setTimeout(function() {
-			$dbData.refreshContacts(function(dbResult, keyWordResult) {
-				buildContact(dbResult, keyWordResult);
-				currentWindow.endPullToRefresh();
+			$dbData.refreshContacts(function(dbResult, keyWordResult, totalCount) {
+				buildContact(dbResult, keyWordResult, false, function() {
+					if (totalCount && totalCount > 0) {
+						var page = $page.createPage(20, 1, totalCount);
+						if (page) {
+							if (page['hasNextPage'] == true) {
+								$('#phoneListUL').attr('nextIndex', page['nextIndex']);
+							}
+						}
+					}
+					currentWindow.endPullToRefresh();
+				});
 			}, function() {
 				currentWindow.endPullToRefresh();
 			});
@@ -204,7 +234,7 @@ define(function(require, exports, module) {
 				if (dir) {
 					$nativeUIManager.watting('正在加载...');
 					$dbData.searchContactsByJP(dir, function(dbResult) {
-						buildContact(dbResult, staticKeyWordResult);
+						buildContact(dbResult, staticKeyWordResult, false, false);
 						$('.checkWord').text(dir);
 					});
 					$('.wordList').removeClass('current');
@@ -214,22 +244,58 @@ define(function(require, exports, module) {
 				$('.wordList').removeClass('current');
 				$nativeUIManager.watting('正在加载...');
 				$dbData.getContactsList(function(dbResult, keyWordResult) {
-					buildContact(dbResult, keyWordResult);
+					buildContact(dbResult, keyWordResult, false, false);
 					$('.checkWord').text('筛选');
 				}, function() {
 					$nativeUIManager.wattingClose();
 				});
 			}
 		});
+		document.addEventListener("plusscrollbottom", function() {
+			var next = $('#phoneListUL').attr('nextIndex');
+			if (next) {
+				if (next > 0) {
+					$nativeUIManager.watting('正在加载更多...');
+					$('#phoneListUL').attr('nextIndex', 0);
+					window.setTimeout(function() {
+						$dbData.getContactsList(function(dbResult, keyWordResult, totalCount) {
+							buildContact(dbResult, keyWordResult, true, function() {
+								if (totalCount && totalCount > 0) {
+									var currentPage = $page.getCurrentPage(20, next);
+									if (currentPage) {
+										var page = $page.createPage(20, currentPage, totalCount);
+										if (page) {
+											if (page['hasNextPage'] == true) {
+												$('#phoneListUL').attr('nextIndex', page['nextIndex']);
+											}
+										}
+									}
+								}
+							});
+						}, function() {
+							$nativeUIManager.wattingClose();
+						},next);
+					}, 500);
+				}
+			}
+		});
 	};
 	loadData = function() {
 		$nativeUIManager.watting('正在加载...');
-		$dbData.getContactsList(function(dbResult, keyWordResult) {
-			buildContact(dbResult, keyWordResult);
+		$dbData.getContactsList(function(dbResult, keyWordResult, totalCount) {
+			buildContact(dbResult, keyWordResult, false, function() {
+				if (totalCount && totalCount > 0) {
+					var page = $page.createPage(20, 1, totalCount);
+					if (page) {
+						if (page['hasNextPage'] == true) {
+							$('#phoneListUL').attr('nextIndex', page['nextIndex']);
+						}
+					}
+				}
+			});
 		}, function() {
 			$nativeUIManager.wattingClose();
 		});
-		pullToRefreshEvent();
 	};
 	plusReady = function() {
 		$common.switchOS(function() {

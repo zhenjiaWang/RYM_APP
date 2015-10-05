@@ -98,7 +98,7 @@ define(function(require, exports, module) {
 	};
 	exports.commentItem = function(replyFlag) {
 		var commentItem = new StringBuilder();
-		commentItem.append('<li class="clearfix" userId="{userId}" userName="{userName}">\n');
+		commentItem.append('<li class="clearfix" userId="{userId}" userName="{userName}" uid="{uid}">\n');
 		commentItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		commentItem.append('<div class="marl60 marr10">\n');
 		commentItem.append('<p class="font12 alignright clearfix">\n');

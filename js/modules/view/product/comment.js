@@ -7,16 +7,16 @@ define(function(require, exports, module) {
 	var $templete = require('core/templete');
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
-	var userId=queryMap.get('userId');
 	var nextIndex = 0;
 	var currentWindow;
+	var productUserId = false;
 	reset = function() {
 		var commentFooterWin = $windowManager.getById('product_commentFooter');
 		if (commentFooterWin) {
 			commentFooterWin.evalJS('reset()');
 		}
 	};
-	sendComment = function(content, replyUserId, uid,callback) {
+	sendComment = function(content, replyUserId, callback) {
 		$nativeUIManager.watting('请稍等...');
 		$common.refreshToken(function(tokenId) {
 			$.ajax({
@@ -25,7 +25,6 @@ define(function(require, exports, module) {
 				dataType: 'json',
 				data: {
 					id: id,
-					userId:uid,
 					content: content,
 					replyUserId: replyUserId,
 					'org.guiceside.web.jsp.taglib.Token': tokenId
@@ -53,10 +52,10 @@ define(function(require, exports, module) {
 									if (typeof callback == 'function') {
 										callback();
 									}
-									var commentCount=$('em','#commentCount').text();
-									if(commentCount){
-										commentCount=parseInt(commentCount);
-										$('em','#commentCount').text(commentCount+1);
+									var commentCount = $('em', '#commentCount').text();
+									if (commentCount) {
+										commentCount = parseInt(commentCount);
+										$('em', '#commentCount').text(commentCount + 1);
 									}
 									$nativeUIManager.wattingClose();
 								}, 1000);
@@ -73,7 +72,7 @@ define(function(require, exports, module) {
 				}
 			});
 		});
-	}
+	};
 	onRefresh = function() {
 		nextIndex = 0;
 		$('#commentUL').attr('nextIndex', 0);
@@ -100,61 +99,167 @@ define(function(require, exports, module) {
 			}
 		}, onRefresh);
 	};
+	deleteComment = function(uid) {
+		$nativeUIManager.watting('请稍等...');
+		$common.refreshToken(function(tokenId) {
+			$.ajax({
+				type: 'POST',
+				url: $common.getRestApiURL() + '/product/info/deleteComment',
+				dataType: 'json',
+				data: {
+					id: uid,
+					'org.guiceside.web.jsp.taglib.Token': tokenId
+				},
+				success: function(jsonData) {
+					if (jsonData) {
+						if (jsonData['result'] == '0') {
+							$nativeUIManager.wattingTitle('删除 成功!');
+							$('li[uid="' + uid + '"]', '#commentUL').remove();
+							window.setTimeout(function() {
+								var commentCount = $('em', '#commentCount').text();
+								if (commentCount) {
+									commentCount = parseInt(commentCount);
+									$('em', '#commentCount').text(commentCount - 1);
+								}
+								$nativeUIManager.wattingClose();
+							}, 1000);
+						} else {
+							$nativeUIManager.wattingClose();
+							$nativeUIManager.alert('提示', '删除评论失败', 'OK', function() {});
+						}
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					$nativeUIManager.wattingClose();
+					$nativeUIManager.alert('提示', '删除评论失败', 'OK', function() {});
+				}
+			});
+		});
+	};
 	bindEvent = function() {
 		$common.touchSE($('li', '#commentUL'), function(event, startTouch, o) {}, function(event, o) {
 			var userName = $(o).attr('userName');
 			var userId = $(o).attr('userId');
-			if (userId && userName) {
-				var commentFooterWin = $windowManager.getById('product_commentFooter');
-				if (commentFooterWin) {
-					commentFooterWin.evalJS('reply("' + userId + '","' + userName + '")');
+			var uid = $(o).attr('uid');
+			if (userId && userName && uid) {
+				if (productUserId && productUserId == $userInfo.get('userId')) {
+					$nativeUIManager.confactionSheetirm('请选择操作', '取消', [{
+							title: '回复'
+						}, {
+							title: '删除评论'
+						}],
+						function(index) {
+							if (index > 0) {
+								if (index == 1) {
+									var commentFooterWin = $windowManager.getById('product_commentFooter');
+									if (commentFooterWin) {
+										commentFooterWin.evalJS('reply("' + userId + '","' + userName + '")');
+									}
+								} else if (index == 2) {
+									$nativeUIManager.confirm('提示', '你确定要删除该条评论?', ['确定', '取消'], function() {
+										deleteComment(uid);
+									}, function() {});
+								}
+							}
+						});
+				} else {
+					if (userId == $userInfo.get('userId')) {
+						$nativeUIManager.confactionSheetirm('请选择操作', '取消', [{
+								title: '回复'
+							}, {
+								title: '删除评论'
+							}],
+							function(index) {
+								if (index > 0) {
+									if (index == 1) {
+										var commentFooterWin = $windowManager.getById('product_commentFooter');
+										if (commentFooterWin) {
+											commentFooterWin.evalJS('reply("' + userId + '","' + userName + '")');
+										}
+									} else if (index == 2) {
+										$nativeUIManager.confirm('提示', '你确定要删除该条评论?', ['确定', '取消'], function() {
+											deleteComment(uid);
+										}, function() {});
+									}
+								}
+							});
+					} else {
+						var commentFooterWin = $windowManager.getById('product_commentFooter');
+						if (commentFooterWin) {
+							commentFooterWin.evalJS('reply("' + userId + '","' + userName + '")');
+						}
+					}
 				}
 			}
 		});
 
 		$common.touchSE($('#likeAction'), function(event, startTouch, o) {}, function(event, o) {
 			$nativeUIManager.watting('请稍等...');
-			$(o).hide();
-			$common.refreshToken(function(tokenId) {
-				$.ajax({
-					type: 'POST',
-					url: $common.getRestApiURL() + '/product/info/addLike',
-					dataType: 'json',
-					data: {
-						id: id,
-						userId:userId,
-						'org.guiceside.web.jsp.taglib.Token': tokenId
-					},
-					success: function(jsonData) {
-						if (jsonData) {
-							if (jsonData['result'] == '0') {
-								var currentLikeCount = $('#likeSpan').find('em').text();
-								if (currentLikeCount) {
-									currentLikeCount = parseInt(currentLikeCount);
-									currentLikeCount += 1;
-									$('#likeSpan').addClass('current');
-									$('#likeSpan').find('em').text(currentLikeCount);
-									$(o).remove();
-									$nativeUIManager.wattingTitle('谢谢亲给的赞!');
-									window.setTimeout(function(){
-										$nativeUIManager.wattingClose();
-									},1000);
+			var action = $(o).attr('action');
+			if (action) {
+				$common.refreshToken(function(tokenId) {
+					$.ajax({
+						type: 'POST',
+						url: $common.getRestApiURL() + '/product/info/' + action,
+						dataType: 'json',
+						data: {
+							id: id,
+							'org.guiceside.web.jsp.taglib.Token': tokenId
+						},
+						success: function(jsonData) {
+							if (jsonData) {
+								if (jsonData['result'] == '0') {
+									if (action == 'addLike') {
+										var currentLikeCount = $('#likeSpan').find('em').text();
+										if (currentLikeCount) {
+											currentLikeCount = parseInt(currentLikeCount);
+											currentLikeCount += 1;
+											$('#likeSpan').addClass('current');
+											$('#likeSpan').find('em').text(currentLikeCount);
+											$(o).text('取消赞').attr('action', 'cancelLike');
+											$nativeUIManager.wattingTitle('谢谢亲给的赞!');
+											window.setTimeout(function() {
+												$nativeUIManager.wattingClose();
+											}, 1000);
+										}
+									} else if (action == 'cancelLike') {
+										var currentLikeCount = $('#likeSpan').find('em').text();
+										if (currentLikeCount) {
+											currentLikeCount = parseInt(currentLikeCount);
+											currentLikeCount -= 1;
+											if (currentLikeCount > 0) {
+												$('#likeSpan').addClass('current');
+											} else {
+												$('#likeSpan').removeClass('current');
+											}
+											$('#likeSpan').find('em').text(currentLikeCount);
+											$(o).text('赞一下').attr('action', 'addLike');
+											$nativeUIManager.wattingTitle('希望再得到亲的赞!');
+											window.setTimeout(function() {
+												$nativeUIManager.wattingClose();
+											}, 1000);
+										}
+									}
+								} else if (jsonData['result'] == '1') {
+									$nativeUIManager.wattingClose();
+									if (action == 'addLike') {
+										$nativeUIManager.alert('提示', '请不要重复点赞!', 'OK', function() {});
+									} else if (action == 'cancelLike') {
+										$nativeUIManager.alert('提示', '请不要重复取消赞!', 'OK', function() {});
+									}
+								} else {
+									$nativeUIManager.wattingClose();
+									$nativeUIManager.alert('提示', '操作失败', 'OK', function() {});
 								}
-							} else if (jsonData['result'] == '1') {
-								$nativeUIManager.wattingClose();
-								$nativeUIManager.alert('提示', '请不要重复点赞!', 'OK', function() {});
-							} else {
-								$nativeUIManager.wattingClose();
-								$nativeUIManager.alert('提示', '点赞失败咯', 'OK', function() {});
 							}
+						},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+							$nativeUIManager.wattingClose();
+							$nativeUIManager.alert('提示', '操作失败', 'OK', function() {});
 						}
-					},
-					error: function(XMLHttpRequest, textStatus, errorThrown) {
-						$nativeUIManager.wattingClose();
-						$nativeUIManager.alert('提示', '点赞失败咯', 'OK', function() {});
-					}
+					});
 				});
-			});
+			}
 		});
 		document.addEventListener("plusscrollbottom", function() {
 			var next = $('#commentUL').attr('nextIndex');
@@ -181,13 +286,13 @@ define(function(require, exports, module) {
 			url: $common.getRestApiURL() + '/product/info/commentView',
 			dataType: 'json',
 			data: {
-				id: id,
-				userId:userId
+				id: id
 			},
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
 						$nativeUIManager.wattingClose();
+						productUserId = jsonData['productUserId'];
 						var likeCount = jsonData['likeCount'];
 						likeCount = parseInt(likeCount);
 						if (likeCount > 0) {
@@ -196,7 +301,9 @@ define(function(require, exports, module) {
 						}
 						var myLikeCount = jsonData['myLikeCount'];
 						if (myLikeCount == 0) {
-							$('#likeAction').show();
+							$('#likeAction').text('赞一个').attr('action', 'addLike');
+						} else {
+							$('#likeAction').text('取消赞').attr('action', 'cancelLike');
 						}
 						$('.commentTop').show();
 						var commentArray = jsonData['commentArray'];
@@ -204,6 +311,7 @@ define(function(require, exports, module) {
 						if (commentArray && $(commentArray).size() > 0) {
 							$(commentArray).each(function(i, o) {
 								sb.append(String.formatmodel($templete.commentItem(o['replyFlag']), {
+									uid: o['uid'],
 									userId: o['userId'],
 									headImgUrl: o['headImgUrl'],
 									userName: o['userName'],
@@ -226,7 +334,7 @@ define(function(require, exports, module) {
 						$('#commentUL').attr('nextIndex', 0);
 						var page = jsonData['page'];
 						if (page) {
-							$('em','#commentCount').text(page['totalRecord']);
+							$('em', '#commentCount').text(page['totalRecord']);
 							if (page['hasNextPage'] == true) {
 								$('#commentUL').attr('nextIndex', page['nextIndex']);
 							}

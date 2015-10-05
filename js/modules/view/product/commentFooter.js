@@ -8,7 +8,6 @@ define(function(require, exports, module) {
 	var $keyManager = require('manager/key');
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
-	var uid = queryMap.get('userId');
 	reset = function() {
 		$('#content').attr('replyUserId', '').text('');
 		$('#replyTip').text('').hide();
@@ -30,7 +29,7 @@ define(function(require, exports, module) {
 				var replyUserId = $('#content').attr('replyUserId');
 				var commentWindow = $windowManager.getById('product_comment');
 				if (commentWindow) {
-					commentWindow.evalJS('sendComment("' + content + '","' + replyUserId + '","' + uid + '",reset)');
+					commentWindow.evalJS('sendComment("' + content + '","' + replyUserId + '",reset)');
 				}
 			} else {
 				$nativeUIManager.alert('提示', '请先输入评论内容', 'OK', function() {});
@@ -64,7 +63,7 @@ define(function(require, exports, module) {
 		});
 	};
 	loadWebview = function() {
-		var commontFooter = plus.webview.create("commentHeader.html?id=" + id + '&userId=' + uid, "product_commentHeader", {
+		var commontFooter = plus.webview.create("commentHeader.html?id=" + id, "product_commentHeader", {
 			top: "0px",
 			bottom: "50px",
 			scrollIndicator: 'vertical'

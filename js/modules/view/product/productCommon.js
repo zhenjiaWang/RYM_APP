@@ -207,7 +207,7 @@ define(function(require, exports, module) {
 						}, function() {});
 					} else if (jsonData['result'] == '1') {
 						$nativeUIManager.wattingClose();
-						$nativeUIManager.alert('提示', '该产品已经存在于在售列表', 'OK', function() {});
+						$nativeUIManager.alert('提示', '你已有这个产品了', 'OK', function() {});
 					} else {
 						$nativeUIManager.wattingClose();
 						$nativeUIManager.alert('提示', '上架产品失败', 'OK', function() {});
@@ -242,7 +242,7 @@ define(function(require, exports, module) {
 						}, 1500);
 					} else if (jsonData['result'] == '1') {
 						$nativeUIManager.wattingClose();
-						$nativeUIManager.alert('提示', '该产品已经存在于在售列表', 'OK', function() {});
+						$nativeUIManager.alert('提示', '你已有这个产品了', 'OK', function() {});
 					} else {
 						$nativeUIManager.wattingClose();
 						$nativeUIManager.alert('提示', '关联产品失败', 'OK', function() {});
