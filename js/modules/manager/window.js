@@ -121,6 +121,15 @@ define(function(require, exports, module) {
 			plus.webview.close(plus.webview.currentWebview(), _hideType);
 		}
 	};
+	exports.closeById = function(windowId,hideType) {
+		if (window.plus) {
+			var _hideType = 'slide-out-right';
+			if (hideType) {
+				_hideType = hideType;
+			}
+			plus.webview.close(windowId, _hideType);
+		}
+	};
 	exports.all = function() {
 		if (window.plus) {
 			return plus.webview.all();

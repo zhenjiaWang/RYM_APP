@@ -54,6 +54,7 @@ define(function(require, exports, module) {
 										if (row) {
 											var contact = jsonData[row['MOBILE_PHONE']];
 											if (contact) {
+												console.info(row['QP'])
 												var planner = contact['planner'];
 												var text = contact['text'];
 												var addFlag = contact['addFlag'];
@@ -83,8 +84,11 @@ define(function(require, exports, module) {
 						}
 					});
 				} else {
+					$('#phoneListUL').empty();
 					$nativeUIManager.wattingClose();
 				}
+			} else {
+				$nativeUIManager.wattingClose();
 			}
 		}
 	};
@@ -116,6 +120,7 @@ define(function(require, exports, module) {
 		}, onRefresh);
 	};
 	search = function(key) {
+		$('.checkWord').hide();
 		$nativeUIManager.watting('正在搜索...');
 		$dbData.searchContactsByKeyword(key, function(dbResult) {
 			buildContact(dbResult, staticKeyWordResult);
@@ -127,8 +132,22 @@ define(function(require, exports, module) {
 			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
 			if (keyCode == 13) {
 				var value = $(this).val();
-				search(value);
+				if (value == '') {
+					search(value);
+				}
 				$('#keyword').trigger('blur');
+			}
+		});
+		$('#keyword').off('blur').on('blur', function(e) {
+			var value = $(this).val();
+			if (value == '') {
+				search(value);
+			}
+		});
+		$('#keyword').off('keyup').on('keyup', function(e) {
+			var value = $(this).val();
+			if (value && value != '') {
+				search(value);
 			}
 		});
 

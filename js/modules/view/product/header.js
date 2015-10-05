@@ -5,6 +5,7 @@ define(function(require, exports, module) {
 	var $nativeUIManager = require('manager/nativeUI');
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
+	var userId;
 	bindEvent = function() {
 		$common.touchSE($('#myBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.create('my_info', '../my/info.html', false, true, function(show) {
@@ -30,34 +31,25 @@ define(function(require, exports, module) {
 		$common.touchSE($('#moreBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$nativeUIManager.confactionSheetirm('请选择操作', '取消', [{
 					title: '分享'
-				}, {
-					title: '调整产品顺序'
 				}],
 				function(index) {
 					if (index > 0) {
 						if (index == 1) {
 							$nativeUIManager.alert('提示', '微信浏览域名没办法用，暂关闭', 'OK', function() {});
-						} else if (index == 2) {
-							$nativeUIManager.alert('提示', '调整顺序会变更关联项目，逻辑检查中，暂关闭', 'OK', function() {});
-							//								$windowManager.create('product_order', 'order.html', false, true, function(show) {
-							//									show();
-							//								});
 						}
 					}
 				});
 		});
 	};
 	loadWebview = function() {
-		var userId = $userInfo.get('userId');
+		userId = $userInfo.get('userId');
 		var productUserWin = plus.webview.create("sale.html?userId=" + userId, "product_user", {
 			top: "50px",
 			bottom: "0px",
 			scrollIndicator: 'vertical'
 		});
+		bindEvent();
 		if (productUserWin) {
-			if ($('li.current', '#plannerSaleTab').size() == 0) {
-				$('li', '#plannerSaleTab').first().addClass('current');
-			}
 			productUserWin.addEventListener("loaded", function() {
 				$windowManager.current().append(productUserWin);
 			}, false);
@@ -65,7 +57,7 @@ define(function(require, exports, module) {
 	}
 	plusReady = function() {
 		loadWebview();
-		bindEvent();
+		
 	};
 	if (window.plus) {
 		plusReady();

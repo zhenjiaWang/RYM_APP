@@ -55,11 +55,12 @@ define(function(require, exports, module) {
 		if ($webSQLManager.isSupport()) {
 			$webSQLManager.del('delete from PHONE_CONTACTS', [], function() {
 				plus.contacts.getAddressBook(plus.contacts.ADDRESSBOOK_PHONE, function(addressbook) {
-					addressbook.find(["id", "displayName", "phoneNumbers", "photos"], function(contacts) {
+					addressbook.find(["id", "displayName", "phoneNumbers"], function(contacts) {
 						var sb = new StringBuilder();
 						if (contacts && $(contacts).size() > 0) {
 							var contactsSize = $(contacts).size();
 							var _index = 0;
+							var _unkownIndex=1;
 							$(contacts).each(function(i, c) {
 								var name = c.displayName;
 
@@ -68,10 +69,6 @@ define(function(require, exports, module) {
 								var mobilePhone = false;
 								var QP = '';
 								var JP = '';
-								if (c.photos) {
-									//photo = c.photos[0].value;
-									//photo = plus.io.convertLocalFileSystemURL(photo);
-								}
 								if (c.phoneNumbers) {
 									$(c.phoneNumbers).each(function(pi, phone) {
 										if (phone['type'] == 'mobile') {
@@ -106,6 +103,25 @@ define(function(require, exports, module) {
 											}
 										}
 									}
+								}
+								if(!name){
+									name='未知联系人'+_unkownIndex;
+									_unkownIndex+=1;
+									var QPS = makePy(name);
+									if (QPS && QPS.length > 0) {
+										QP = QPS[0];
+										if (QP && QP.length > 0) {
+											JP = QP.substring(0, 1);
+											JP = JP.toUpperCase();
+											var jpAscii = JP.charCodeAt();
+											if (jpAscii >= 48 && jpAscii <= 57) {
+												JP = '0~9';
+											}
+										}
+									}
+								}
+								if(!mobilePhone){
+									mobilePhone='13800138000';
 								}
 								if (name && mobilePhone && id) {
 									$webSQLManager.insert('insert  into  PHONE_CONTACTS (ID, NAME,PHOTO,MOBILE_PHONE,QP,JP ) values(?,?,?,?,?,?)', [
@@ -160,7 +176,19 @@ define(function(require, exports, module) {
 						if (count == 0) {
 							exports.refreshContacts(callback, errorback);
 						} else {
-							loadContacts(callback, 1, 1);
+							plus.contacts.getAddressBook(plus.contacts.ADDRESSBOOK_PHONE, function(addressbook) {
+								addressbook.find(["id", "displayName", "phoneNumbers"], function(contacts) {
+									if (contacts && $(contacts).size() > 0) {
+										if($(contacts).size()!=count){
+											exports.refreshContacts(callback, errorback);
+										}else{
+											loadContacts(callback, 1, 1);
+										}
+									}
+								},function(){});
+							},
+							function(){
+							});
 						}
 					}
 				}, function(msg) {

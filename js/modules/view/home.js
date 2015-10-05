@@ -14,7 +14,7 @@ define(function(require, exports, module) {
 				if (dir == 'room') {
 					currentProductWinId = 'product_user';
 				} else if (dir == 'friend') {
-					currentProductWinId='friend_list';
+					currentProductWinId = 'friend_list';
 				}
 				var productWindow = $windowManager.getById(currentProductWinId);
 				if (productWindow) {
@@ -72,38 +72,43 @@ define(function(require, exports, module) {
 					if (!$('#plusBtn').hasClass('current')) {
 						var oldDir = $('span.current', '#footerAction').attr('dir');
 						if (oldDir != dir) {
-							var lang = $('span[dir="' + dir + '"]', '#footerAction').attr('lang');
-							if (lang) {
-								$('span.current', '#footerAction').removeClass('current');
-								$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
-								if (lang == "1") {
-									if (dir == 'room') {
-										$controlWindow.windowShow('product_header');
-										$controlWindow.windowShow('product_user');
-									} else if (dir == 'friend') {
-										$controlWindow.windowShow('friend_header');
-										$controlWindow.windowShow('friend_list');
-									}
-								} else if (lang == "0") {
-									if (dir == 'friend') {
-										var historyHead = plus.webview.create("friend/header.html", "friend_header", {
-											top: "0px",
-											bottom: "50px"
-										});
-										historyHead.addEventListener("loaded", function() { //叶面加载完成后才显示
-											$windowManager.current().append(historyHead);
-											$('span[dir="friend"]', '#footerAction').attr('lang', '1');
-										}, false);
-									}
-								}
-								if (oldDir) {
-									if (oldDir == 'room') {
-										$controlWindow.windowHide('product_header');
-										$controlWindow.windowHide('product_user');
-									} else if (oldDir == 'friend') {
-										$controlWindow.windowHide('friend_header');
-										$controlWindow.windowHide('friend_list');
-									}
+							if (dir == 'friend') {
+								var friendHead = plus.webview.create("friend/header.html", "friend_header", {
+									top: "0px",
+									bottom: "50px"
+								});
+								friendHead.addEventListener("loaded", function() { //叶面加载完成后才显示
+									$windowManager.current().append(friendHead);
+									$('span.current', '#footerAction').removeClass('current');
+									$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
+								}, false);
+							} else if (dir == 'room') {
+								var productHead = plus.webview.create("product/header.html", "product_header", {
+									top: "0px",
+									bottom: "50px",
+									scrollIndicator: 'vertical'
+								});
+								productHead.addEventListener("loaded", function() { //叶面加载完成后才显示
+									$windowManager.current().append(productHead);
+									$('span.current', '#footerAction').removeClass('current');
+									$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
+								}, false);
+							}
+							if (oldDir) {
+								if (oldDir == 'room') {
+									$controlWindow.windowHide('product_header');
+									$controlWindow.windowHide('product_user');
+									window.setTimeout(function() {
+										$windowManager.closeById('product_header', 'none');
+										$windowManager.closeById('product_user', 'none');
+									}, 200);
+								} else if (oldDir == 'friend') {
+									$controlWindow.windowHide('friend_header');
+									$controlWindow.windowHide('friend_list');
+									window.setTimeout(function() {
+										$windowManager.closeById('friend_header', 'none');
+										$windowManager.closeById('friend_list', 'none');
+									}, 500);
 								}
 							}
 						}
@@ -122,7 +127,6 @@ define(function(require, exports, module) {
 			$windowManager.current().append(workHead);
 			if ($('span.current', '#footerAction').size() == 0) {
 				$('span', '#footerAction').first().addClass('current');
-				$('span[dir="room"]', '#footerAction').attr('lang', '1');
 			}
 		}, false);
 	}

@@ -49,11 +49,25 @@ define(function(require, exports, module) {
 			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
 			if (keyCode == 13) {
 				var value = $(this).val();
-				loadData();
-				$('.checkWord').text('筛选');
+				if (value == '') {
+					loadData();
+				}
 				$('#keyword').trigger('blur');
 			}
 		});
+		$('#keyword').off('blur').on('blur', function(e) {
+			var value = $(this).val();
+			if (value == '') {
+				loadData();
+			}
+		});
+		$('#keyword').off('keyup').on('keyup', function(e) {
+			var value = $(this).val();
+			if (value && value != '') {
+				loadData();
+			}
+		});
+		
 		$common.touchSE($('.personBoard', '#friendUL'), function(event, startTouch, o) {}, function(event, o) {
 			var userId = $(o).attr('uid');
 			if (userId) {
@@ -121,6 +135,7 @@ define(function(require, exports, module) {
 		});
 	};
 	loadData = function(callback, append) {
+		$('.checkWord').hide();
 		if (!callback) {
 			$nativeUIManager.watting('正在加载...');
 		}
@@ -149,6 +164,7 @@ define(function(require, exports, module) {
 						var friendPlannerArray = jsonData['friendPlannerArray'];
 						var sb = new StringBuilder();
 						if (friendPlannerArray && $(friendPlannerArray).size() > 0) {
+							$('#blank').hide();
 							$('.checkWord').show();
 							$(friendPlannerArray).each(function(i, o) {
 								var textClass = '';
