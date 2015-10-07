@@ -181,25 +181,49 @@ define(function(require, exports, module) {
 				});
 			}
 		});
-		$common.touchSE($('#uploadBgImgBtn'), function(event, startTouch, o) {}, function(event, o) {
-			window.setTimeout(function() {
-				files = [];
-				$nativeUIManager.confactionSheetirm('请选择上传方式操作', '取消', [{
-						title: '从照片选取'
-					}, {
-						title: '拍摄'
-					}],
-					function(index) {
-						if (index > 0) {
-							if (index == 1) {
-								plus.gallery.pick(function(p) {
-									plus.io.resolveLocalFileSystemURL(p, function(entry) {
-										$nativeUIManager.watting('正在压缩图片...');
-										window.setTimeout(function() {
+		if (userId == $userInfo.get('userId')) {
+			$common.touchSE($('#uploadBgImgBtn'), function(event, startTouch, o) {}, function(event, o) {
+				window.setTimeout(function() {
+					files = [];
+					$nativeUIManager.confactionSheetirm('请选择上传方式操作', '取消', [{
+							title: '从照片选取'
+						}, {
+							title: '拍摄'
+						}],
+						function(index) {
+							if (index > 0) {
+								if (index == 1) {
+									plus.gallery.pick(function(p) {
+										plus.io.resolveLocalFileSystemURL(p, function(entry) {
+											$nativeUIManager.watting('正在压缩图片...');
+											window.setTimeout(function() {
+												plus.zip.compressImage({
+														src: entry.toLocalURL(),
+														dst: '_www/wzj.jpg',
+														quality: 40
+													},
+													function(event) {
+														files.push({
+															name: "uploadkey" + index,
+															path: event.target
+														});
+														index++;
+														$nativeUIManager.wattingTitle('正在上传...');
+														window.setTimeout(function() {
+															upload();
+														}, 500);
+													}, function(error) {});
+											}, 500);
+										});
+									});
+								} else if (index == 2) {
+									plus.camera.getCamera().captureImage(function(p) {
+										plus.io.resolveLocalFileSystemURL(p, function(entry) {
+											$nativeUIManager.watting('正在压缩图片...');
 											plus.zip.compressImage({
 													src: entry.toLocalURL(),
 													dst: '_www/wzj.jpg',
-													quality: 80
+													quality: 40
 												},
 												function(event) {
 													files.push({
@@ -208,43 +232,21 @@ define(function(require, exports, module) {
 													});
 													index++;
 													$nativeUIManager.wattingTitle('正在上传...');
+													upload();
+												}, function(error) {
+													$nativeUIManager.wattingTitle('图片压缩失败...');
 													window.setTimeout(function() {
-														upload();
-													}, 500);
-												}, function(error) {});
-										}, 500);
-									});
-								});
-							} else if (index == 2) {
-								plus.camera.getCamera().captureImage(function(p) {
-									plus.io.resolveLocalFileSystemURL(p, function(entry) {
-										$nativeUIManager.watting('正在压缩图片...');
-										plus.zip.compressImage({
-												src: entry.toLocalURL(),
-												dst: '_www/wzj.jpg',
-												quality: 80
-											},
-											function(event) {
-												files.push({
-													name: "uploadkey" + index,
-													path: event.target
+														$nativeUIManager.wattingClose();
+													}, 1000);
 												});
-												index++;
-												$nativeUIManager.wattingTitle('正在上传...');
-												upload();
-											}, function(error) {
-												$nativeUIManager.wattingTitle('图片压缩失败...');
-												window.setTimeout(function() {
-													$nativeUIManager.wattingClose();
-												}, 1000);
-											});
+										});
 									});
-								});
+								}
 							}
-						}
-					});
-			}, 100);
-		});
+						});
+				}, 100);
+			});
+		}
 	};
 	loadData = function(callback) {
 		if (!callback) {

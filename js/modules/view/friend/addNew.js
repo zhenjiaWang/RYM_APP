@@ -6,7 +6,33 @@ define(function(require, exports, module) {
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
 	var $templete = require('core/templete');
+	goSearch=function(value){
+		$windowManager.load('plannerList.html?keyword='+value);
+	};
 	bindEvent = function() {
+		$('#keyword').off('keydown').on('keydown', function(e) {
+			e = (e) ? e : ((window.event) ? window.event : "")
+			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
+			if (keyCode == 13) {
+				var value = $(this).val();
+				if (value != '') {
+					goSearch(value);
+				}
+				$('#keyword').trigger('blur');
+			}
+		});
+		$('#keyword').off('blur').on('blur', function(e) {
+			var value = $(this).val();
+			if (value != '') {
+				goSearch(value);
+			}
+		});
+		$('#keyword').off('keyup').on('keyup', function(e) {
+			var value = $(this).val();
+			if (value && value != '') {
+				goSearch(value);
+			}
+		});
 		$common.touchSE($('#addPhoneContacts'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.create('friend_phoneList_header', 'phoneListHeader.html', false, true, function(show) {
 				show();
@@ -16,7 +42,7 @@ define(function(require, exports, module) {
 			$nativeUIManager.alert('提示', '和微信一起开放', 'OK', function() {});
 		});
 		$common.touchSE($('.addBtn'), function(event, startTouch, o) {}, function(event, o) {
-			if (!$(o).hasClass('nobg')&&!$(o).hasClass('addDone')) {
+			if (!$(o).hasClass('nobg') && !$(o).hasClass('addDone')) {
 				var li = $(o).closest('li');
 				var friendId = $(li).attr('userId');
 				if (friendId) {
@@ -78,7 +104,7 @@ define(function(require, exports, module) {
 							});
 							$('#followUL').empty().append(sb.toString()).show();
 							$('#newFollow').show();
-						}else{
+						} else {
 							$('#blank').show();
 						}
 						bindEvent();

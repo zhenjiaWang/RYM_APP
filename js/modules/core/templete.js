@@ -162,9 +162,9 @@ define(function(require, exports, module) {
 		relationPlannerItem.append('<th>基金</th>\n');
 		relationPlannerItem.append('</tr>\n');
 		relationPlannerItem.append('<tr>\n');
-		relationPlannerItem.append('<td>6.45%</td>\n');
-		relationPlannerItem.append('<td>6.45%</td>\n');
-		relationPlannerItem.append('<td>股票型</td>\n');
+		relationPlannerItem.append('<td>{financialContent}</td>\n');
+		relationPlannerItem.append('<td>{trustContent}</td>\n');
+		relationPlannerItem.append('<td>{fundContent}</td>\n');
 		relationPlannerItem.append('</tr>\n');
 		relationPlannerItem.append('</table>\n');
 		relationPlannerItem.append('</section>\n');
@@ -190,9 +190,9 @@ define(function(require, exports, module) {
 		relationPlannerItem.append('<th>基金</th>\n');
 		relationPlannerItem.append('</tr>\n');
 		relationPlannerItem.append('<tr>\n');
-		relationPlannerItem.append('<td>6.45%</td>\n');
-		relationPlannerItem.append('<td>6.45%</td>\n');
-		relationPlannerItem.append('<td>股票型</td>\n');
+		relationPlannerItem.append('<td>{financialContent}</td>\n');
+		relationPlannerItem.append('<td>{trustContent}</td>\n');
+		relationPlannerItem.append('<td>{fundContent}</td>\n');
 		relationPlannerItem.append('</tr>\n');
 		relationPlannerItem.append('</table>\n');
 		relationPlannerItem.append('</section>\n');

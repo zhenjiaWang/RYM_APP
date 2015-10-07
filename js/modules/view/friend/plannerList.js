@@ -8,7 +8,7 @@ define(function(require, exports, module) {
 	var $keyManager = require('manager/key');
 	var $templete = require('core/templete');
 	var queryMap = parseURL();
-	var userId = queryMap.get('userId');
+	var keyword = queryMap.get('keyword');
 	var nextIndex = 0;
 	var currentWindow;
 	onRefresh = function() {
@@ -37,6 +37,9 @@ define(function(require, exports, module) {
 			}
 		}, onRefresh);
 	};
+	goAdd=function(){
+		$windowManager.load('addNew.html');
+	};
 	bindEvent = function() {
 		$('#keyword').off('keydown').on('keydown', function(e) {
 			e = (e) ? e : ((window.event) ? window.event : "")
@@ -44,7 +47,7 @@ define(function(require, exports, module) {
 			if (keyCode == 13) {
 				var value = $(this).val();
 				if (value == '') {
-					loadData();
+					goAdd();
 				}
 				$('#keyword').trigger('blur');
 			}
@@ -52,13 +55,17 @@ define(function(require, exports, module) {
 		$('#keyword').off('blur').on('blur', function(e) {
 			var value = $(this).val();
 			if (value == '') {
-				loadData();
+				goAdd();
 			}
 		});
 		$('#keyword').off('keyup').on('keyup', function(e) {
 			var value = $(this).val();
-			if (value && value != '') {
-				loadData();
+			if (value ) {
+				if (value == '') {
+					goAdd();
+				}else{
+					loadData();
+				}
 			}
 		});
 		$common.touchSE($('.UserCard', '#friendUL'), function(event, startTouch, o) {}, function(event, o) {
@@ -91,7 +98,7 @@ define(function(require, exports, module) {
 								if (jsonData['result'] == '0') {
 									$nativeUIManager.wattingTitle('关注成功!');
 									$('.icon-new', section).remove();
-									$(o).text('共同好友').removeClass('rightBtnAdd').off('touchstart').off('touchend');
+									$(o).text('已关注').removeClass('rightBtnAdd').off('touchstart').off('touchend');
 									window.setTimeout(function() {
 										$nativeUIManager.wattingClose();
 									}, 1000);
@@ -126,16 +133,14 @@ define(function(require, exports, module) {
 		});
 	};
 	loadData = function(callback, append) {
-		$('.checkWord').hide();
 		if (!callback) {
 			$nativeUIManager.watting('正在加载...');
 		}
 		$.ajax({
 			type: 'POST',
-			url: $common.getRestApiURL() + '/social/friendPlanner/friendList',
+			url: $common.getRestApiURL() + '/sys/planner/friendList',
 			dataType: 'json',
 			data: {
-				userId: userId,
 				start: nextIndex > 0 ? nextIndex : '',
 				keyword: $('#keyword').val()
 			},
@@ -146,7 +151,6 @@ define(function(require, exports, module) {
 						var sb = new StringBuilder();
 						if (friendArray && $(friendArray).size() > 0) {
 							$('#blank').hide();
-							$('.checkWord').show();
 							$(friendArray).each(function(i, o) {
 								var productInfo=o['productInfo'];
 								sb.append(String.formatmodel($templete.friendFollowPlannerItem(o['state'] == '-1'), {
@@ -211,6 +215,7 @@ define(function(require, exports, module) {
 		}, function() {
 
 		});
+		$('#keyword').val(keyword);
 		loadData();
 	};
 	if (window.plus) {

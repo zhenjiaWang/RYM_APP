@@ -63,6 +63,7 @@ define(function(require, exports, module) {
 						if (friendPlannerArray && $(friendPlannerArray).size() > 0) {
 							$('.checkWord').show();
 							$(friendPlannerArray).each(function(i, o) {
+								var productInfo=o['productInfo'];
 								var textClass = '';
 								if (o['state'] == '1') {
 									textClass = 'icon-8';
@@ -73,7 +74,10 @@ define(function(require, exports, module) {
 									userId: o['userId'],
 									userName: o['userName'],
 									headImgUrl: o['headImgUrl'],
-									saleCount: o['saleCount']
+									saleCount: o['saleCount'],
+									financialContent:productInfo['financialContent'],
+									trustContent:productInfo['trustContent'],
+									fundContent:productInfo['fundContent']
 								}));
 							});
 						} else {
