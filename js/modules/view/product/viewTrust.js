@@ -7,12 +7,12 @@ define(function(require, exports, module) {
 	var showImgFlag = false;
 	bindEvent = function() {
 		$common.touchSE($('#showImgBtn'), function(event, startTouch, o) {}, function(event, o) {
-				$nativeUIManager.watting('请稍等...');
-				$windowManager.create('product_img', 'img.html', 'slide-in-bottom', true, function(show) {
-					$nativeUIManager.wattingClose();
-					show();
-				});
+			$nativeUIManager.watting('请稍等...');
+			$windowManager.create('product_img', 'img.html', 'slide-in-bottom', true, function(show) {
+				$nativeUIManager.wattingClose();
+				show();
 			});
+		});
 	};
 	loadData = function() {
 		var productView = $userInfo.get('productView');
@@ -20,6 +20,24 @@ define(function(require, exports, module) {
 			var jsonData = JSON.parse(productView);
 			if (jsonData) {
 				if (jsonData['result'] == '0') {
+					var planner = jsonData['planner'];
+					if (planner) {
+						$('#userName').text(planner['userName']);
+						$('#plannerNo').text(planner['plannerNo']);
+						$('#orgName').text(planner['orgName']);
+						$('#signature').text(planner['signature']);
+						$('#follow').text(planner['follow']);
+						$('#friends').text(planner['friends']);
+						var bgImgUrl = planner['bgImgUrl'];
+						if (!bgImgUrl) {
+							bgImgUrl = '../../img/2.jpg';
+						}
+						$('img', '#uploadBgImgBtn').attr('src', bgImgUrl);
+						var headImgUrl = planner['headImgUrl'];
+						if (headImgUrl) {
+							$('img', '.userPhoto').attr('src', headImgUrl);
+						}
+					}
 					var trust = jsonData['trust'];
 					var productInfo = jsonData['productInfo'];
 					if (productInfo && trust) {

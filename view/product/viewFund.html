@@ -19,7 +19,22 @@
 	</script>
 	<body class="androidMain">
 		<div class="main" style="display: none;" id="contentMain">
-			<div class="oneCard detail">
+			<section class="personBoard mart10 bgwhite">
+				<div class="userInfo mart5 clearfix">
+					<span class="userPhoto floatleft"><img src=""></span>
+					<div class="floatleft marl15 mart10 font13">
+						<p class="font17" id="userName"></p>
+						<p id="orgName"></p>
+						<p >工号：<span id="plannerNo"></span></p>
+					</div>
+					<div class="floatright mart15 alignright color-6" id="myFollowDIV">
+						<p ><span id="follow"></span><i class="icon icon-3 marl5"></i></p>
+						<p ><span id="friends"></span><i class="icon icon-4 marl5"></i></p>
+					</div>
+				</div>
+				<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i><span id="signature" class="txt_hidden"></span></div>
+			</section>
+			<div class="oneCard detail mart10">
 				<div class="font11 title color-a alignright">
 					<span class="tips tips-j floatleft strong">基 金</span>
 					<span class="color-3 font17 strong txt_hidden" style="width:86%;" id="name"></span>
@@ -55,9 +70,16 @@
 				</li>
 			</ul>
 		</div>
-		<footer class="footer footerInner clearfix" id="showImgBtn" style="display: none;">
+		<!--<footer class="footer footerInner clearfix" id="showImgBtn" style="display: none;">
 			<p class="aligncenter font14 color-8">点击查看图片详情</p>
+		</footer>-->
+		<footer class="footer footerInner footerFour hide clearfix" title="" style="bottom:0;">
+			<span class="floatleft">收藏</span>
+			<span class="floatleft">上架</span>
+			<span class="floatleft">关联</span>
+			<span class="floatright">评论</span>
 		</footer>
+
 	</body>
 
 </html>

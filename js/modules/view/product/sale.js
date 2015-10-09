@@ -172,6 +172,17 @@ define(function(require, exports, module) {
 				}
 			}
 		});
+		$common.touchSE($('.relationSpan', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
+			event.stopPropagation();
+			var userId = $(o).attr('uid');
+			if (userId) {
+				if (userId != $userInfo.get('userId')) {
+					$windowManager.create('product_header_pop', 'headerPop.html?userId=' + userId, false, true, function(show) {
+						show();
+					});
+				}
+			}
+		});
 		$common.touchSE($('.oneCard', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
 			var typeId = $(o).attr('typeId');
 			var uid = $(o).attr('uid');
@@ -262,6 +273,10 @@ define(function(require, exports, module) {
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
+						if (userId != $userInfo.get('userId')) {
+							$('#footerTools').show();
+							$('.main').css('padding-bottom', '50px');
+						}
 						var planner = jsonData['planner'];
 						if (planner) {
 							$('#userName').text(planner['userName']);
@@ -298,6 +313,7 @@ define(function(require, exports, module) {
 													productId: o['productId'],
 													userId: o['userId'],
 													relationUserName: o['relationUserName'],
+													relationUserId: o['relationUserId'],
 													viewCount: o['viewCount'],
 													relationCount: o['relationCount'],
 													uid: uid,
@@ -315,6 +331,7 @@ define(function(require, exports, module) {
 													productId: o['productId'],
 													userId: o['userId'],
 													relationUserName: o['relationUserName'],
+													relationUserId: o['relationUserId'],
 													viewCount: o['viewCount'],
 													relationCount: o['relationCount'],
 													uid: uid,

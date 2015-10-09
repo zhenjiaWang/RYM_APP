@@ -35,7 +35,7 @@ define(function(require, exports, module) {
 		trustItem.append('<span class="tips tips-x floatleft strong">{typeName}</span>\n');
 		trustItem.append('<span class="floatleft marl5">{updateTime}</span>\n');
 		if (relationYn && relationYn == 'Y') {
-			trustItem.append('<span>关联自<em>{relationUserName}</em></span>\n');
+			trustItem.append('<span class="relationSpan" uid="{relationUserId}">关联自<em>{relationUserName}</em></span>\n');
 		}
 		trustItem.append('</p>\n');
 		trustItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong">{name}');
@@ -69,7 +69,7 @@ define(function(require, exports, module) {
 		fundItem.append('<span class="tips tips-j floatleft strong">{typeName}</span>\n');
 		fundItem.append('<span class="floatleft marl5">{updateTime}</span>\n');
 		if (relationYn && relationYn == 'Y') {
-			fundItem.append('<span>关联自<em>{relationUserName}</em></span>\n');
+			fundItem.append('<span class="relationSpan" uid="{relationUserId}">关联自<em>{relationUserName}</em></span>\n');
 		}
 		fundItem.append('</p>\n');
 		fundItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong">{name}');

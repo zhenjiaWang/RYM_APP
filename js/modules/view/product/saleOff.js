@@ -115,6 +115,10 @@ define(function(require, exports, module) {
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
+						if(userId!=$userInfo.get('userId')){
+							$('#footerTools').show();
+							$('.main').css('padding-bottom','50px');
+						}
 						var productArray = jsonData['productArray'];
 						var sb = new StringBuilder();
 						if (productArray && $(productArray).size() > 0) {
