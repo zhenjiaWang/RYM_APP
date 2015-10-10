@@ -17,6 +17,7 @@
 		});
 		seajs.use('view/product/viewFund');
 	</script>
+
 	<body class="androidMain">
 		<div class="main" style="display: none;" id="contentMain">
 			<section class="personBoard mart10 bgwhite">
@@ -25,11 +26,11 @@
 					<div class="floatleft marl15 mart10 font13">
 						<p class="font17" id="userName"></p>
 						<p id="orgName"></p>
-						<p >工号：<span id="plannerNo"></span></p>
+						<p>工号：<span id="plannerNo"></span></p>
 					</div>
 					<div class="floatright mart15 alignright color-6" id="myFollowDIV">
-						<p ><span id="follow"></span><i class="icon icon-3 marl5"></i></p>
-						<p ><span id="friends"></span><i class="icon icon-4 marl5"></i></p>
+						<p><span id="follow"></span><i class="icon icon-3 marl5"></i></p>
+						<p><span id="friends"></span><i class="icon icon-4 marl5"></i></p>
 					</div>
 				</div>
 				<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i><span id="signature" class="txt_hidden"></span></div>
@@ -65,21 +66,23 @@
 			<ul class="inputList mart10">
 				<li class="clearfix noboder">
 					<span class="lable">产品描述</span>
-					<p class="font15 txt" id="remarks">
-					</p>
+					<pre class="font15 txt" id="remarks">
+						
+					</pre>
+				</li>
+			</ul>
+			<ul class="inputList mart10">
+				<li class="clearfix noboder">
+					<div class="imgDetail">
+						
+					</div>
 				</li>
 			</ul>
 		</div>
+
 		<!--<footer class="footer footerInner clearfix" id="showImgBtn" style="display: none;">
 			<p class="aligncenter font14 color-8">点击查看图片详情</p>
 		</footer>-->
-		<footer class="footer footerInner footerFour hide clearfix" title="" style="bottom:0;">
-			<span class="floatleft">收藏</span>
-			<span class="floatleft">上架</span>
-			<span class="floatleft">关联</span>
-			<span class="floatright">评论</span>
-		</footer>
-
 	</body>
 
 </html>

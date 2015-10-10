@@ -129,9 +129,21 @@ define(function(require, exports, module) {
 				$('span', '#footerAction').first().addClass('current');
 			}
 		}, false);
-	}
+	};
+	loadTip=function(){
+		var followTipCount=$userInfo.get('followTipCount');
+		if(followTipCount){
+			followTipCount=parseInt(followTipCount);
+			if(followTipCount>0){
+				$('span[dir="friend"]','#footerAction').find('.icon-p').show().text(followTipCount);
+			}else{
+				$('span[dir="friend"]','#footerAction').find('.icon-p').hide();
+			}
+		}
+	};
 	plusReady = function() {
 		loadWebview();
+		loadTip();
 		bindEvent();
 		document.addEventListener("resume", function() {
 			$authorize.timeout();

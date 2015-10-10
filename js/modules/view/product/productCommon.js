@@ -12,7 +12,7 @@ define(function(require, exports, module) {
 	onActionCommon = function() {
 		$nativeUIManager.watting('请选择发布栏位...');
 		window.setTimeout(function() {
-			$windowManager.create('product_send', 'send.html?productName=' + productName + '&saveWinId=product_view&saveFunction=onAction', false, true, function(show) {
+			$windowManager.create('product_send', 'send.html?productName=' + productName + '&saveWinId=product_view_header&saveFunction=onAction', false, true, function(show) {
 				show();
 				$nativeUIManager.wattingClose();
 			});
@@ -22,7 +22,7 @@ define(function(require, exports, module) {
 	newOnActionCommon = function() {
 		$nativeUIManager.watting('请选择发布栏位...');
 		window.setTimeout(function() {
-			$windowManager.create('product_send', 'send.html?productName=' + productName + '&saveWinId=product_view&saveFunction=newOnAction', false, true, function(show) {
+			$windowManager.create('product_send', 'send.html?productName=' + productName + '&saveWinId=product_view_header&saveFunction=newOnAction', false, true, function(show) {
 				show();
 				$nativeUIManager.wattingClose();
 			});
@@ -47,7 +47,7 @@ define(function(require, exports, module) {
 							window.setTimeout(function() {
 								$nativeUIManager.wattingClose();
 								$windowManager.close();
-							}, 300);
+							}, 500);
 						} else {
 							$nativeUIManager.wattingClose();
 							$nativeUIManager.alert('提示', '收藏产品失败', 'OK', function() {});
@@ -142,11 +142,14 @@ define(function(require, exports, module) {
 					if (jsonData) {
 						if (jsonData['result'] == '0') {
 							$nativeUIManager.wattingTitle('取消收藏成功!');
-							$windowManager.reloadOtherWindow('product_user', true);
+							var productUserWin = $windowManager.getById('product_user');
+							if (productUserWin) {
+								productUserWin.evalJS('onRefresh()');
+							}
 							window.setTimeout(function() {
 								$nativeUIManager.wattingClose();
 								$windowManager.close();
-							}, 300);
+							}, 500);
 						} else {
 							$nativeUIManager.wattingClose();
 							$nativeUIManager.alert('提示', '取消收藏产品失败', 'OK', function() {});
@@ -188,7 +191,7 @@ define(function(require, exports, module) {
 			}
 		});
 	};
-	newOnExist = function() {
+	onExist = function() {
 		$nativeUIManager.watting('请稍等...');
 		$.ajax({
 			type: 'POST',
@@ -203,8 +206,38 @@ define(function(require, exports, module) {
 					if (jsonData['result'] == '0') {
 						$nativeUIManager.wattingClose();
 						$nativeUIManager.confirm('提示', '你确定要上架当前产品吗?', ['确定', '取消'], function() {
-							newOnActionCommon();
+							onActionCommon();
 						}, function() {});
+					} else if (jsonData['result'] == '1') {
+						$nativeUIManager.wattingClose();
+						$nativeUIManager.alert('提示', '你已有这个产品了', 'OK', function() {});
+					} else {
+						$nativeUIManager.wattingClose();
+						$nativeUIManager.alert('提示', '上架产品失败', 'OK', function() {});
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				$nativeUIManager.wattingClose();
+				$nativeUIManager.alert('提示', '上架产品失败', 'OK', function() {});
+			}
+		});
+	};
+	newOnExist = function() {
+		$nativeUIManager.watting('请稍等...');
+		$.ajax({
+			type: 'POST',
+			url: $common.getRestApiURL() + '/product/info/newOnExist',
+			dataType: 'json',
+			data: {
+				id: ID,
+				tab: productTab
+			},
+			success: function(jsonData) {
+				if (jsonData) {
+					if (jsonData['result'] == '0') {
+						$nativeUIManager.wattingClose();
+						newOnActionCommon();
 					} else if (jsonData['result'] == '1') {
 						$nativeUIManager.wattingClose();
 						$nativeUIManager.alert('提示', '你已有这个产品了', 'OK', function() {});
@@ -301,11 +334,14 @@ define(function(require, exports, module) {
 					if (jsonData) {
 						if (jsonData['result'] == '0') {
 							$nativeUIManager.wattingTitle('产品已下架!');
-							$windowManager.reloadOtherWindow('product_user', true);
+							var productUserWin = $windowManager.getById('product_user');
+							if (productUserWin) {
+								productUserWin.evalJS('onRefresh()');
+							}
 							window.setTimeout(function() {
 								$nativeUIManager.wattingClose();
 								$windowManager.close();
-							}, 300);
+							}, 500);
 						} else {
 							$nativeUIManager.wattingClose();
 							$nativeUIManager.alert('提示', '下架产品失败', 'OK', function() {});
@@ -336,11 +372,14 @@ define(function(require, exports, module) {
 					if (jsonData) {
 						if (jsonData['result'] == '0') {
 							$nativeUIManager.wattingTitle('产品已上架!');
-							$windowManager.reloadOtherWindow('product_user', true);
+							var productUserWin = $windowManager.getById('product_user');
+							if (productUserWin) {
+								productUserWin.evalJS('onRefresh()');
+							}
 							window.setTimeout(function() {
 								$nativeUIManager.wattingClose();
 								$windowManager.close();
-							}, 300);
+							}, 500);
 						} else {
 							$nativeUIManager.wattingClose();
 							$nativeUIManager.alert('提示', '上架产品失败', 'OK', function() {});
@@ -370,7 +409,10 @@ define(function(require, exports, module) {
 					if (jsonData) {
 						if (jsonData['result'] == '0') {
 							$nativeUIManager.wattingTitle('产品已上架!');
-							$windowManager.reloadOtherWindow('product_user', true);
+							var productUserWin = $windowManager.getById('product_user');
+							if (productUserWin) {
+								productUserWin.evalJS('onRefresh()');
+							}
 							window.setTimeout(function() {
 								$nativeUIManager.wattingClose();
 								$windowManager.close();
@@ -388,6 +430,41 @@ define(function(require, exports, module) {
 			});
 		});
 	};
+	exports.action = function(id, tab, name, pid, numSeq, uid, action) {
+		ID = id;
+		productName = name;
+		productId = pid;
+		userId = uid;
+		productTab = tab;
+		productNumSeq = numSeq;
+		if (action) {
+			if (action == 'offSale') {
+				offExist();
+			} else if (action == 'onSale') {
+				onExist();
+			} else if (action == 'newOnSale') {
+				newOnExist();
+			} else if (action == 'relation') {
+				$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
+				//relationExist(productId, productName, userId, productNumSeq);
+			} else if (action == 'favorites') {
+				favoritesExist();
+			} else if (action == 'delFavorites') {
+				$nativeUIManager.confirm('提示', '你确定要取消收藏当前产品吗?', ['确定', '取消'], function() {
+					favoritesCancelActionCommon();
+				}, function() {});
+			} else if (action == 'lock') {
+				$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
+//				$nativeUIManager.confirm('提示', '你确定要锁定产品，解除关联关系?', ['确定', '取消'], function() {
+//					lockActionCommon();
+//				}, function() {});
+			}else if (action == 'comment') {
+				$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + ID + '&tab=' + productTab, false, true, function(show) {
+					show();
+				});
+			}
+		}
+	};
 	exports.showMoreAction = function(id, tab, name, pid, numSeq, uid) {
 		ID = id;
 		productName = name;
@@ -395,71 +472,27 @@ define(function(require, exports, module) {
 		userId = uid;
 		productTab = tab;
 		productNumSeq = numSeq;
-		$.ajax({
-			type: 'POST',
-			url: $common.getRestApiURL() + '/product/info/viewMore',
-			dataType: 'json',
-			data: {
-				id: id,
-				tab: tab
-			},
-			success: function(jsonData) {
-				if (jsonData) {
-					if (jsonData['result'] == '0') {
-						var moreArray = jsonData['moreArray'];
-						var moreActionObj = jsonData['moreActionObj'];
-						if (moreArray) {
-							$nativeUIManager.confactionSheetirm('请选择操作', '取消', moreArray,
-								function(index) {
-									if (index > 0) {
-										var moreAction = moreActionObj[index + ''];
-										if (moreAction) {
-											if (moreAction == 'offSale') {
-												offExist();
-											} else if (moreAction == 'onSale') {
-												$nativeUIManager.confirm('提示', '你确定要上架当前产品吗?', ['确定', '取消'], function() {
-													onActionCommon();
-												}, function() {});
-											} else if (moreAction == 'newOnSale') {
-												newOnExist();
-											} else if (moreAction == 'relation') {
-												relationExist(productId, productName, userId, productNumSeq);
-											} else if (moreAction == 'favorites') {
-												$nativeUIManager.confirm('提示', '你确定要收藏当前产品吗?', ['确定', '取消'], function() {
-													favoritesExist();
-												}, function() {});
-											} else if (moreAction == 'delFavorites') {
-												$nativeUIManager.confirm('提示', '你确定要取消收藏当前产品吗?', ['确定', '取消'], function() {
-													favoritesCancelActionCommon();
-												}, function() {});
-											} else if (moreAction == 'lock') {
-												$nativeUIManager.confirm('提示', '你确定要锁定产品，解除关联关系?', ['确定', '取消'], function() {
-													lockActionCommon();
-												}, function() {});
-											} else if (moreAction == 'unLock') {
-												$nativeUIManager.confirm('提示', '你确定要解锁产品，恢复关联关系?', ['确定', '取消'], function() {
-													unLockActionCommon();
-												}, function() {});
-											} else if (moreAction == 'share') {
-												$nativeUIManager.alert('提示', '微信浏览域名没办法用，暂关闭', 'OK', function() {});
-											} else if (moreAction == 'edit') {
-												$nativeUIManager.alert('提示', '测试需要监控原始数据，暂关闭', 'OK', function() {});
-											}
-										}
-									}
-								});
+		var moreArrayJson = $userInfo.get('moreArray');
+		var moreActionObjJson = $userInfo.get('moreActionObj');
+		if (moreArrayJson && moreActionObjJson) {
+			var moreArray = JSON.parse(moreArrayJson);
+			var moreActionObj = JSON.parse(moreActionObjJson);
+			if (moreArray && moreActionObj) {
+				$nativeUIManager.confactionSheetirm('请选择操作', '取消', moreArray,
+					function(index) {
+						if (index > 0) {
+							var moreAction = moreActionObj[index + ''];
+							if (moreAction) {
+								if (moreAction == 'share') {
+									$nativeUIManager.alert('提示', '微信浏览域名没办法用，暂关闭', 'OK', function() {});
+								} else if (moreAction == 'edit') {
+									$nativeUIManager.alert('提示', '测试需要监控原始数据，暂关闭', 'OK', function() {});
+								}
+							}
 						}
-					} else {
-						$nativeUIManager.wattingClose();
-						$nativeUIManager.alert('提示', '获取权限失败', 'OK', function() {});
-					}
-				}
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				$nativeUIManager.wattingClose();
-				$nativeUIManager.alert('提示', '获取权限失败', 'OK', function() {});
+					});
 			}
-		});
+		}
 	};
 
 });

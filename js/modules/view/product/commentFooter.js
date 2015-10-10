@@ -8,6 +8,7 @@ define(function(require, exports, module) {
 	var $keyManager = require('manager/key');
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
+	var tab = queryMap.get('tab');
 	reset = function() {
 		$('#content').attr('replyUserId', '').text('');
 		$('#replyTip').text('').hide();
@@ -63,7 +64,7 @@ define(function(require, exports, module) {
 		});
 	};
 	loadWebview = function() {
-		var commontFooter = plus.webview.create("commentHeader.html?id=" + id, "product_commentHeader", {
+		var commontFooter = plus.webview.create("commentHeader.html?id=" + id+'&tab='+tab, "product_commentHeader", {
 			top: "0px",
 			bottom: "50px",
 			scrollIndicator: 'vertical'

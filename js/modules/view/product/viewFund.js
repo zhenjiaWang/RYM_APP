@@ -41,7 +41,7 @@ define(function(require, exports, module) {
 				var productInfo = jsonData['productInfo'];
 				if (productInfo && fund) {
 					$('#name').text(productInfo['name']);
-					$('#updateTime').text(productInfo['updateTime'] + '前更新');
+					$('#updateTime').text(productInfo['updateTime']);
 					$('#viewCount').text(productInfo['viewCount']);
 					$('#relationCount').text(productInfo['relationCount']);
 					$('#orgName').text(productInfo['orgName']);
@@ -50,35 +50,16 @@ define(function(require, exports, module) {
 					$('#fundType').text(fund['fundType']);
 					var attArray = jsonData['attArray'];
 					if (attArray && $(attArray).size() > 0) {
-						$userInfo.put('attImg', JSON.stringify(attArray));
-						$('#showImgBtn').show();
-						$('#contentMain').css('bottom', '50px');
+						$('.imgDetail').append('<p class="font14 title color-8d">产品图片</p>\n');
+						$(attArray).each(function(i, o) {
+							$('.imgDetail').append('<p class="mart10"><img src="' + o['imgSrc'] + '"></p>\n');
+						});
 					}
 					$('#contentMain').show();
-					pullToRefreshEvent();
+					bindEvent();
 				}
-				bindEvent();
 			}
 		}
-	};
-	pullToRefreshEvent = function() {
-		currentWindow = $windowManager.current();
-		currentWindow.setPullToRefresh({
-			support: true,
-			height: "50px",
-			range: "200px",
-			contentdown: {
-				caption: ""
-			},
-			contentover: {
-				caption: ""
-			},
-			contentrefresh: {
-				caption: ""
-			}
-		}, function() {
-			currentWindow.endPullToRefresh();
-		});
 	};
 	plusReady = function() {
 		$common.switchOS(function() {
@@ -87,6 +68,7 @@ define(function(require, exports, module) {
 
 		});
 		loadData();
+
 	};
 	if (window.plus) {
 		plusReady();

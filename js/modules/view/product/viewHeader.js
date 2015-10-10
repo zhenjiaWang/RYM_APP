@@ -14,6 +14,9 @@ define(function(require, exports, module) {
 	var userId;
 	var productName;
 	var numSeq;
+	doAction = function(action) {
+		$productCommon.action(id, tab, productName, productId, numSeq, userId,action);
+	};
 	onAction = function(numSeq) {
 		$productCommon.onProductSale(id, numSeq);
 	};
@@ -22,7 +25,47 @@ define(function(require, exports, module) {
 	};
 	bindEvent = function() {
 		$common.touchSE($('#moreBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$productCommon.showMoreAction(id, tab, productName, productId, numSeq,userId);
+			$productCommon.showMoreAction(id, tab, productName, productId, numSeq, userId);
+		});
+	};
+	loadAction = function() {
+		$.ajax({
+			type: 'POST',
+			url: $common.getRestApiURL() + '/product/info/viewMore',
+			dataType: 'json',
+			data: {
+				id: id,
+				tab: tab
+			},
+			success: function(jsonData) {
+				if (jsonData) {
+					if (jsonData['result'] == '0') {
+						var moreArray = jsonData['moreArray'];
+						var moreActionObj = jsonData['moreActionObj'];
+						var actionArray = jsonData['actionArray'];
+						var actionActionObj = jsonData['actionActionObj'];
+						$userInfo.put('moreArray', JSON.stringify(moreArray));
+						$userInfo.put('moreActionObj', JSON.stringify(moreActionObj));
+						$userInfo.put('actionArray', JSON.stringify(actionArray));
+						$userInfo.put('actionActionObj', JSON.stringify(actionActionObj));
+					} else {
+						$userInfo.removeItem('moreArray');
+						$userInfo.removeItem('moreActionObj');
+						$userInfo.removeItem('actionArray');
+						$userInfo.removeItem('actionActionObj');
+						$nativeUIManager.wattingClose();
+						$nativeUIManager.alert('提示', '获取权限失败', 'OK', function() {});
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				$userInfo.removeItem('moreArray');
+				$userInfo.removeItem('moreActionObj');
+				$userInfo.removeItem('actionArray');
+				$userInfo.removeItem('actionActionObj');
+				$nativeUIManager.wattingClose();
+				$nativeUIManager.alert('提示', '获取权限失败', 'OK', function() {});
+			}
 		});
 	};
 	loadData = function() {
@@ -43,19 +86,12 @@ define(function(require, exports, module) {
 							productName = productInfo['name'];
 							productId = productInfo['productId'];
 							userId = productInfo['userId'];
-							numSeq=productInfo['numSeq'];
+							numSeq = productInfo['numSeq'];
 							$userInfo.put('productView', JSON.stringify(jsonData));
-							var viewUrl='';
-							if(typeId){
-								if(typeId=='1'){
-									viewUrl='viewFinancial.html';
-								}else if(typeId=='2'){
-									viewUrl='viewFund.html';
-								}else if(typeId=='3'){
-									viewUrl='viewTrust.html';
-								}
+							var viewUrl = '';
+							if (typeId) {
+								loadWebview(typeId);
 							}
-							loadWebview(viewUrl);
 						}
 						$nativeUIManager.wattingClose();
 						bindEvent();
@@ -71,20 +107,21 @@ define(function(require, exports, module) {
 			}
 		});
 	};
-	loadWebview = function(url) {
-		var productUserWin = plus.webview.create(url, "product_view", {
+	loadWebview = function(typeId) {
+		var productFooterWin = plus.webview.create('viewFooter.html?typeId='+typeId, "product_view_footer", {
 			top: "50px",
 			bottom: "0px",
 			scrollIndicator: 'vertical'
 		});
-		if (productUserWin) {
-			productUserWin.addEventListener("loaded", function() {
-				$windowManager.current().append(productUserWin);
+		if (productFooterWin) {
+			productFooterWin.addEventListener("loaded", function() {
+				$windowManager.current().append(productFooterWin);
 			}, false);
 		}
 	}
 	plusReady = function() {
 		loadData();
+		loadAction();
 		bindEvent();
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();

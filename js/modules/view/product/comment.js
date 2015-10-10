@@ -7,6 +7,7 @@ define(function(require, exports, module) {
 	var $templete = require('core/templete');
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
+	var tab = queryMap.get('tab');
 	var nextIndex = 0;
 	var currentWindow;
 	var productUserId = false;
@@ -25,6 +26,7 @@ define(function(require, exports, module) {
 				dataType: 'json',
 				data: {
 					id: id,
+					tab: tab,
 					content: content,
 					replyUserId: replyUserId,
 					'org.guiceside.web.jsp.taglib.Token': tokenId
@@ -36,6 +38,7 @@ define(function(require, exports, module) {
 							if (commentObj) {
 								if (!$('#commentUL').is(':visible')) {
 									$('#commentUL').show();
+									$('#blank').hide();
 								}
 								$('#commentUL').prepend(String.formatmodel($templete.commentItem(commentObj['replyFlag']), {
 									userId: commentObj['userId'],
@@ -115,6 +118,10 @@ define(function(require, exports, module) {
 						if (jsonData['result'] == '0') {
 							$nativeUIManager.wattingTitle('删除 成功!');
 							$('li[uid="' + uid + '"]', '#commentUL').remove();
+							if ($('li', '#commentUL').size() == 0) {
+								$('#commentUL').hide();
+								$('#blank').show();
+							}
 							window.setTimeout(function() {
 								var commentCount = $('em', '#commentCount').text();
 								if (commentCount) {
@@ -204,6 +211,7 @@ define(function(require, exports, module) {
 						dataType: 'json',
 						data: {
 							id: id,
+							tab: tab,
 							'org.guiceside.web.jsp.taglib.Token': tokenId
 						},
 						success: function(jsonData) {
@@ -286,7 +294,8 @@ define(function(require, exports, module) {
 			url: $common.getRestApiURL() + '/product/info/commentView',
 			dataType: 'json',
 			data: {
-				id: id
+				id: id,
+				tab: tab
 			},
 			success: function(jsonData) {
 				if (jsonData) {
@@ -321,6 +330,7 @@ define(function(require, exports, module) {
 									replyUserName: o['replyUserName']
 								}));
 							});
+							$('#blank').hide();
 							$('#commentUL').show();
 						} else {
 							$('#blank').show();

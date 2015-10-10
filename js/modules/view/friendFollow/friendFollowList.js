@@ -62,9 +62,9 @@ define(function(require, exports, module) {
 			}
 		});
 		$common.touchSE($('.UserCard', '#friendUL'), function(event, startTouch, o) {}, function(event, o) {
-			var userId = $(o).attr('userId');
-			if (userId) {
-				$windowManager.create('product_header_pop', '../product/headerPop.html?userId='+userId, false, true, function(show) {
+			var uid = $(o).attr('userId');
+			if (uid) {
+				$windowManager.create('product_header_pop', '../product/headerPop.html?userId='+uid, false, true, function(show) {
 					show();
 				});
 			}

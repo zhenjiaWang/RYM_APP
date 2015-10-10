@@ -42,7 +42,7 @@ define(function(require, exports, module) {
 					var productInfo = jsonData['productInfo'];
 					if (productInfo && trust) {
 						$('#name').text(productInfo['name']);
-						$('#updateTime').text(productInfo['updateTime'] + '前更新');
+						$('#updateTime').text(productInfo['updateTime']);
 						$('#viewCount').text(productInfo['viewCount']);
 						$('#relationCount').text(productInfo['relationCount']);
 						$('#orgName').text(productInfo['orgName']);
@@ -60,37 +60,17 @@ define(function(require, exports, module) {
 						$('#remarks').text(productInfo['remarks']);
 						var attArray = jsonData['attArray'];
 						if (attArray && $(attArray).size() > 0) {
-							$userInfo.put('attImg', JSON.stringify(attArray));
-							$('#showImgBtn').show();
-							$('#contentMain').css('bottom', '50px');
+							$('.imgDetail').append('<p class="font14 title color-8d">产品图片</p>\n');
+							$(attArray).each(function(i, o) {
+								$('.imgDetail').append('<p><img src="' + o['imgSrc'] + '"></p>\n');
+							});
 						}
 						$('#contentMain').show();
-						pullToRefreshEvent();
 					}
 					bindEvent();
 				}
 			}
 		}
-	};
-	pullToRefreshEvent = function() {
-		currentWindow = $windowManager.current();
-		currentWindow.setPullToRefresh({
-			support: true,
-			height: "50px",
-			range: "200px",
-			contentdown: {
-				caption: "下拉回到产品详情"
-			},
-			contentover: {
-				caption: ""
-			},
-			contentrefresh: {
-				caption: ""
-			}
-		}, function() {
-			goTop();
-			currentWindow.endPullToRefresh();
-		});
 	};
 	plusReady = function() {
 		$common.switchOS(function() {

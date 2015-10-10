@@ -45,11 +45,11 @@ define(function(require, exports, module) {
 		$('#bottomPop').removeClass('current');
 	};
 	bindEvent = function() {
-		$common.touchSE($('.oneCard', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
-			var typeId = $(o).attr('typeId');
-			var uid = $(o).attr('uid');
+		$common.touchSE($('.openView', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
+			var typeId = $(o).closest('.oneCard').attr('typeId');
+			var uid = $(o).closest('.oneCard').attr('uid');
 			if (typeId && uid) {
-				$windowManager.create('product_view', 'viewHeader.html?id=' + uid + '&tab=favorites&typeId=' + typeId, false, true, function(show) {
+				$windowManager.create('product_view_header', 'viewHeader.html?id=' + uid + '&tab=favorites&typeId=' + typeId, false, true, function(show) {
 					show();
 				});
 			}
@@ -63,14 +63,31 @@ define(function(require, exports, module) {
 				}
 			});
 		});
-		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
+		$common.touchSE($('.viewSpan', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
+			event.stopPropagation();
+			var viewCount = $(o).closest('.oneCard').attr('viewCount');
+			var uid = $(o).closest('.oneCard').attr('uid');
+			var productName = $(o).closest('.oneCard').attr('productName');
+			if (viewCount&&uid&&productName) {
+				viewCount = parseInt(viewCount);
+				if (viewCount > 0) {
+					if (userId == $userInfo.get('userId')) {
+						$windowManager.create('product_view_list_header', '../productView/header.html?id=' + uid + '&tab=sale&productName='+productName, false, true, function(show) {
+							show();
+						});
+					}
 				}
-			});
+			}
+		});
+		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
+			$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
+			//			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
+			//				show();
+			//				var lunchWindow = $windowManager.getLaunchWindow();
+			//				if (lunchWindow) {
+			//					lunchWindow.evalJS('plusRest()');
+			//				}
+			//			});
 		});
 		$common.touchSE($('.commentBtn', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
 			event.stopPropagation();
@@ -78,7 +95,7 @@ define(function(require, exports, module) {
 			if (card) {
 				var uid = $(card).attr('uid');
 				if (uid) {
-					$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + uid, false, true, function(show) {
+					$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + uid + '&tab=favorites', false, true, function(show) {
 						show();
 					});
 				}
@@ -100,7 +117,7 @@ define(function(require, exports, module) {
 			}
 		});
 	};
-	loadData = function(callback,append) {
+	loadData = function(callback, append) {
 		if (!callback) {
 			$nativeUIManager.watting('正在加载...');
 		}
@@ -133,8 +150,8 @@ define(function(require, exports, module) {
 											sb.append(String.formatmodel($templete.fundItem(relationYn), {
 												productId: o['productId'],
 												userId: o['userId'],
-												viewCount:o['viewCount'],
-												relationCount:o['relationCount'],
+												viewCount: o['viewCount'],
+												relationCount: o['relationCount'],
 												typeId: typeId,
 												uid: uid,
 												typeName: o['typeName'],
@@ -149,8 +166,8 @@ define(function(require, exports, module) {
 											sb.append(String.formatmodel($templete.trustItem(relationYn), {
 												productId: o['productId'],
 												userId: o['userId'],
-												viewCount:o['viewCount'],
-												relationCount:o['relationCount'],
+												viewCount: o['viewCount'],
+												relationCount: o['relationCount'],
 												typeId: typeId,
 												uid: uid,
 												typeName: o['typeName'],

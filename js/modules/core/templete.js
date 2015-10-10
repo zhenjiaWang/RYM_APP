@@ -30,7 +30,7 @@ define(function(require, exports, module) {
 	};
 	exports.trustItem = function(relationYn, endFlag) {
 		var trustItem = new StringBuilder();
-		trustItem.append('<div class="oneCard" numSeq="{numSeq}" productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
+		trustItem.append('<div class="oneCard" viewCount="{viewCount}" numSeq="{numSeq}" productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
 		trustItem.append('<p class="font11 title color-a alignright">\n');
 		trustItem.append('<span class="tips tips-x floatleft strong">{typeName}</span>\n');
 		trustItem.append('<span class="floatleft marl5">{updateTime}</span>\n');
@@ -38,7 +38,7 @@ define(function(require, exports, module) {
 			trustItem.append('<span class="relationSpan" uid="{relationUserId}">关联自<em>{relationUserName}</em></span>\n');
 		}
 		trustItem.append('</p>\n');
-		trustItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong">{name}');
+		trustItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong openView">{name}');
 		if (endFlag) {
 			if (endFlag == 'Y') {
 				trustItem.append('<span class="tip tip-over font12">募集期结束</span>\n');
@@ -47,7 +47,7 @@ define(function(require, exports, module) {
 			}
 		}
 		trustItem.append('</p>\n');
-		trustItem.append('<div class="clearfix mart5">\n');
+		trustItem.append('<div class="clearfix mart5 openView">\n');
 		trustItem.append('<span class="font14 floatleft inlineblock marl10 p-top25 color-9">期限:<em class="color-6">{dayLimit}天</em></span>\n');
 		trustItem.append('<div class="floatright alignright marr10">\n');
 		trustItem.append('<p class="font11 color-a">预计年化率</p>\n');
@@ -55,7 +55,7 @@ define(function(require, exports, module) {
 		trustItem.append('</div>\n');
 		trustItem.append('</div>\n');
 		trustItem.append('<div class="cardBottom clearfix alignright mart10">\n');
-		trustItem.append('<span class="clearfix floatleft"><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft">{viewCount}</em></span>\n');
+		trustItem.append('<span class="clearfix floatleft viewSpan"><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft">{viewCount}</em></span>\n');
 		trustItem.append('<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">{relationCount}</em></span>\n');
 		trustItem.append('<span class="commentBtn"><i class="icon icon-comment"></i></span>\n');
 		trustItem.append('</div>\n');
@@ -64,7 +64,7 @@ define(function(require, exports, module) {
 	};
 	exports.fundItem = function(relationYn, endFlag) {
 		var fundItem = new StringBuilder();
-		fundItem.append('<div class="oneCard" numSeq="{numSeq}"  productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
+		fundItem.append('<div class="oneCard" viewCount="{viewCount}" numSeq="{numSeq}"  productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
 		fundItem.append('<p class="font11 title color-a alignright">\n');
 		fundItem.append('<span class="tips tips-j floatleft strong">{typeName}</span>\n');
 		fundItem.append('<span class="floatleft marl5">{updateTime}</span>\n');
@@ -72,7 +72,7 @@ define(function(require, exports, module) {
 			fundItem.append('<span class="relationSpan" uid="{relationUserId}">关联自<em>{relationUserName}</em></span>\n');
 		}
 		fundItem.append('</p>\n');
-		fundItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong">{name}');
+		fundItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong openView">{name}');
 		if (endFlag) {
 			if (endFlag == 'Y') {
 				fundItem.append('<span class="tip tip-over font12">募集期结束</span>\n');
@@ -81,7 +81,7 @@ define(function(require, exports, module) {
 			}
 		}
 		fundItem.append('</p>\n');
-		fundItem.append('<div class="clearfix mart5">\n');
+		fundItem.append('<div class="clearfix mart5 openView">\n');
 		fundItem.append('<span class="font14 floatleft inlineblock marl10 p-top25 color-9">无期限</span>\n');
 		fundItem.append('<div class="floatright alignright marr10">\n');
 		fundItem.append('<p class="font11 color-a">基金类型</p>\n');
@@ -89,7 +89,7 @@ define(function(require, exports, module) {
 		fundItem.append('</div>\n');
 		fundItem.append('</div>\n');
 		fundItem.append('<div class="cardBottom clearfix alignright mart10">\n');
-		fundItem.append('<span class="clearfix floatleft"><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft">{viewCount}</em></span>\n');
+		fundItem.append('<span class="clearfix floatleft viewSpan"><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft">{viewCount}</em></span>\n');
 		fundItem.append('<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">{relationCount}</em></span>\n');
 		fundItem.append('<span class="commentBtn"><i class="icon icon-comment"></i></span>\n');
 		fundItem.append('</div>\n');
@@ -198,4 +198,43 @@ define(function(require, exports, module) {
 		relationPlannerItem.append('</section>\n');
 		return relationPlannerItem.toString();
 	};
+	
+	exports.footer1 = function() {
+		var footerItem = new StringBuilder();
+		footerItem.append('<footer class="footer footerInner aligncenter clearfix" style="bottom:0;" id="footerTools">\n');
+		footerItem.append('<span dir="{action1}" class="nofloat block width-auto">{text1}</span>\n');
+		footerItem.append('</footer>\n');
+		return footerItem.toString();
+	};
+	
+	exports.footer2 = function() {
+		var footerItem = new StringBuilder();
+		footerItem.append('<footer class="footer footerInner clearfix" style="bottom:0;" id="footerTools">\n');
+		footerItem.append('<span dir="{action1}" class="floatleft marl15">{text1}</span>\n');
+		footerItem.append('<span dir="{action2}" class="floatright">{text2}</span>\n');
+		footerItem.append('</footer>\n');
+		return footerItem.toString();
+	};
+	
+	exports.footer3 = function() {
+		var footerItem = new StringBuilder();
+		footerItem.append('<footer class="footer footerInner footerThree  clearfix" style="bottom:0;" id="footerTools">\n');
+		footerItem.append('<span dir="{action1}" class="floatleft">{text1}</span>\n');
+		footerItem.append('<span dir="{action2}" class="floatleft">{text2}</span>\n');
+		footerItem.append('<span dir="{action3}" class="floatright">{text3}</span>\n');
+		footerItem.append('</footer>\n');
+		return footerItem.toString();
+	};
+	exports.footer4 = function() {
+		var footerItem = new StringBuilder();
+		footerItem.append('<footer class="footer footerInner footerFour  clearfix" style="bottom:0;" id="footerTools">\n');
+		footerItem.append('<span dir="{action1}" class="floatleft">{text1}</span>\n');
+		footerItem.append('<span dir="{action2}" class="floatleft">{text2}</span>\n');
+		footerItem.append('<span dir="{action3}" class="floatleft">{text3}</span>\n');
+		footerItem.append('<span dir="{action4}" class="floatright">{text4}</span>\n');
+		footerItem.append('</footer>\n');
+		return footerItem.toString();
+	};
+
+
 });

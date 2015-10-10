@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+		<script type="text/javascript" src="../../js/support.js"></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/productView/productViewList');
+		</script>
+
+		<body>
+			<div class="main">
+				<p class="p-bt10 p-top10 color-a font14 aligncenter" id="blank" style="display: none;">当前无浏览记录</p>
+				<div class="friend_list mart10 marl10" id="friendUL">
+				</div>
+			</div>
+		</body>
+
+</html>
