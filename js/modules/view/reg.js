@@ -242,7 +242,6 @@ define(function(require, exports, module) {
 			if(mobilePhone&&mobilePhone!=undefined&&mobilePhone!='undefined'){
 				$('#mobilePhone').val(mobilePhone).attr('readonly','readonly');
 			}
-			alert(openId)
 		}
 		bindEvent();
 		bindValidate();
