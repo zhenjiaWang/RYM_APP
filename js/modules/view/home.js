@@ -15,7 +15,7 @@ define(function(require, exports, module) {
 					currentProductWinId = 'product_user';
 				} else if (dir == 'friend') {
 					currentProductWinId = 'friend_list';
-				}else if (dir == 'tip') {
+				} else if (dir == 'tip') {
 					currentProductWinId = 'tip_list';
 				}
 				var productWindow = $windowManager.getById(currentProductWinId);
@@ -49,7 +49,7 @@ define(function(require, exports, module) {
 							plusWinId = 'product_user';
 						} else if (currentDir == 'friend') {
 							plusWinId = 'friend_list';
-						}else if (currentDir == 'tip') {
+						} else if (currentDir == 'tip') {
 							plusWinId = 'tip_list';
 						}
 					}
@@ -81,7 +81,7 @@ define(function(require, exports, module) {
 									$windowManager.current().append(friendHead);
 									$('span[dir!="plusBtn"]', '#footerAction').removeClass('current');
 									$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
-									$('#footerAction').attr('current',dir);
+									$('#footerAction').attr('current', dir);
 								}, false);
 							} else if (dir == 'room') {
 								var productHead = plus.webview.create("product/header.html", "product_header", {
@@ -93,9 +93,9 @@ define(function(require, exports, module) {
 									$windowManager.current().append(productHead);
 									$('span[dir!="plusBtn"]', '#footerAction').removeClass('current');
 									$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
-									$('#footerAction').attr('current',dir);
+									$('#footerAction').attr('current', dir);
 								}, false);
-							}else if (dir == 'tip') {
+							} else if (dir == 'tip') {
 								var productHead = plus.webview.create("tip/header.html", "tip_header", {
 									top: "0px",
 									bottom: "50px",
@@ -105,7 +105,7 @@ define(function(require, exports, module) {
 									$windowManager.current().append(productHead);
 									$('span[dir!="plusBtn"]', '#footerAction').removeClass('current');
 									$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
-									$('#footerAction').attr('current',dir);
+									$('#footerAction').attr('current', dir);
 								}, false);
 							}
 							if (oldDir) {
@@ -123,7 +123,7 @@ define(function(require, exports, module) {
 										$windowManager.closeById('friend_header', 'none');
 										$windowManager.closeById('friend_list', 'none');
 									}, 500);
-								}else if (oldDir == 'tip') {
+								} else if (oldDir == 'tip') {
 									$controlWindow.windowHide('tip_header');
 									$controlWindow.windowHide('tip_list');
 									window.setTimeout(function() {
@@ -148,11 +148,12 @@ define(function(require, exports, module) {
 			$windowManager.current().append(workHead);
 			if ($('span.current', '#footerAction').size() == 0) {
 				$('span', '#footerAction').first().addClass('current');
-				$('#footerAction').attr('current','room');
+				$('#footerAction').attr('current', 'room');
 			}
 		}, false);
 	};
 	loadTip = function() {
+		var badgeNumber = 0;
 		var followTipCount = $userInfo.get('followTipCount');
 		if (followTipCount) {
 			followTipCount = parseInt(followTipCount);
@@ -161,6 +162,7 @@ define(function(require, exports, module) {
 			} else {
 				$('span[dir="friend"]', '#footerAction').find('.icon-p').hide();
 			}
+			badgeNumber += followTipCount;
 		}
 		var messageTipCount = 0;
 		var visitCount = $userInfo.get('visitCount');
@@ -168,11 +170,31 @@ define(function(require, exports, module) {
 			visitCount = parseInt(visitCount);
 			messageTipCount += visitCount;
 		}
+		var likeCount = $userInfo.get('likeCount');
+		if (likeCount) {
+			likeCount = parseInt(likeCount);
+			messageTipCount += likeCount;
+		}
+		var commentCount = $userInfo.get('commentCount');
+		if (commentCount) {
+			commentCount = parseInt(commentCount);
+			messageTipCount += commentCount;
+		}
 		if (messageTipCount > 0) {
 			$('span[dir="tip"]', '#footerAction').find('.icon-p').show();
 		} else {
 			$('span[dir="tip"]', '#footerAction').find('.icon-p').hide();
 		}
+		badgeNumber += messageTipCount;
+		$common.switchOS(function() {
+			if (badgeNumber > 0) {
+				plus.runtime.setBadgeNumber(badgeNumber);
+			} else {
+				plus.runtime.setBadgeNumber(0);
+			}
+		}, function() {
+
+		});
 	};
 	plusReady = function() {
 		loadWebview();

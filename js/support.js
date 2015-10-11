@@ -539,6 +539,10 @@ function parseURL() {
 		if (num > 0) {
 			name = arrtmp[i].substring(0, num);
 			value = arrtmp[i].substr(num + 1);
+			if(value==null||value=='null'){
+				value='';
+			}
+			console.info(name+'='+value);
 			queryMap.put(name, value);
 		}
 	}

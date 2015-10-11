@@ -25,6 +25,14 @@ define(function(require, exports, module) {
 					$windowManager.create('visit_header', 'visitHeader.html', false, true, function(show) {
 						show();
 					});
+				}else if(dir=='like'){
+					$windowManager.create('like_header', 'likeHeader.html', false, true, function(show) {
+						show();
+					});
+				}else if(dir=='comment'){
+					$windowManager.create('comment_header', 'commentHeader.html', false, true, function(show) {
+						show();
+					});
 				}
 			}
 		});
@@ -61,7 +69,24 @@ define(function(require, exports, module) {
 				$('li[dir="visit"]', '#tipCountUL').find('.icon-p').hide();
 			}
 		}
-
+		var likeCount = $userInfo.get('likeCount');
+		if (likeCount) {
+			likeCount = parseInt(likeCount);
+			if (likeCount > 0) {
+				$('li[dir="like"]', '#tipCountUL').find('.icon-p').show().text(likeCount);
+			} else {
+				$('li[dir="like"]', '#tipCountUL').find('.icon-p').hide();
+			}
+		}
+		var commentCount = $userInfo.get('commentCount');
+		if (commentCount) {
+			commentCount = parseInt(commentCount);
+			if (commentCount > 0) {
+				$('li[dir="comment"]', '#tipCountUL').find('.icon-p').show().text(commentCount);
+			} else {
+				$('li[dir="comment"]', '#tipCountUL').find('.icon-p').hide();
+			}
+		}
 		var homeWin = $windowManager.getById($windowManager.getLaunchWindowId());
 		if (homeWin) {
 			homeWin.evalJS('loadTip()');

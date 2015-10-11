@@ -9,8 +9,9 @@ define(function(require, exports, module) {
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
 	var tab = queryMap.get('tab');
+	var userId = queryMap.get('userId');
 	loadWebview = function(url) {
-		var productCommentWin = plus.webview.create('comment.html?id=' + id+'&tab='+tab, "product_comment", {
+		var productCommentWin = plus.webview.create('comment.html?id=' + id+'&tab='+tab+'&userId='+userId, "product_comment", {
 			top: "50px",
 			bottom: "0px",
 			scrollIndicator: 'vertical'

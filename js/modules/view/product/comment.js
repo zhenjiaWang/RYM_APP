@@ -8,6 +8,7 @@ define(function(require, exports, module) {
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
 	var tab = queryMap.get('tab');
+	var userId = queryMap.get('userId');
 	var nextIndex = 0;
 	var currentWindow;
 	var productUserId = false;
@@ -146,9 +147,9 @@ define(function(require, exports, module) {
 	bindEvent = function() {
 		$common.touchSE($('li', '#commentUL'), function(event, startTouch, o) {}, function(event, o) {
 			var userName = $(o).attr('userName');
-			var userId = $(o).attr('userId');
+			var userID = $(o).attr('userId');
 			var uid = $(o).attr('uid');
-			if (userId && userName && uid) {
+			if (userID && userName && uid) {
 				if (productUserId && productUserId == $userInfo.get('userId')) {
 					$nativeUIManager.confactionSheetirm('请选择操作', '取消', [{
 							title: '回复'
@@ -160,7 +161,7 @@ define(function(require, exports, module) {
 								if (index == 1) {
 									var commentFooterWin = $windowManager.getById('product_commentFooter');
 									if (commentFooterWin) {
-										commentFooterWin.evalJS('reply("' + userId + '","' + userName + '")');
+										commentFooterWin.evalJS('reply("' + userID + '","' + userName + '")');
 									}
 								} else if (index == 2) {
 									$nativeUIManager.confirm('提示', '你确定要删除该条评论?', ['确定', '取消'], function() {
@@ -170,7 +171,7 @@ define(function(require, exports, module) {
 							}
 						});
 				} else {
-					if (userId == $userInfo.get('userId')) {
+					if (userID == $userInfo.get('userId')) {
 						$nativeUIManager.confactionSheetirm('请选择操作', '取消', [{
 								title: '回复'
 							}, {
@@ -181,7 +182,7 @@ define(function(require, exports, module) {
 									if (index == 1) {
 										var commentFooterWin = $windowManager.getById('product_commentFooter');
 										if (commentFooterWin) {
-											commentFooterWin.evalJS('reply("' + userId + '","' + userName + '")');
+											commentFooterWin.evalJS('reply("' + userID + '","' + userName + '")');
 										}
 									} else if (index == 2) {
 										$nativeUIManager.confirm('提示', '你确定要删除该条评论?', ['确定', '取消'], function() {
@@ -193,7 +194,7 @@ define(function(require, exports, module) {
 					} else {
 						var commentFooterWin = $windowManager.getById('product_commentFooter');
 						if (commentFooterWin) {
-							commentFooterWin.evalJS('reply("' + userId + '","' + userName + '")');
+							commentFooterWin.evalJS('reply("' + userID + '","' + userName + '")');
 						}
 					}
 				}
@@ -295,7 +296,8 @@ define(function(require, exports, module) {
 			dataType: 'json',
 			data: {
 				id: id,
-				tab: tab
+				tab: tab,
+				userId:userId
 			},
 			success: function(jsonData) {
 				if (jsonData) {
@@ -319,7 +321,7 @@ define(function(require, exports, module) {
 						var sb = new StringBuilder();
 						if (commentArray && $(commentArray).size() > 0) {
 							$(commentArray).each(function(i, o) {
-								sb.append(String.formatmodel($templete.commentItem(o['replyFlag']), {
+								sb.append(String.formatmodel($templete.commentContentItem(o['replyFlag']), {
 									uid: o['uid'],
 									userId: o['userId'],
 									headImgUrl: o['headImgUrl'],

@@ -96,7 +96,7 @@ define(function(require, exports, module) {
 		fundItem.append('</div>\n');
 		return fundItem.toString();
 	};
-	exports.commentItem = function(replyFlag) {
+	exports.commentContentItem = function(replyFlag) {
 		var commentItem = new StringBuilder();
 		commentItem.append('<li class="clearfix" userId="{userId}" userName="{userName}" uid="{uid}">\n');
 		commentItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
@@ -251,5 +251,40 @@ define(function(require, exports, module) {
 		visitItem.append('</div>\n');
 		visitItem.append('</section>\n');
 		return visitItem.toString();
+	};
+	
+	exports.likeItem = function() {
+		var likeItem = new StringBuilder();
+		likeItem.append('<section class="personBoard" userId="{userId}" productId="{productId}">\n');
+		likeItem.append('<div class="userInfo mart5 clearfix">\n');
+		likeItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
+		likeItem.append('<div class="floatleft marl15 mart10 font13">\n');
+		likeItem.append('<p class="font17">{userName}</p>\n');
+		likeItem.append('<p class="mart10">{type}</p>\n');
+		likeItem.append('</div>\n');
+		likeItem.append('<div class="floatright alignright color-9">\n');
+		likeItem.append('<p class="font11 alignright">{updateTime}赞了你的产品</p>\n');
+		likeItem.append('<p class="color-6">{productName}</p>\n');
+		likeItem.append('</div>\n');
+		likeItem.append('</div>\n');
+		likeItem.append('</section>\n');
+		return likeItem.toString();
+	};
+	exports.commentItem = function() {
+		var commentItem = new StringBuilder();
+		commentItem.append('<section class="personBoard" userId="{userId}" productId="{productId}">\n');
+		commentItem.append('<div class="userInfo mart5 clearfix">\n');
+		commentItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
+		commentItem.append('<div class="floatleft marl15 mart10 font13">\n');
+		commentItem.append('<p class="font17">{userName}</p>\n');
+		commentItem.append('<p class="mart10">{type}</p>\n');
+		commentItem.append('</div>\n');
+		commentItem.append('<div class="floatright color-9">\n');
+		commentItem.append('<p class="font11 alignright">{updateTime}</p>\n');
+		commentItem.append('<pre class="color-6">{content}</pre>\n');
+		commentItem.append('</div>\n');
+		commentItem.append('</div>\n');
+		commentItem.append('</section>\n');
+		return commentItem.toString();
 	};
 });

@@ -9,16 +9,17 @@ define(function(require, exports, module) {
 	var queryMap = parseURL();
 	var id = queryMap.get('id');
 	var tab = queryMap.get('tab');
+	var userId = queryMap.get('userId');
 	reset = function() {
 		$('#content').attr('replyUserId', '').text('');
 		$('#replyTip').text('').hide();
 	};
-	reply = function(userId, userName) {
+	reply = function(uid, userName) {
 		$nativeUIManager.watting();
 		window.setTimeout(function() {
 			$keyManager.openSoftKeyboard(function() {
 				$('#replyTip').text('回复 ' + userName).show();
-				$('#content').attr('replyUserId', userId).text('').get(0).focus();
+				$('#content').attr('replyUserId', uid).text('').get(0).focus();
 				$nativeUIManager.wattingClose();
 			});
 		}, 500)
@@ -64,7 +65,7 @@ define(function(require, exports, module) {
 		});
 	};
 	loadWebview = function() {
-		var commontFooter = plus.webview.create("commentHeader.html?id=" + id+'&tab='+tab, "product_commentHeader", {
+		var commontFooter = plus.webview.create("commentHeader.html?id=" + id+'&tab='+tab+'&userId='+userId, "product_commentHeader", {
 			top: "0px",
 			bottom: "50px",
 			scrollIndicator: 'vertical'
