@@ -542,7 +542,6 @@ function parseURL() {
 			if(value==null||value=='null'){
 				value='';
 			}
-			console.info(name+'='+value);
 			queryMap.put(name, value);
 		}
 	}
