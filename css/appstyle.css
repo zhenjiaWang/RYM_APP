@@ -147,7 +147,7 @@ label.checkbox,label.radio,label.text{padding-left:4px;vertical-align:top;}
 .icon-userB,.icon-more,.icon-link,.icon-addf{width:50px;height:49px;background-image: url(../img/icon-user.png);background-size:25px;background-position:15.5px center;}
 .icon-more,.icon-link{background-image: url(../img/icon-more.png);background-position:10.5px center;}
 .icon-link{background-image: url(../img/icon-link.png);background-size:50%;}
-.icon-addf{background-image: url(../img/icon-add.png);background-size:55%;}
+.icon-addf{background-image: url(../img/icon-add.png);background-size:55%;position: relative;}
 .icon-home{background-image: url(../img/icon-home.png);}
 .current .icon-home{background-image: url(../img/icon-home-h.png);}
 .icon-friend{background-image: url(../img/icon-3-big.png);}
@@ -190,9 +190,12 @@ margin-top:-11px;transition:0.3s;-webkit-transition:0.3s;}
 .icon-group3{background-image: url(../img/icon-group3.png);}
 .current .icon-group3{background-image: url(../img/icon-group3h.png);}
 .current .icon-3b{background-image: url(../img/icon-3bh.png);}
-.footer span i.icon.icon-p,.feedList span i.icon.icon-p{font-size:10px;position: absolute;text-align:center;width:14px;height:14px;line-height:14px;color:#fff;border-radius:50%;background:#ff030f;top:5px;left:50%;margin-left:2px;}
+.footer span i.icon.icon-p,.feedList span i.icon.icon-p,i.icon.icon-p{font-size:10px;position: absolute;text-align:center;width:14px;height:14px;line-height:14px;color:#fff;border-radius:50%;background:#ff030f;top:5px;left:50%;margin-left:2px;}
 .feedList span.userPhoto{position: relative;}
 .feedList span i.icon.icon-p{left:38px;top:-2px;}
+.icon-addf i.icon.icon-p{width:6px;height:6px;left:28px;top:12px;}
+.inputList li i.icon.icon-p{width:20px;height:20px;line-height:20px;left: initial;right:40px;top:50%;margin-top:-10px;
+font-size:12px;}
 /*启动登陆注册页面*/
 .begin{height:100%;background: url(../img/pageone.jpg);background-size:100% auto;}
 .logo,.logo img{width:200px;}
@@ -250,7 +253,7 @@ margin-top:-11px;transition:0.3s;-webkit-transition:0.3s;}
 .imgList li{width:100%;overflow-y:hidden;overflow-x: auto;}
 .imgList .ImgBox img{width:120px;float: left;margin:0 5px;}
 .ulBg li{min-height:45px;background: url(../img/arrow-r.png) 95% 18px no-repeat;background-size:8px;}
-.addBtn{display:inline-block;height:24px;line-height:24px;font-size:12px;border:1px solid #1db3df;background:#16c1f3;border-radius:2px;color:#fff;padding:0 10px;position: absolute;right:15px;top:24px;}
+.addBtn{display:inline-block;height:24px;line-height:24px;font-size:12px;background:#16c1f3;border-radius:2px;color:#fff;padding:0 10px;position: absolute;right:15px;top:24px;}
 .addBtn.nobg{right:6px;}
 .btnAgree{background:#22ac38;border-color:#22ac38;}
 .btnRefuse{background:#eb3f3f;border-color:#eb3f3f;}

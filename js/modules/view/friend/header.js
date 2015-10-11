@@ -24,7 +24,19 @@ define(function(require, exports, module) {
 			}, false);
 		}
 	}
+	loadTip = function() {
+		var followTipCount = $userInfo.get('followTipCount');
+		if (followTipCount) {
+			followTipCount = parseInt(followTipCount);
+			if (followTipCount > 0) {
+				$('#plusBtn').find('.icon-p').show();
+			} else {
+				$('#plusBtn').find('.icon-p').hide();
+			}
+		}
+	};
 	plusReady = function() {
+		loadTip();
 		loadWebview();
 		bindEvent();
 	};

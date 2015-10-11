@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+		<script type="text/javascript" src="../../js/support.js"></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/tip/tipList');
+		</script>
+
+		<body>
+			<div class="main">
+				<ul class="inputList ulBg mart-1 ulIcon nopadding" id="tipCountUL">
+					<li class="clearfix" dir="comment">
+						<i class="icon icon-msg-big floatleft"></i>
+						<span class="lable floatleft">评论</span>
+						<i class="icon icon-p" style="display: none;"></i>
+					</li>
+					<li class="clearfix" dir="visit">
+						<i class="icon icon-earth floatleft"></i>
+						<span class="lable floatleft">访问</span>
+						<i class="icon icon-p" style="display: none;"></i>
+					</li>
+					<li class="clearfix" dir="relation">
+						<i class="icon icon-link2 floatleft"></i>
+						<span class="lable floatleft">关联</span>
+						<i class="icon icon-p" style="display: none;"></i>
+					</li>
+					<li class="clearfix" dir="like">
+						<i class="icon icon-hand3 floatleft"></i>
+						<span class="lable floatleft">点赞</span>
+						<i class="icon icon-p" style="display: none;"></i>
+					</li>
+				</ul>
+				<!--<ul class="inputList feedList mart20">
+					<li class="clearfix">
+						<span class="userPhoto floatleft"><img src="../../img/1.jpg"></span>
+						<div class="marl60 marr10">
+							<p class="font12 alignright clearfix">
+								<span class="font17 floatleft">刘德华</span>
+								<span class="color-a">下午6:44</span>
+							</p>
+							<p class="font14 color-9">跟你私信说点什么好呢，扯会儿蛋吧！</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<span class="userPhoto floatleft"><img src="../../img/2.jpg"></span>
+						<div class="marl60 marr10">
+							<p class="font12 alignright clearfix">
+								<span class="font17 floatleft">刘德华</span>
+								<span class="color-a">下午6:44</span>
+							</p>
+							<p class="font14 color-9">跟你私信说点什么好呢?...扯会儿蛋吧跟你私信说点什么好呢?...扯会儿蛋吧跟你私信说点什么好呢?...扯会儿蛋吧！</p>
+						</div>
+					</li>
+					<li class="clearfix">
+						<span class="userPhoto floatleft"><img src="../../img/3.jpg"></span>
+						<div class="marl60 marr10">
+							<p class="font12 alignright clearfix">
+								<span class="font17 floatleft">刘德华</span>
+								<span class="color-a">下午6:44</span>
+							</p>
+							<p class="font14 color-9">跟你私信说点什么好呢，扯会儿蛋吧！</p>
+						</div>
+					</li>
+				</ul>-->
+			</div>
+			<!--底部弹出begin-->
+			<footer class="footer footerMask" style="height:99px;bottom:-99px;"></footer>
+			<div class="bottomPop aligncenter nobg" id="bottomPop">
+				<span class="popBtn" id="addProductBtn">
+				<i class="icon icon-plus-big"></i>
+				<em class="font11 color-6">添加产品</em>
+			</span>
+				<span class="popBtn" id="relationProductBtn">
+				<i class="icon icon-6"></i>
+				<em class="font11 color-6">关联产品</em>
+			</span>
+			</div>
+			<!--底部弹出over-->
+		</body>
+
+</html>

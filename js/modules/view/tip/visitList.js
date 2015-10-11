@@ -14,7 +14,7 @@ define(function(require, exports, module) {
 	var currentWindow;
 	onRefresh = function() {
 		nextIndex = 0;
-		$('#friendUL').attr('nextIndex', 0);
+		$('#visitDIV').attr('nextIndex', 0);
 		window.setTimeout(function() {
 			loadData(function() {
 				currentWindow.endPullToRefresh();
@@ -39,84 +39,22 @@ define(function(require, exports, module) {
 		}, onRefresh);
 	};
 	bindEvent = function() {
-		$('#keyword').off('keydown').on('keydown', function(e) {
-			e = (e) ? e : ((window.event) ? window.event : "")
-			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
-			if (keyCode == 13) {
-				var value = $(this).val();
-				if (value == '') {
-					loadData();
-				}
-				$('#keyword').trigger('blur');
-			}
-		});
-		$('#keyword').off('blur').on('blur', function(e) {
-			var value = $(this).val();
-			if (value == '') {
-				loadData();
-			}
-		});
-		$('#keyword').off('keyup').on('keyup', function(e) {
-			var value = $(this).val();
-			if (value && value != '') {
-				loadData();
-			}
-		});
-		$common.touchSE($('.UserCard', '#friendUL'), function(event, startTouch, o) {}, function(event, o) {
+
+		$common.touchSE($('.personBoard', '#visitDIV'), function(event, startTouch, o) {}, function(event, o) {
 			var userId = $(o).attr('userId');
 			if (userId) {
-				$windowManager.create('product_header_pop', '../product/headerPop.html?userId='+userId, false, true, function(show) {
+				$windowManager.create('product_header_pop', '../product/headerPop.html?userId=' + userId, false, true, function(show) {
 					show();
 				});
 			}
 		});
-		$common.touchSE($('.rightBtnAdd'), function(event, startTouch, o) {
-			event.stopPropagation();
-		}, function(event, o) {
-			event.stopPropagation();
-			var section = $(o).closest('section');
-			var friendId = $(section).attr('userId');
-			if (friendId) {
-				$nativeUIManager.watting('请稍等...');
-				$common.refreshToken(function(tokenId) {
-					$.ajax({
-						type: 'POST',
-						url: $common.getRestApiURL() + '/social/friendPlanner/addFriend',
-						dataType: 'json',
-						data: {
-							'org.guiceside.web.jsp.taglib.Token': tokenId,
-							friendId: friendId
-						},
-						success: function(jsonData) {
-							if (jsonData) {
-								if (jsonData['result'] == '0') {
-									$nativeUIManager.wattingTitle('关注成功!');
-									$('.icon-new', section).remove();
-									$(o).text('共同好友').removeClass('rightBtnAdd').off('touchstart').off('touchend');
-									window.setTimeout(function() {
-										$nativeUIManager.wattingClose();
-									}, 1000);
-								} else {
-									$nativeUIManager.wattingClose();
-									$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
-								}
-							}
-						},
-						error: function(XMLHttpRequest, textStatus, errorThrown) {
-							$nativeUIManager.wattingClose();
-							$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
-						}
-					});
-				});
-			}
-		});
 		document.addEventListener("plusscrollbottom", function() {
-			var next = $('#friendUL').attr('nextIndex');
+			var next = $('#visitDIV').attr('nextIndex');
 			if (next) {
 				if (next > 0) {
 					nextIndex = next;
 					$nativeUIManager.watting('正在加载更多...');
-					$('#friendUL').attr('nextIndex', 0);
+					$('#visitDIV').attr('nextIndex', 0);
 					window.setTimeout(function() {
 						loadData(function() {
 							$nativeUIManager.wattingClose();
@@ -127,53 +65,51 @@ define(function(require, exports, module) {
 		});
 	};
 	loadData = function(callback, append) {
-		$('.checkWord').hide();
 		if (!callback) {
 			$nativeUIManager.watting('正在加载...');
 		}
 		$.ajax({
 			type: 'POST',
-			url: $common.getRestApiURL() + '/product/info/viewList',
+			url: $common.getRestApiURL() + '/product/info/visitList',
 			dataType: 'json',
 			data: {
-				id: id,
-				tab: tab,
 				start: nextIndex > 0 ? nextIndex : ''
 			},
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
-						var viewArray = jsonData['viewArray'];
+						var tipListWin = $windowManager.getById('tip_list');
+						if (tipListWin) {
+							$userInfo.put('visitCount','0');
+							tipListWin.evalJS('loadTip()');
+						}
+						var visitArray = jsonData['visitArray'];
 						var sb = new StringBuilder();
-						if (viewArray && $(viewArray).size() > 0) {
+						if (visitArray && $(visitArray).size() > 0) {
 							$('#blank').hide();
-							$('.checkWord').show();
-							$(viewArray).each(function(i, o) {
-								var productInfo=o['productInfo'];
-								sb.append(String.formatmodel($templete.friendFollowPlannerItem(o['state'] == '-1'), {
+							$(visitArray).each(function(i, o) {
+								sb.append(String.formatmodel($templete.visitItem(), {
 									userId: o['userId'],
 									userName: o['userName'],
 									headImgUrl: o['headImgUrl'],
-									saleCount: o['saleCount'],
-									financialContent:productInfo['financialContent'],
-									trustContent:productInfo['trustContent'],
-									fundContent:productInfo['fundContent']
+									type: o['type'],
+									updateTime: o['updateTime']
 								}));
 							});
 						} else {
 							$('#blank').show();
 						}
 						if (append) {
-							$('#friendUL').append(sb.toString());
+							$('#visitDIV').append(sb.toString());
 						} else {
-							$('#friendUL').empty().append(sb.toString());
+							$('#visitDIV').empty().append(sb.toString());
 						}
 						nextIndex = 0;
-						$('#friendUL').attr('nextIndex', 0);
+						$('#visitDIV').attr('nextIndex', 0);
 						var page = jsonData['page'];
 						if (page) {
 							if (page['hasNextPage'] == true) {
-								$('#friendUL').attr('nextIndex', page['nextIndex']);
+								$('#visitDIV').attr('nextIndex', page['nextIndex']);
 							}
 						}
 						pullToRefreshEvent();

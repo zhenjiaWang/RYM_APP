@@ -235,6 +235,21 @@ define(function(require, exports, module) {
 		footerItem.append('</footer>\n');
 		return footerItem.toString();
 	};
-
-
+	
+	exports.visitItem = function() {
+		var visitItem = new StringBuilder();
+		visitItem.append('<section class="personBoard" userId="{userId}">\n');
+		visitItem.append('<div class="userInfo mart5 clearfix">\n');
+		visitItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
+		visitItem.append('<div class="floatleft marl15 mart10 font13">\n');
+		visitItem.append('<p class="font17">{userName}</p>\n');
+		visitItem.append('<p class="mart10">{type}</p>\n');
+		visitItem.append('</div>\n');
+		visitItem.append('<div class="floatright mart15 color-9">\n');
+		visitItem.append('<p class="font11 alignright">{updateTime}访问了你</p>\n');
+		visitItem.append('</div>\n');
+		visitItem.append('</div>\n');
+		visitItem.append('</section>\n');
+		return visitItem.toString();
+	};
 });

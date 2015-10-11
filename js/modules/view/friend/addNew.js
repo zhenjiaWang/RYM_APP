@@ -66,6 +66,10 @@ define(function(require, exports, module) {
 										if (homeWin) {
 											homeWin.evalJS('loadTip()');
 										}
+										var friendHeaderWin = $windowManager.getById('friend_header');
+										if (friendHeaderWin) {
+											friendHeaderWin.evalJS('loadTip()');
+										}
 										$nativeUIManager.wattingTitle('关注成功!');
 										$(o).text(jsonData['text']).addClass('addDone');
 										window.setTimeout(function() {

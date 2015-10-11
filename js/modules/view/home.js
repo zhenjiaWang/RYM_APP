@@ -15,6 +15,8 @@ define(function(require, exports, module) {
 					currentProductWinId = 'product_user';
 				} else if (dir == 'friend') {
 					currentProductWinId = 'friend_list';
+				}else if (dir == 'tip') {
+					currentProductWinId = 'tip_list';
 				}
 				var productWindow = $windowManager.getById(currentProductWinId);
 				if (productWindow) {
@@ -35,22 +37,20 @@ define(function(require, exports, module) {
 		}, function(event, o) {
 			var dir = $(o).attr('dir');
 			if (dir) {
-				if (dir == 'tip') {
-					$nativeUIManager.alert('提示', '和微信一起开放', 'OK', function() {});
-					return false;
-				}
 				if (dir == 'customer') {
 					$nativeUIManager.alert('提示', '和微信一起开放', 'OK', function() {});
 					return false;
 				}
 				if (dir == 'plusBtn') {
-					var currentDir = $('span.current', '#footerAction').attr('dir');
+					var currentDir = $('#footerAction').attr('current');
 					var plusWinId = false;
 					if (currentDir) {
 						if (currentDir == 'room') {
 							plusWinId = 'product_user';
 						} else if (currentDir == 'friend') {
 							plusWinId = 'friend_list';
+						}else if (currentDir == 'tip') {
+							plusWinId = 'tip_list';
 						}
 					}
 					if (plusWinId) {
@@ -79,8 +79,9 @@ define(function(require, exports, module) {
 								});
 								friendHead.addEventListener("loaded", function() { //叶面加载完成后才显示
 									$windowManager.current().append(friendHead);
-									$('span.current', '#footerAction').removeClass('current');
+									$('span[dir!="plusBtn"]', '#footerAction').removeClass('current');
 									$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
+									$('#footerAction').attr('current',dir);
 								}, false);
 							} else if (dir == 'room') {
 								var productHead = plus.webview.create("product/header.html", "product_header", {
@@ -90,8 +91,21 @@ define(function(require, exports, module) {
 								});
 								productHead.addEventListener("loaded", function() { //叶面加载完成后才显示
 									$windowManager.current().append(productHead);
-									$('span.current', '#footerAction').removeClass('current');
+									$('span[dir!="plusBtn"]', '#footerAction').removeClass('current');
 									$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
+									$('#footerAction').attr('current',dir);
+								}, false);
+							}else if (dir == 'tip') {
+								var productHead = plus.webview.create("tip/header.html", "tip_header", {
+									top: "0px",
+									bottom: "50px",
+									scrollIndicator: 'vertical'
+								});
+								productHead.addEventListener("loaded", function() { //叶面加载完成后才显示
+									$windowManager.current().append(productHead);
+									$('span[dir!="plusBtn"]', '#footerAction').removeClass('current');
+									$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
+									$('#footerAction').attr('current',dir);
 								}, false);
 							}
 							if (oldDir) {
@@ -108,6 +122,13 @@ define(function(require, exports, module) {
 									window.setTimeout(function() {
 										$windowManager.closeById('friend_header', 'none');
 										$windowManager.closeById('friend_list', 'none');
+									}, 500);
+								}else if (oldDir == 'tip') {
+									$controlWindow.windowHide('tip_header');
+									$controlWindow.windowHide('tip_list');
+									window.setTimeout(function() {
+										$windowManager.closeById('tip_header', 'none');
+										$windowManager.closeById('tip_list', 'none');
 									}, 500);
 								}
 							}
@@ -127,18 +148,30 @@ define(function(require, exports, module) {
 			$windowManager.current().append(workHead);
 			if ($('span.current', '#footerAction').size() == 0) {
 				$('span', '#footerAction').first().addClass('current');
+				$('#footerAction').attr('current','room');
 			}
 		}, false);
 	};
-	loadTip=function(){
-		var followTipCount=$userInfo.get('followTipCount');
-		if(followTipCount){
-			followTipCount=parseInt(followTipCount);
-			if(followTipCount>0){
-				$('span[dir="friend"]','#footerAction').find('.icon-p').show().text(followTipCount);
-			}else{
-				$('span[dir="friend"]','#footerAction').find('.icon-p').hide();
+	loadTip = function() {
+		var followTipCount = $userInfo.get('followTipCount');
+		if (followTipCount) {
+			followTipCount = parseInt(followTipCount);
+			if (followTipCount > 0) {
+				$('span[dir="friend"]', '#footerAction').find('.icon-p').show();
+			} else {
+				$('span[dir="friend"]', '#footerAction').find('.icon-p').hide();
 			}
+		}
+		var messageTipCount = 0;
+		var visitCount = $userInfo.get('visitCount');
+		if (visitCount) {
+			visitCount = parseInt(visitCount);
+			messageTipCount += visitCount;
+		}
+		if (messageTipCount > 0) {
+			$('span[dir="tip"]', '#footerAction').find('.icon-p').show();
+		} else {
+			$('span[dir="tip"]', '#footerAction').find('.icon-p').hide();
 		}
 	};
 	plusReady = function() {
