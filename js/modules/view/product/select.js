@@ -8,6 +8,7 @@ define(function(require, exports, module) {
 	var controlId = queryMap.get('controlId');
 	var controlValue = queryMap.get('controlValue');
 	var title = queryMap.get('title');
+	var win = queryMap.get('win');
 	bindEvent = function() {
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
@@ -16,7 +17,7 @@ define(function(require, exports, module) {
 			if(!$(o).hasClass('choosed')){
 				$('li','#selectItemUL').removeClass('choosed');
 				$(o).addClass('choosed');
-				var productAddWindow=$windowManager.getById('product_add');
+				var productAddWindow=$windowManager.getById(win);
 				if(productAddWindow){
 					var uid=$(o).attr('uid');
 					var text=$('span',o).text();

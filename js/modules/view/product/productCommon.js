@@ -355,6 +355,48 @@ define(function(require, exports, module) {
 			});
 		});
 	};
+	editActionCommon = function() {
+		$nativeUIManager.watting('请稍等...');
+		$.ajax({
+			type: 'POST',
+			url: $common.getRestApiURL() + '/product/info/editData',
+			dataType: 'json',
+			data: {
+				id: ID
+			},
+			success: function(jsonData) {
+				if (jsonData) {
+					if (jsonData['result'] == '0') {
+						var editType = jsonData['editType'];
+						$userInfo.put('editJson', JSON.stringify(jsonData));
+						var editUrl = editType;
+						var productInfo = jsonData['productInfo'];
+						if (productInfo) {
+							var typeId = productInfo['typeId'];
+							if (typeId == 1) {
+								editUrl += 'Financial.html';
+							} else if (typeId == 2) {
+								editUrl += 'Fund.html';
+							} else if (typeId == 3) {
+								editUrl += 'Trust.html';
+							}
+						}
+						$windowManager.create('product_edit', editUrl, false, true, function(show) {
+							show();
+							$nativeUIManager.wattingClose();
+						});
+					} else {
+						$nativeUIManager.wattingClose();
+						$nativeUIManager.alert('提示', '获取产品信息失败', 'OK', function() {});
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				$nativeUIManager.wattingClose();
+				$nativeUIManager.alert('提示', '获取产品信息失败', 'OK', function() {});
+			}
+		});
+	};
 	exports.newOnProductSale = function(id, numSeq) {
 		$nativeUIManager.watting('请稍等...');
 		$common.refreshToken(function(tokenId) {
@@ -455,10 +497,10 @@ define(function(require, exports, module) {
 				}, function() {});
 			} else if (action == 'lock') {
 				$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
-//				$nativeUIManager.confirm('提示', '你确定要锁定产品，解除关联关系?', ['确定', '取消'], function() {
-//					lockActionCommon();
-//				}, function() {});
-			}else if (action == 'comment') {
+				//				$nativeUIManager.confirm('提示', '你确定要锁定产品，解除关联关系?', ['确定', '取消'], function() {
+				//					lockActionCommon();
+				//				}, function() {});
+			} else if (action == 'comment') {
 				$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + ID + '&tab=' + productTab, false, true, function(show) {
 					show();
 				});
@@ -486,7 +528,7 @@ define(function(require, exports, module) {
 								if (moreAction == 'share') {
 									$nativeUIManager.alert('提示', '微信浏览域名没办法用，暂关闭', 'OK', function() {});
 								} else if (moreAction == 'edit') {
-									$nativeUIManager.alert('提示', '测试需要监控原始数据，暂关闭', 'OK', function() {});
+									editActionCommon();
 								}
 							}
 						}

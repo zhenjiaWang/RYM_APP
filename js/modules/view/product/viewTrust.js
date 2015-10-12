@@ -24,7 +24,7 @@ define(function(require, exports, module) {
 					if (planner) {
 						$('#userName').text(planner['userName']);
 						$('#plannerNo').text(planner['plannerNo']);
-						$('#orgName').text(planner['orgName']);
+						$('#plannerOrgName').text(planner['orgName']);
 						$('#signature').text(planner['signature']);
 						$('#follow').text(planner['follow']);
 						$('#friends').text(planner['friends']);

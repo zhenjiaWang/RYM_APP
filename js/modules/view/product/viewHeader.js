@@ -15,7 +15,7 @@ define(function(require, exports, module) {
 	var productName;
 	var numSeq;
 	doAction = function(action) {
-		$productCommon.action(id, tab, productName, productId, numSeq, userId,action);
+		$productCommon.action(id, tab, productName, productId, numSeq, userId, action);
 	};
 	onAction = function(numSeq) {
 		$productCommon.onProductSale(id, numSeq);
@@ -68,6 +68,25 @@ define(function(require, exports, module) {
 			}
 		});
 	};
+	loadViewData = function() {
+		$.ajax({
+			type: 'POST',
+			url: $common.getRestApiURL() + '/product/info/view',
+			dataType: 'json',
+			data: {
+				id: id,
+				tab: tab
+			},
+			success: function(jsonData) {
+				if (jsonData) {
+					if (jsonData['result'] == '0') {
+						$userInfo.put('productView', JSON.stringify(jsonData));
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {}
+		});
+	};
 	loadData = function() {
 		$nativeUIManager.watting('请稍等...');
 		$.ajax({
@@ -108,7 +127,7 @@ define(function(require, exports, module) {
 		});
 	};
 	loadWebview = function(typeId) {
-		var productFooterWin = plus.webview.create('viewFooter.html?typeId='+typeId, "product_view_footer", {
+		var productFooterWin = plus.webview.create('viewFooter.html?typeId=' + typeId, "product_view_footer", {
 			top: "50px",
 			bottom: "0px",
 			scrollIndicator: 'vertical'

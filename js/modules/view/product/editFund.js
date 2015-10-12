@@ -11,24 +11,30 @@ define(function(require, exports, module) {
 	var typeName = queryMap.get('typeName');
 	var server = "/common/common/uploadData";
 	var files = [];
-	saveData = function(numSeq) {
-		$nativeUIManager.watting('正在发布产品...');
+	saveData = function() {
+		$nativeUIManager.watting('正在保存产品...');
 		$common.refreshToken(function(tokenId) {
 			$('#org\\.guiceside\\.web\\.jsp\\.taglib\\.Token').val(tokenId);
-			$('#numSeq').val(numSeq);
 			$.ajax({
 				type: 'POST',
-				url: $common.getRestApiURL() + '/product/info/saveMobile',
+				url: $common.getRestApiURL() + '/product/info/edit',
 				dataType: 'json',
 				data: $('#editForm').serialize().replace(/\+/g, " "),
 				success: function(jsonData) {
 					if (jsonData) {
 						if (jsonData['result'] == '0') {
-							$windowManager.reloadOtherWindow('product_user', true);
-							window.setTimeout(function() {
-								$nativeUIManager.wattingClose();
-								$windowManager.close();
-							}, 300);
+							$nativeUIManager.wattingTitle('保存成功 重新加载产品');
+							var productViewHeader = $windowManager.getById('product_view_header');
+							if (productViewHeader) {
+								productViewHeader.evalJS('loadViewData()');
+								window.setTimeout(function() {
+									$windowManager.reloadOtherWindow('product_view', true);
+									window.setTimeout(function() {
+										$nativeUIManager.wattingClose();
+										$windowManager.close();
+									}, 300);
+								}, 1000);
+							}
 						} else {
 							$nativeUIManager.wattingClose();
 							$nativeUIManager.alert('提示', '保存失败', 'OK', function() {});
@@ -97,6 +103,53 @@ define(function(require, exports, module) {
 		}
 		task.start();
 	};
+	selectItem = function(controlId, uid, text) {
+		var li = $('#' + controlId).closest('li');
+		if (li) {
+			$('.placeTxt', li).text(text);
+			$('#' + controlId).val(uid);
+			$validator.check(controlId);
+		}
+	};
+	loadOrg = function(orgCompany) {
+		$nativeUIManager.watting('请稍等...');
+		var controlValue = $('#productOrgId').val();
+		$windowManager.create('selectOrg', 'selectOrg.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue + '&win=product_edit', false, true, function(show) {
+			show();
+			$nativeUIManager.wattingClose();
+		});
+	};
+	loadFundType = function() {
+		$nativeUIManager.watting('请稍等...');
+		$.ajax({
+			type: 'POST',
+			url: $common.getRestApiURL() + '/common/common/fundTypeList',
+			dataType: 'json',
+			data: {},
+			success: function(jsonData) {
+				if (jsonData) {
+					if (jsonData['result'] == '0') {
+						var fundTypeList = jsonData['fundTypeList'];
+						if (fundTypeList && $(fundTypeList).size() > 0) {
+							$userInfo.put("selectList", JSON.stringify(fundTypeList));
+							var controlValue = $('#fundType').val();
+							$windowManager.create('select', 'select.html?title=基金类型&controlId=fundType&controlValue=' + controlValue + '&win=product_edit', false, true, function(show) {
+								show();
+								$nativeUIManager.wattingClose();
+							});
+						}
+					} else {
+						$nativeUIManager.wattingClose();
+						$nativeUIManager.alert('提示', '获取数据失败', 'OK', function() {});
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				$nativeUIManager.wattingClose();
+				$nativeUIManager.alert('提示', '获取数据失败', 'OK', function() {});
+			}
+		});
+	};
 	deleteAtt = function(attId, type) {
 		$nativeUIManager.watting('请稍等...');
 		$common.refreshToken(function(tokenId) {
@@ -128,55 +181,6 @@ define(function(require, exports, module) {
 			});
 		});
 	};
-	selectItem = function(controlId, uid, text) {
-		var li = $('#' + controlId).closest('li');
-		if (li) {
-			$('.placeTxt', li).text(text);
-			$('#' + controlId).val(uid);
-			$validator.check(controlId);
-		}
-	};
-	loadOrg = function(orgCompany) {
-		$nativeUIManager.watting('请稍等...');
-		var controlValue = $('#productOrgId').val();
-		$windowManager.create('selectOrg', 'selectOrg.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue+'&win=product_add', false, true, function(show) {
-			show();
-			$nativeUIManager.wattingClose();
-		});
-	};
-	loadPayoffType = function() {
-		$nativeUIManager.watting('请稍等...');
-		$.ajax({
-			type: 'POST',
-			url: $common.getRestApiURL() + '/common/common/payOffTypeList',
-			dataType: 'json',
-			data: {
-				typeId: $('#typeId').val()
-			},
-			success: function(jsonData) {
-				if (jsonData) {
-					if (jsonData['result'] == '0') {
-						var payOffTypeList = jsonData['payOffTypeList'];
-						if (payOffTypeList && $(payOffTypeList).size() > 0) {
-							$userInfo.put("selectList", JSON.stringify(payOffTypeList));
-							var controlValue = $('#payOffType').val();
-							$windowManager.create('select', 'select.html?title=收益类型&controlId=payOffType&controlValue=' + controlValue+'&win=product_add', false, true, function(show) {
-								show();
-								$nativeUIManager.wattingClose();
-							});
-						}
-					} else {
-						$nativeUIManager.wattingClose();
-						$nativeUIManager.alert('提示', '获取数据失败', 'OK', function() {});
-					}
-				}
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				$nativeUIManager.wattingClose();
-				$nativeUIManager.alert('提示', '获取数据失败', 'OK', function() {});
-			}
-		});
-	};
 	bindEvent = function() {
 		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
 			var uid = $(o).attr('uid');
@@ -190,42 +194,16 @@ define(function(require, exports, module) {
 			}
 		});
 
-		
 		$common.touchSE($('#saveBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$validator.checkAll();
 			window.setTimeout(function() {
 				var passed = $validator.isPassed();
 				if (passed) {
-					$nativeUIManager.watting('请选择发布栏位...');
-					window.setTimeout(function() {
-						var productName = $('#productName').val();
-						$windowManager.create('product_send', 'send.html?productName=' + productName + '&saveWinId=product_add&saveFunction=saveData', false, true, function(show) {
-							show();
-							$nativeUIManager.wattingClose();
-						});
-					}, 1500);
+					saveData();
 				} else {
 					$nativeUIManager.alert('提示', '请检查信息是否填写完毕', 'OK', function() {});
 				}
 			}, 500);
-		});
-		$common.touchSE($('#selectProductType'), function(event, startTouch, o) {}, function(event, o) {
-			$nativeUIManager.confactionSheetirm('请选择产品类型', '取消', [{
-					title: '理财'
-				}, {
-					title: '基金'
-				}],
-				function(index) {
-					if (index > 0) {
-						if (index == 1) {
-
-						} else if (index == 2) {
-
-						} else if (index == 3) {
-							//nothing
-						}
-					}
-				});
 		});
 		$common.touchSE($('#selectProductOrg'), function(event, startTouch, o) {}, function(event, o) {
 			$nativeUIManager.watting('请稍等...');
@@ -263,47 +241,10 @@ define(function(require, exports, module) {
 			});
 		});
 
-		$common.touchSE($('#selectPayOffType'), function(event, startTouch, o) {}, function(event, o) {
-			loadPayoffType();
-		});
-		$common.touchSE($('#selectDate'), function(event, startTouch, o) {}, function(event, o) {
-			$nativeUIManager.watting('请先选择募集开始日期');
-			window.setTimeout(function() {
-				$nativeUIManager.wattingClose();
-				$nativeUIManager.pickDate(function(date1) {
-					var startDateStr = date1.Format('yyyy-MM-dd');
-					var endDateStr = null;
-					$nativeUIManager.watting('募集开始日期是:' + startDateStr + ',选择募集结束时间');
-					window.setTimeout(function() {
-						$nativeUIManager.wattingClose();
-						$nativeUIManager.pickDate(function(date2) {
-							endDateStr = date2.Format('yyyy-MM-dd');
-							var ckFlag = checkDate(startDateStr, endDateStr);
-							if (!ckFlag) {
-								$nativeUIManager.alert('错误提示', '结束日期不能小于开始日期', 'OK', function() {});
-								$('#startDate').val('');
-								$('#endDate').val('');
-								return false;
-							}
-							$('#startDate').val(startDateStr);
-							$('#endDate').val(endDateStr);
-							$('.placeTxt', '#selectDate').text(startDateStr + ' 至 ' + endDateStr);
-							$validator.check('startDate');
-							$validator.check('endDate');
-						}, function() {});
-					}, 1000);
-				}, function() {});
-			}, 1000);
+		$common.touchSE($('#selectFundType'), function(event, startTouch, o) {}, function(event, o) {
+			loadFundType();
 		});
 
-		$common.touchSE($('#selectExpireDate'), function(event, startTouch, o) {}, function(event, o) {
-			$nativeUIManager.pickDate(function(date) {
-				var dateStr = date.Format('yyyy-MM-dd');
-				$('#expireDate').val(dateStr);
-				$('.placeTxt', '#selectExpireDate').text(dateStr);
-				$validator.check('expireDate');
-			}, function() {});
-		});
 
 		$common.touchSE($('#uploadBtn'), function(event, startTouch, o) {}, function(event, o) {
 			var imgCount = $('div', '#imgUL').find('img').size();
@@ -374,7 +315,6 @@ define(function(require, exports, module) {
 				$nativeUIManager.alert('提示', '最多只能上传6张图片', 'OK', function() {});
 			}
 		});
-
 	};
 	bindValidate = function() {
 		$validator.init([{
@@ -398,76 +338,12 @@ define(function(require, exports, module) {
 				msg: '请选择发行机构'
 			}]
 		}, {
-			id: 'payOffType',
+			id: 'fundType',
 			required: true,
 			pattern: [{
 				type: 'blank',
 				exp: '!=',
-				msg: '请选择收益类型'
-			}]
-		}, {
-			id: 'purchaseAmount',
-			required: true,
-			pattern: [{
-				type: 'blank',
-				exp: '!=',
-				msg: '请输入起购金额'
-			}, {
-				type: 'number',
-				exp: '==',
-				msg: '起购金额格式不正确'
-			}, {
-				type: 'reg',
-				exp: '_number1',
-				msg: '正整数或者保留一位小数'
-			}]
-		}, {
-			id: 'startDate',
-			required: true,
-			pattern: [{
-				type: 'blank',
-				exp: '!=',
-				msg: '请选择募集开始日期'
-			}]
-		}, {
-			id: 'endDate',
-			required: true,
-			pattern: [{
-				type: 'blank',
-				exp: '!=',
-				msg: '请选择募集结束日期'
-			}]
-		}, {
-			id: 'accrualDay',
-			required: true,
-			pattern: [{
-				type: 'blank',
-				exp: '!=',
-				msg: '请输入计息天数'
-			}, {
-				type: 'int',
-				exp: '==',
-				msg: '计息天数格式不正确'
-			}]
-		}, {
-			id: 'expireDate',
-			required: true,
-			pattern: [{
-				type: 'blank',
-				exp: '!=',
-				msg: '请选择到期日'
-			}]
-		}, {
-			id: 'yield',
-			required: true,
-			pattern: [{
-				type: 'blank',
-				exp: '!=',
-				msg: '请输入预期收益率'
-			}, {
-				type: 'number',
-				exp: '==',
-				msg: '预期收益率格式不正确'
+				msg: '请选择基金类型'
 			}]
 		}, {
 			id: 'remarks',
@@ -490,6 +366,37 @@ define(function(require, exports, module) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
 						$('#attToken').val(jsonData['attToken']);
+						var editJsonStr = $userInfo.get('editJson');
+						if (editJsonStr) {
+							var editJson = JSON.parse(editJsonStr);
+							if (editJson) {
+								var productInfo = editJson['productInfo'];
+								var fund = editJson['fund'];
+								if (productInfo && fund) {
+									$('#id').val(editJson['id']);
+									$('#typeId').val(productInfo['typeId']);
+									$('#productName').val(productInfo['name']);
+									$('#productOrgId').val(productInfo['productOrgId']);
+									$('.placeTxt', '#selectProductOrg').text(productInfo['orgName']);
+									$('#remarks').val(productInfo['remarks']);
+
+									$('#fundType').val(fund['fundType']);
+									$('.placeTxt', '#selectFundType').text(fund['fundType']);
+
+									var attArray = editJson['attArray'];
+									if (attArray && $(attArray).size() > 0) {
+										if (!$('#imgUL').is(':visible')) {
+											$('#imgUL').show();
+										}
+										$(attArray).each(function(i, o) {
+											var src = o['imgSrc'] + '!productEdit';
+											$('div', '#imgUL').append('<span type="' + o['type'] + '" uid="' + o['id'] + '"><img src="' + src + '"><em>删 除</em></span>\n');
+										});
+									}
+									bindEvent();
+								}
+							}
+						}
 						$('#footerTools').show();
 					}
 				}
@@ -503,11 +410,10 @@ define(function(require, exports, module) {
 		}, function() {
 
 		});
-		$('#typeId').val(typeId);
-		$('.placeTxt', '#selectProductType').text(typeName);
+
 		bindValidate();
-		bindEvent();
 		loadData();
+
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});

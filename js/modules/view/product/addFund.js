@@ -70,7 +70,8 @@ define(function(require, exports, module) {
 										if (!$('#imgUL').is(':visible')) {
 											$('#imgUL').show();
 										}
-										$('div', '#imgUL').append('<img src="' + src + '">');
+										$('div', '#imgUL').append('<span type="' + jsonData['type'] + '" uid="' + jsonData['id'] + '"><img src="' + src + '"><em>删 除</em></span>\n');
+										bindEvent();
 									} else {
 										$nativeUIManager.wattingClose();
 										$nativeUIManager.alert('提示', '图片保存失败', 'OK', function() {});
@@ -96,6 +97,37 @@ define(function(require, exports, module) {
 		}
 		task.start();
 	};
+	deleteAtt = function(attId, type) {
+		$nativeUIManager.watting('请稍等...');
+		$common.refreshToken(function(tokenId) {
+			$.ajax({
+				type: 'POST',
+				url: $common.getRestApiURL() + '/product/info/deleteAtt',
+				dataType: 'json',
+				data: {
+					id: attId,
+					type: type,
+					'org.guiceside.web.jsp.taglib.Token': tokenId
+				},
+				success: function(jsonData) {
+					if (jsonData) {
+						if (jsonData['result'] == '0') {
+							$nativeUIManager.wattingTitle('删除成功!');
+							$('span[uid="' + attId + '"]', '#imgUL').remove();
+							$nativeUIManager.wattingClose();
+						} else {
+							$nativeUIManager.wattingClose();
+							$nativeUIManager.alert('提示', '删除失败', 'OK', function() {});
+						}
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					$nativeUIManager.wattingClose();
+					$nativeUIManager.alert('提示', '删除失败', 'OK', function() {});
+				}
+			});
+		});
+	};
 	selectItem = function(controlId, uid, text) {
 		var li = $('#' + controlId).closest('li');
 		if (li) {
@@ -107,7 +139,7 @@ define(function(require, exports, module) {
 	loadOrg = function(orgCompany) {
 		$nativeUIManager.watting('请稍等...');
 		var controlValue = $('#productOrgId').val();
-		$windowManager.create('selectOrg', 'selectOrg.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue, false, true, function(show) {
+		$windowManager.create('selectOrg', 'selectOrg.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue+'&win=product_add', false, true, function(show) {
 			show();
 			$nativeUIManager.wattingClose();
 		});
@@ -126,7 +158,7 @@ define(function(require, exports, module) {
 						if (fundTypeList && $(fundTypeList).size() > 0) {
 							$userInfo.put("selectList", JSON.stringify(fundTypeList));
 							var controlValue = $('#fundType').val();
-							$windowManager.create('select', 'select.html?title=基金类型&controlId=fundType&controlValue=' + controlValue, false, true, function(show) {
+							$windowManager.create('select', 'select.html?title=基金类型&controlId=fundType&controlValue=' + controlValue+'&win=product_add', false, true, function(show) {
 								show();
 								$nativeUIManager.wattingClose();
 							});
@@ -144,9 +176,18 @@ define(function(require, exports, module) {
 		});
 	};
 	bindEvent = function() {
-		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.close();
+		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
+			var uid = $(o).attr('uid');
+			var type = $(o).attr('type');
+			if (uid && type) {
+				$nativeUIManager.confirm('提示', '你确定删除此图片?删除将无法恢复!', ['确定', '取消'], function() {
+					deleteAtt(uid, type);
+				}, function() {
+
+				});
+			}
 		});
+
 		$common.touchSE($('#saveBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$validator.checkAll();
 			window.setTimeout(function() {
@@ -362,6 +403,10 @@ define(function(require, exports, module) {
 		bindValidate();
 		loadData();
 		bindEvent();
+		
+		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
+			$windowManager.close();
+		});
 	};
 	if (window.plus) {
 		plusReady();
