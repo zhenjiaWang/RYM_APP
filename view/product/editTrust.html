@@ -17,11 +17,11 @@
 			seajs.config({
 				base: "../../js/modules/"
 			});
-			seajs.use('view/product/editFund');
+			seajs.use('view/product/editTrust');
 		</script>
 	</head>
 
-	<body >
+	<body>
 		<header class="header">
 			<span class="icon icon-back floatleft" id="backBtn"></span>
 			<h1 class="aligncenter font17" style="left:70px;right:70px;">编辑产品</h1>
@@ -41,10 +41,38 @@
 						<input type="hidden" class="alignright" id="productOrgId" name="productOrgId" />
 						<label class="lableTxt"></label>
 					</li>
-					<li class="clearfix" controlType="text" id="selectFundType">
-						<span class="lable">基金类型</span>
-						<input type="hidden" class="alignright" id="fundType" name="fundType" />
+					<li class="clearfix" controlType="text" id="selectPayOffType">
+						<span class="lable">收益类型</span>
+						<input type="hidden" class="alignright" id="payOffType" name="payOffType" />
 						<span class="alignright placeTxt">请选择</span>
+						<label class="lableTxt"></label>
+					</li>
+					<li class="clearfix" controlType="text">
+						<span class="lable">起购金额</span><span class="floatright marr10">万元</span>
+						<input type="number" id="purchaseAmount" name="purchaseAmount" class="alignright" placeholder="未填写" />
+						<label class="lableTxt"></label>
+					</li>
+					<li class="clearfix" controlType="text" id="selectDate">
+						<span class="lable">募集起止日期</span>
+						<input type="hidden" class="alignright" id="startDate" name="startDate" />
+						<input type="hidden" class="alignright" id="endDate" name="endDate" />
+						<span class="alignright placeTxt" style="width:52%;">请选择</span>
+						<label class="lableTxt"></label>
+					</li>
+					<li class="clearfix" controlType="number">
+						<span class="lable">计息天数</span>
+						<input type="number" id="accrualDay" name="accrualDay" class="alignright" placeholder="未填写" />
+						<label class="lableTxt"></label>
+					</li>
+					<li class="clearfix" controlType="text" id="selectExpireDate">
+						<span class="lable">到期日</span>
+						<input type="hidden" class="alignright" id="expireDate" name="expireDate" />
+						<span class="alignright placeTxt" style="width:52%;">请选择</span>
+						<label class="lableTxt"></label>
+					</li>
+					<li class="clearfix" controlType="number">
+						<span class="lable">预期收益率</span><span class="floatright marr10">%</span>
+						<input type="number" id="yield" name="yield" class="alignright" placeholder="未填写" />
 						<label class="lableTxt"></label>
 					</li>
 				</ul>
@@ -57,16 +85,16 @@
 						<label class="lableTxt"></label>
 					</li>
 				</ul>
-				<input type="hidden" id="org.guiceside.web.jsp.taglib.Token" name="org.guiceside.web.jsp.taglib.Token"/>
-				<input type="hidden" id="numSeq" name="numSeq"/>
-				<input type="hidden" id="id" name="id"/>
-				<input type="hidden" id="attToken" name="attToken"/>
+				<input type="hidden" id="org.guiceside.web.jsp.taglib.Token" name="org.guiceside.web.jsp.taglib.Token" />
+				<input type="hidden" id="numSeq" name="numSeq" />
+				<input type="hidden" id="id" name="id" />
+				<input type="hidden" id="attToken" name="attToken" />
 				<input type="hidden" class="alignright" id="typeId" name="typeId" />
 			</form>
 			<ul class="inputList imgList mart15" id="imgUL" style="display: none;">
 				<li class="clearfix noboder Ios_scroll" style="overflow-y: hidden;">
 					<div class="ImgBox" style="width:1000px">
-						
+
 					</div>
 				</li>
 			</ul>

@@ -11,10 +11,11 @@ define(function(require, exports, module) {
 	var typeName = queryMap.get('typeName');
 	var server = "/common/common/uploadData";
 	var files = [];
-	saveData = function() {
+	saveData = function(numSeq) {
 		$nativeUIManager.watting('正在保存产品...');
 		$common.refreshToken(function(tokenId) {
 			$('#org\\.guiceside\\.web\\.jsp\\.taglib\\.Token').val(tokenId);
+			$('#numSeq').val(numSeq);
 			$.ajax({
 				type: 'POST',
 				url: $common.getRestApiURL() + '/product/info/edit',
@@ -113,7 +114,6 @@ define(function(require, exports, module) {
 				data: {
 					id: attId,
 					type: type,
-					attIgnore:'Y',
 					'org.guiceside.web.jsp.taglib.Token': tokenId
 				},
 				success: function(jsonData) {
@@ -135,6 +135,7 @@ define(function(require, exports, module) {
 			});
 		});
 	};
+	
 	bindEvent = function() {
 		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
 			var uid = $(o).attr('uid');
@@ -143,9 +144,11 @@ define(function(require, exports, module) {
 				$nativeUIManager.confirm('提示', '你确定删除此图片?删除将无法恢复!', ['确定', '取消'], function() {
 					deleteAtt(uid, type);
 				}, function() {
+
 				});
 			}
 		});
+
 
 		$common.touchSE($('#saveBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$validator.checkAll();
@@ -159,7 +162,7 @@ define(function(require, exports, module) {
 			}, 500);
 		});
 
-
+		
 		$common.touchSE($('#uploadBtn'), function(event, startTouch, o) {}, function(event, o) {
 			var imgCount = $('div', '#imgUL').find('img').size();
 			if (imgCount < 6) {
@@ -229,6 +232,7 @@ define(function(require, exports, module) {
 				$nativeUIManager.alert('提示', '最多只能上传6张图片', 'OK', function() {});
 			}
 		});
+
 	};
 	bindValidate = function() {
 		$validator.init([{
@@ -257,14 +261,24 @@ define(function(require, exports, module) {
 							var editJson = JSON.parse(editJsonStr);
 							if (editJson) {
 								var productInfo = editJson['productInfo'];
-								var fund = editJson['fund'];
-								if (productInfo && fund) {
+								var trust = editJson['trust'];
+								if (productInfo && trust) {
 									$('#id').val(editJson['id']);
+									$('#typeId').val(productInfo['typeId']);
 									$('#productName').val(productInfo['name']);
 									$('#productOrgId').val(productInfo['productOrgId']);
 									$('#orgName').val(productInfo['orgName']);
 									$('#remarks').val(productInfo['remarks']);
-									$('#fundType').val(fund['fundType']);
+
+									$('#payOffType').val(trust['payOffType']);
+
+									$('#yield').val(trust['yield']);
+									$('#purchaseAmount').val(trust['purchaseAmount']);
+									$('#startDate').val(trust['startDate']);
+									$('#endDate').val(trust['endDate']);
+									$('.placeTxt', '#selectDate').text(trust['startDate'] + ' 至 ' + trust['endDate']);
+									$('#accrualDay').val(trust['accrualDay']);
+									$('#expireDate').val(trust['expireDate']);
 
 									var attArray = editJson['attArray'];
 									if (attArray && $(attArray).size() > 0) {
@@ -293,10 +307,8 @@ define(function(require, exports, module) {
 		}, function() {
 
 		});
-
 		bindValidate();
 		loadData();
-
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});

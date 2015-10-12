@@ -11,10 +11,11 @@ define(function(require, exports, module) {
 	var typeName = queryMap.get('typeName');
 	var server = "/common/common/uploadData";
 	var files = [];
-	saveData = function() {
+	saveData = function(numSeq) {
 		$nativeUIManager.watting('正在保存产品...');
 		$common.refreshToken(function(tokenId) {
 			$('#org\\.guiceside\\.web\\.jsp\\.taglib\\.Token').val(tokenId);
+			$('#numSeq').val(numSeq);
 			$.ajax({
 				type: 'POST',
 				url: $common.getRestApiURL() + '/product/info/edit',
@@ -113,7 +114,6 @@ define(function(require, exports, module) {
 				data: {
 					id: attId,
 					type: type,
-					attIgnore:'Y',
 					'org.guiceside.web.jsp.taglib.Token': tokenId
 				},
 				success: function(jsonData) {
@@ -135,6 +135,55 @@ define(function(require, exports, module) {
 			});
 		});
 	};
+	selectItem = function(controlId, uid, text) {
+		var li = $('#' + controlId).closest('li');
+		if (li) {
+			$('.placeTxt', li).text(text);
+			$('#' + controlId).val(uid);
+			$validator.check(controlId);
+		}
+	};
+	loadOrg = function(orgCompany) {
+		$nativeUIManager.watting('请稍等...');
+		var controlValue = $('#productOrgId').val();
+		$windowManager.create('selectOrg', 'selectOrg.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue + '&win=product_edit', false, true, function(show) {
+			show();
+			$nativeUIManager.wattingClose();
+		});
+	};
+	loadPayoffType = function() {
+		$nativeUIManager.watting('请稍等...');
+		$.ajax({
+			type: 'POST',
+			url: $common.getRestApiURL() + '/common/common/payOffTypeList',
+			dataType: 'json',
+			data: {
+				typeId: $('#typeId').val()
+			},
+			success: function(jsonData) {
+				if (jsonData) {
+					if (jsonData['result'] == '0') {
+						var payOffTypeList = jsonData['payOffTypeList'];
+						if (payOffTypeList && $(payOffTypeList).size() > 0) {
+							$userInfo.put("selectList", JSON.stringify(payOffTypeList));
+							var controlValue = $('#payOffType').val();
+							$windowManager.create('select', 'select.html?title=收益类型&controlId=payOffType&controlValue=' + controlValue + '&win=product_edit', false, true, function(show) {
+								show();
+								$nativeUIManager.wattingClose();
+							});
+						}
+					} else {
+						$nativeUIManager.wattingClose();
+						$nativeUIManager.alert('提示', '获取数据失败', 'OK', function() {});
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				$nativeUIManager.wattingClose();
+				$nativeUIManager.alert('提示', '获取数据失败', 'OK', function() {});
+			}
+		});
+	};
 	bindEvent = function() {
 		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
 			var uid = $(o).attr('uid');
@@ -143,9 +192,11 @@ define(function(require, exports, module) {
 				$nativeUIManager.confirm('提示', '你确定删除此图片?删除将无法恢复!', ['确定', '取消'], function() {
 					deleteAtt(uid, type);
 				}, function() {
+
 				});
 			}
 		});
+
 
 		$common.touchSE($('#saveBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$validator.checkAll();
@@ -159,6 +210,83 @@ define(function(require, exports, module) {
 			}, 500);
 		});
 
+		$common.touchSE($('#selectProductOrg'), function(event, startTouch, o) {}, function(event, o) {
+			$nativeUIManager.watting('请稍等...');
+			$.ajax({
+				type: 'POST',
+				url: $common.getRestApiURL() + '/common/common/orgCompanyList',
+				dataType: 'json',
+				data: {},
+				success: function(jsonData) {
+					if (jsonData) {
+						if (jsonData['result'] == '0') {
+							$nativeUIManager.wattingClose();
+							var orgCompanyList = jsonData['orgCompanyList'];
+							if (orgCompanyList && $(orgCompanyList).size() > 0) {
+								$nativeUIManager.confactionSheetirm('请选择机构公司', '取消', orgCompanyList,
+									function(index) {
+										if (index > 0) {
+											var orgCompany = orgCompanyList[index - 1]['title'];
+											if (orgCompany) {
+												loadOrg(orgCompany);
+											}
+										}
+									});
+							}
+						} else {
+							$nativeUIManager.wattingClose();
+							$nativeUIManager.alert('提示', '获取数据失败', 'OK', function() {});
+						}
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					$nativeUIManager.wattingClose();
+					$nativeUIManager.alert('提示', '获取数据失败', 'OK', function() {});
+				}
+			});
+		});
+
+		$common.touchSE($('#selectPayOffType'), function(event, startTouch, o) {}, function(event, o) {
+			loadPayoffType();
+		});
+		$common.touchSE($('#selectDate'), function(event, startTouch, o) {}, function(event, o) {
+			$nativeUIManager.watting('请先选择募集开始日期');
+			window.setTimeout(function() {
+				$nativeUIManager.wattingClose();
+				$nativeUIManager.pickDate(function(date1) {
+					var startDateStr = date1.Format('yyyy-MM-dd');
+					var endDateStr = null;
+					$nativeUIManager.watting('募集开始日期是:' + startDateStr + ',选择募集结束时间');
+					window.setTimeout(function() {
+						$nativeUIManager.wattingClose();
+						$nativeUIManager.pickDate(function(date2) {
+							endDateStr = date2.Format('yyyy-MM-dd');
+							var ckFlag = checkDate(startDateStr, endDateStr);
+							if (!ckFlag) {
+								$nativeUIManager.alert('错误提示', '结束日期不能小于开始日期', 'OK', function() {});
+								$('#startDate').val('');
+								$('#endDate').val('');
+								return false;
+							}
+							$('#startDate').val(startDateStr);
+							$('#endDate').val(endDateStr);
+							$('.placeTxt', '#selectDate').text(startDateStr + ' 至 ' + endDateStr);
+							$validator.check('startDate');
+							$validator.check('endDate');
+						}, function() {});
+					}, 1000);
+				}, function() {});
+			}, 1000);
+		});
+
+		$common.touchSE($('#selectExpireDate'), function(event, startTouch, o) {}, function(event, o) {
+			$nativeUIManager.pickDate(function(date) {
+				var dateStr = date.Format('yyyy-MM-dd');
+				$('#expireDate').val(dateStr);
+				$('.placeTxt', '#selectExpireDate').text(dateStr);
+				$validator.check('expireDate');
+			}, function() {});
+		});
 
 		$common.touchSE($('#uploadBtn'), function(event, startTouch, o) {}, function(event, o) {
 			var imgCount = $('div', '#imgUL').find('img').size();
@@ -229,9 +357,102 @@ define(function(require, exports, module) {
 				$nativeUIManager.alert('提示', '最多只能上传6张图片', 'OK', function() {});
 			}
 		});
+
 	};
 	bindValidate = function() {
 		$validator.init([{
+			id: 'productName',
+			required: true,
+			pattern: [{
+				type: 'blank',
+				exp: '!=',
+				msg: '请输入名称'
+			}, {
+				type: 'length',
+				exp: '<=40',
+				msg: '名称不能大于40字'
+			}]
+		}, {
+			id: 'productOrgId',
+			required: true,
+			pattern: [{
+				type: 'blank',
+				exp: '!=',
+				msg: '请选择发行机构'
+			}]
+		}, {
+			id: 'payOffType',
+			required: true,
+			pattern: [{
+				type: 'blank',
+				exp: '!=',
+				msg: '请选择收益类型'
+			}]
+		}, {
+			id: 'purchaseAmount',
+			required: true,
+			pattern: [{
+				type: 'blank',
+				exp: '!=',
+				msg: '请输入起购金额'
+			}, {
+				type: 'number',
+				exp: '==',
+				msg: '起购金额格式不正确'
+			}, {
+				type: 'reg',
+				exp: '_number1',
+				msg: '正整数或者保留一位小数'
+			}]
+		}, {
+			id: 'startDate',
+			required: true,
+			pattern: [{
+				type: 'blank',
+				exp: '!=',
+				msg: '请选择募集开始日期'
+			}]
+		}, {
+			id: 'endDate',
+			required: true,
+			pattern: [{
+				type: 'blank',
+				exp: '!=',
+				msg: '请选择募集结束日期'
+			}]
+		}, {
+			id: 'accrualDay',
+			required: true,
+			pattern: [{
+				type: 'blank',
+				exp: '!=',
+				msg: '请输入计息天数'
+			}, {
+				type: 'int',
+				exp: '==',
+				msg: '计息天数格式不正确'
+			}]
+		}, {
+			id: 'expireDate',
+			required: true,
+			pattern: [{
+				type: 'blank',
+				exp: '!=',
+				msg: '请选择到期日'
+			}]
+		}, {
+			id: 'yield',
+			required: true,
+			pattern: [{
+				type: 'blank',
+				exp: '!=',
+				msg: '请输入预期收益率'
+			}, {
+				type: 'number',
+				exp: '==',
+				msg: '预期收益率格式不正确'
+			}]
+		}, {
 			id: 'remarks',
 			required: true,
 			pattern: [{
@@ -257,14 +478,26 @@ define(function(require, exports, module) {
 							var editJson = JSON.parse(editJsonStr);
 							if (editJson) {
 								var productInfo = editJson['productInfo'];
-								var fund = editJson['fund'];
-								if (productInfo && fund) {
+								var trust = editJson['trust'];
+								if (productInfo && trust) {
 									$('#id').val(editJson['id']);
+									$('#typeId').val(productInfo['typeId']);
 									$('#productName').val(productInfo['name']);
 									$('#productOrgId').val(productInfo['productOrgId']);
-									$('#orgName').val(productInfo['orgName']);
+									$('.placeTxt', '#selectProductOrg').text(productInfo['orgName']);
 									$('#remarks').val(productInfo['remarks']);
-									$('#fundType').val(fund['fundType']);
+
+									$('#payOffType').val(trust['payOffType']);
+									$('.placeTxt', '#selectPayOffType').text(trust['payOffType']);
+
+									$('#yield').val(trust['yield']);
+									$('#purchaseAmount').val(trust['purchaseAmount']);
+									$('#startDate').val(trust['startDate']);
+									$('#endDate').val(trust['endDate']);
+									$('.placeTxt', '#selectDate').text(trust['startDate'] + ' 至 ' + trust['endDate']);
+									$('#accrualDay').val(trust['accrualDay']);
+									$('#expireDate').val(trust['expireDate']);
+									$('.placeTxt', '#selectExpireDate').text(trust['expireDate']);
 
 									var attArray = editJson['attArray'];
 									if (attArray && $(attArray).size() > 0) {
@@ -293,10 +526,8 @@ define(function(require, exports, module) {
 		}, function() {
 
 		});
-
 		bindValidate();
 		loadData();
-
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});

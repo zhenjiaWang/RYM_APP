@@ -57,7 +57,6 @@ define(function(require, exports, module) {
 						$('#endDate').text(trust['endDate']);
 						$('#accrualDay').text(trust['accrualDay']);
 						$('#expireDate').text(trust['expireDate']);
-						$('#remarks').text(productInfo['remarks']);
 						var attArray = jsonData['attArray'];
 						if (attArray && $(attArray).size() > 0) {
 							$('.imgDetail').append('<p class="font14 title color-8d">产品图片</p>\n');
