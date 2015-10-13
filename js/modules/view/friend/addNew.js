@@ -34,10 +34,10 @@ define(function(require, exports, module) {
 			}
 		});
 		$common.touchSE($('#addPhoneContacts'), function(event, startTouch, o) {}, function(event, o) {
-			$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
-//			$windowManager.create('friend_phoneList_header', 'phoneListHeader.html', false, true, function(show) {
-//				show();
-//			});
+			//$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
+			$windowManager.create('friend_phoneList_header', 'phoneListHeader.html', false, true, function(show) {
+				show();
+			});
 		});
 		$common.touchSE($('#investorBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$nativeUIManager.alert('提示', '和微信一起开放', 'OK', function() {});
@@ -95,6 +95,16 @@ define(function(require, exports, module) {
 			}
 		});
 	};
+	loadContactsTip = function(unAddCount) {
+		if (unAddCount) {
+			unAddCount = parseInt(unAddCount);
+			if (unAddCount > 0) {
+				$('.icon-p', '#addPhoneContacts').show().text(unAddCount);
+			} else {
+				$('.icon-p', '#addPhoneContacts').hide();
+			}
+		}
+	};
 	loadData = function(callback) {
 		$nativeUIManager.watting('请稍等...');
 		$.ajax({
@@ -104,6 +114,7 @@ define(function(require, exports, module) {
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
+						loadContactsTip(jsonData['unAddCount']);
 						var friendFollowArray = jsonData['friendFollowArray'];
 						if (friendFollowArray && $(friendFollowArray).size() > 0) {
 							$('#blank').hide();

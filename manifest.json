@@ -172,11 +172,11 @@
 			"splashscreen": {
 				"ios": {
 					"iphone": {
-						"default": "F:/ios/320_480.png", /*iPhone3启动图片选，分辨率：320x480*/
-						"retina35": "F:/ios/640_960.png",/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
-						"retina40": "F:/ios/640_1136.png",/*4.0 英寸设备(iPhone5/iPhone5s)启动图片，分辨率：640x1136*/
-						"retina47": "F:/ios/750_1134.png",/*4.7 英寸设备(iPhone6)启动图片，分辨率：750x1334*/
-						"retina55": "F:/ios/1132_2208.png",/*5.5 英寸设备(iPhone6 Plus)启动图片，分辨率：1242x2208*/
+						"default": "/Users/zhenjiaWang/Documents/rym-package/ruyimenqidong/320*480.png", /*iPhone3启动图片选，分辨率：320x480*/
+						"retina35": "/Users/zhenjiaWang/Documents/rym-package/ruyimenqidong/640*960.png",/*3.5英寸设备(iPhone4)启动图片，分辨率：640x960*/
+						"retina40": "/Users/zhenjiaWang/Documents/rym-package/ruyimenqidong/640*1136.png",/*4.0 英寸设备(iPhone5/iPhone5s)启动图片，分辨率：640x1136*/
+						"retina47": "/Users/zhenjiaWang/Documents/rym-package/ruyimenqidong/750*1134.png",/*4.7 英寸设备(iPhone6)启动图片，分辨率：750x1334*/
+						"retina55": "/Users/zhenjiaWang/Documents/rym-package/ruyimenqidong/1132*2208.png",/*5.5 英寸设备(iPhone6 Plus)启动图片，分辨率：1242x2208*/
 						"retina55l": ""
 					},
 					"ipad": {
