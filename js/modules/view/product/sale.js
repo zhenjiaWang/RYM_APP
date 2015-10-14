@@ -235,14 +235,13 @@ define(function(require, exports, module) {
 			});
 		});
 		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
-			//			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
-			//				show();
-			//				var lunchWindow = $windowManager.getLaunchWindow();
-			//				if (lunchWindow) {
-			//					lunchWindow.evalJS('plusRest()');
-			//				}
-			//			});
+			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
+				show();
+				var lunchWindow = $windowManager.getLaunchWindow();
+				if (lunchWindow) {
+					lunchWindow.evalJS('plusRest()');
+				}
+			});
 		});
 
 		$common.touchSE($('.commentBtn', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
@@ -273,11 +272,11 @@ define(function(require, exports, module) {
 			var viewCount = $(o).closest('.oneCard').attr('viewCount');
 			var uid = $(o).closest('.oneCard').attr('uid');
 			var productName = $(o).closest('.oneCard').attr('productName');
-			if (viewCount&&uid&&productName) {
+			if (viewCount && uid && productName) {
 				viewCount = parseInt(viewCount);
 				if (viewCount > 0) {
 					if (userId == $userInfo.get('userId')) {
-						$windowManager.create('product_view_list_header', '../productView/header.html?id=' + uid + '&tab=sale&productName='+productName, false, true, function(show) {
+						$windowManager.create('product_view_list_header', '../productView/header.html?id=' + uid + '&tab=sale&productName=' + productName, false, true, function(show) {
 							show();
 						});
 					}

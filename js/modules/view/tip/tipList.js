@@ -25,11 +25,11 @@ define(function(require, exports, module) {
 					$windowManager.create('visit_header', 'visitHeader.html', false, true, function(show) {
 						show();
 					});
-				}else if(dir=='like'){
+				} else if (dir == 'like') {
 					$windowManager.create('like_header', 'likeHeader.html', false, true, function(show) {
 						show();
 					});
-				}else if(dir=='comment'){
+				} else if (dir == 'comment') {
 					$windowManager.create('comment_header', 'commentHeader.html', false, true, function(show) {
 						show();
 					});
@@ -46,14 +46,13 @@ define(function(require, exports, module) {
 			});
 		});
 		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
-			//			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
-			//				show();
-			//				var lunchWindow = $windowManager.getLaunchWindow();
-			//				if (lunchWindow) {
-			//					lunchWindow.evalJS('plusRest()');
-			//				}
-			//			});
+			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
+				show();
+				var lunchWindow = $windowManager.getLaunchWindow();
+				if (lunchWindow) {
+					lunchWindow.evalJS('plusRest()');
+				}
+			});
 		});
 	};
 	loadData = function(callback, append) {

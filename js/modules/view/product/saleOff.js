@@ -80,14 +80,13 @@ define(function(require, exports, module) {
 			}
 		});
 		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
-//			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
-//				show();
-//				var lunchWindow = $windowManager.getLaunchWindow();
-//				if (lunchWindow) {
-//					lunchWindow.evalJS('plusRest()');
-//				}
-//			});
+			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
+				show();
+				var lunchWindow = $windowManager.getLaunchWindow();
+				if (lunchWindow) {
+					lunchWindow.evalJS('plusRest()');
+				}
+			});
 		});
 		$common.touchSE($('.commentBtn', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
 			event.stopPropagation();

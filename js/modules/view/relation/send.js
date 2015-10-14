@@ -47,11 +47,11 @@ define(function(require, exports, module) {
 		$common.touchSE($('#sendBtn'), function(event, startTouch, o) {}, function(event, o) {
 			if (selectNumSeq == -1) {
 				$nativeUIManager.alert('提示', '请选择产品发布栏位', 'OK', function() {});
+			} else {
+				$nativeUIManager.confirm('提示', '确定按照现在的产品栏位发布产品?', ['确定', '取消'], function() {
+					saveData(selectNumSeq);
+				}, function() {});
 			}
-			$nativeUIManager.confirm('提示', '确定按照现在的产品栏位发布产品?', ['确定', '取消'], function() {
-				saveData(selectNumSeq);
-			}, function() {});
-
 		});
 		$common.touchSE($('li', '#productSaleNumUL'), function(event, startTouch, o) {}, function(event, o) {
 			var type = $(o).attr('type');

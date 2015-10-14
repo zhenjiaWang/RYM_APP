@@ -41,7 +41,7 @@ define(function(require, exports, module) {
 									$('#commentUL').show();
 									$('#blank').hide();
 								}
-								$('#commentUL').prepend(String.formatmodel($templete.commentItem(commentObj['replyFlag']), {
+								$('#commentUL').prepend(String.formatmodel($templete.commentContentItem(commentObj['replyFlag']), {
 									userId: commentObj['userId'],
 									headImgUrl: commentObj['headImgUrl'],
 									userName: commentObj['userName'],
