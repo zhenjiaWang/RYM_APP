@@ -306,7 +306,10 @@ define(function(require, exports, module) {
 						}, function() {});
 					} else if (jsonData['result'] == '1') {
 						$nativeUIManager.wattingClose();
-						$nativeUIManager.alert('提示', '该产品已经存在下游关系，暂时禁止下架', 'OK', function() {});
+						$nativeUIManager.alert('提示', '该产品已经存在下游关系', 'OK', function() {});
+						//						$nativeUIManager.confirm('提示', '该产品已经存在下游关系，你确定要下架当前产品吗?', ['确定', '取消'], function() {
+						//							offActionCommon();
+						//						}, function() {});
 					} else {
 						$nativeUIManager.wattingClose();
 						$nativeUIManager.alert('提示', '下架产品失败', 'OK', function() {});
@@ -487,8 +490,8 @@ define(function(require, exports, module) {
 			} else if (action == 'newOnSale') {
 				newOnExist();
 			} else if (action == 'relation') {
-				$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
-				//relationExist(productId, productName, userId, productNumSeq);
+				//$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
+				relationExist(productId, productName, userId, productNumSeq);
 			} else if (action == 'favorites') {
 				favoritesExist();
 			} else if (action == 'delFavorites') {
@@ -496,10 +499,10 @@ define(function(require, exports, module) {
 					favoritesCancelActionCommon();
 				}, function() {});
 			} else if (action == 'lock') {
-				$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
-				//				$nativeUIManager.confirm('提示', '你确定要锁定产品，解除关联关系?', ['确定', '取消'], function() {
-				//					lockActionCommon();
-				//				}, function() {});
+				//$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
+				$nativeUIManager.confirm('提示', '你确定要锁定产品，解除关联关系?', ['确定', '取消'], function() {
+					lockActionCommon();
+				}, function() {});
 			} else if (action == 'comment') {
 				$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + ID + '&tab=' + productTab, false, true, function(show) {
 					show();

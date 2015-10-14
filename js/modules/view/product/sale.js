@@ -411,45 +411,62 @@ define(function(require, exports, module) {
 									var relationYn = o['relationYn'];
 									var uid = o['uid'];
 									var endFlag = o['endFlag'];
-									if (typeId && relationYn && uid) {
-										if (typeId == 1) {
+									var waiting = o['waiting'];
+									if (typeId && relationYn && uid && waiting) {
+										if (waiting == 'Y') {
+											sb.append(String.formatmodel($templete.waitingItem(relationYn), {
+												productId: o['productId'],
+												userId: o['userId'],
+												relationUserName: o['relationUserName'],
+												relationUserId: o['relationUserId'],
+												viewCount: o['viewCount'],
+												relationCount: o['relationCount'],
+												uid: uid,
+												typeId: typeId,
+												typeName: o['typeName'],
+												name: o['name'],
+												updateTime: o['updateTime']
+											}));
+										} else {
+											if (typeId == 1) {
 
-										} else if (typeId == 2) {
-											var fundObj = o['fund'];
-											if (fundObj) {
-												sb.append(String.formatmodel($templete.fundItem(relationYn, endFlag), {
-													productId: o['productId'],
-													userId: o['userId'],
-													relationUserName: o['relationUserName'],
-													relationUserId: o['relationUserId'],
-													viewCount: o['viewCount'],
-													relationCount: o['relationCount'],
-													uid: uid,
-													typeId: typeId,
-													typeName: o['typeName'],
-													name: o['name'],
-													updateTime: o['updateTime'],
-													fundType: fundObj['fundType']
-												}));
-											}
-										} else if (typeId == 3) {
-											var trustObj = o['trust'];
-											if (trustObj) {
-												sb.append(String.formatmodel($templete.trustItem(relationYn, endFlag), {
-													productId: o['productId'],
-													userId: o['userId'],
-													relationUserName: o['relationUserName'],
-													relationUserId: o['relationUserId'],
-													viewCount: o['viewCount'],
-													relationCount: o['relationCount'],
-													uid: uid,
-													typeId: typeId,
-													typeName: o['typeName'],
-													name: o['name'],
-													updateTime: o['updateTime'],
-													yield: trustObj['yield'],
-													dayLimit: trustObj['dayLimit']
-												}));
+											} else if (typeId == 2) {
+												var fundObj = o['fund'];
+												if (fundObj) {
+													sb.append(String.formatmodel($templete.fundItem(relationYn, endFlag), {
+														productId: o['productId'],
+														userId: o['userId'],
+														relationUserName: o['relationUserName'],
+														relationUserId: o['relationUserId'],
+														viewCount: o['viewCount'],
+														relationCount: o['relationCount'],
+														uid: uid,
+														typeId: typeId,
+														typeName: o['typeName'],
+														name: o['name'],
+														updateTime: o['updateTime'],
+														fundType: fundObj['fundType']
+													}));
+												}
+											} else if (typeId == 3) {
+												var trustObj = o['trust'];
+												if (trustObj) {
+													sb.append(String.formatmodel($templete.trustItem(relationYn, endFlag), {
+														productId: o['productId'],
+														userId: o['userId'],
+														relationUserName: o['relationUserName'],
+														relationUserId: o['relationUserId'],
+														viewCount: o['viewCount'],
+														relationCount: o['relationCount'],
+														uid: uid,
+														typeId: typeId,
+														typeName: o['typeName'],
+														name: o['name'],
+														updateTime: o['updateTime'],
+														yield: trustObj['yield'],
+														dayLimit: trustObj['dayLimit']
+													}));
+												}
 											}
 										}
 									}

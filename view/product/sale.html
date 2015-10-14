@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 	<head>
 		<meta charset="utf-8">
-		<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" /> 
-		<meta name="apple-touch-fullscreen" content="yes"/>
-		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"> 
+		<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
 		<title>理财室-在售中</title>
 		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
 		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
@@ -19,6 +20,7 @@
 			seajs.use('view/product/sale');
 		</script>
 	</head>
+
 	<body>
 		<div class="main" style="display: none;">
 			<section class="personBoard">
@@ -31,17 +33,18 @@
 					<div class="floatleft marl15 mart10 font13">
 						<p class="font17" id="userName"></p>
 						<p id="orgName"></p>
-						<p >工号：<span id="plannerNo"></span></p>
+						<p>工号：<span id="plannerNo"></span></p>
 					</div>
 					<div class="floatright mart15 alignright color-6" id="myFollowDIV">
-						<p ><span id="follow"></span><i class="icon icon-3 marl5"></i></p>
-						<p ><span id="friends"></span><i class="icon icon-4 marl5"></i></p>
+						<p><span id="follow"></span><i class="icon icon-3 marl5"></i></p>
+						<p><span id="friends"></span><i class="icon icon-4 marl5"></i></p>
 					</div>
 				</div>
 				<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i><span id="signature" class="txt_hidden"></span></div>
 			</section>
 			<p class="p-bt10 p-top10 color-a font14 aligncenter" id="blank" style="display: none;">当前无产品</p>
-			<div class="cardBox"></div>
+			<ul class="cardBox">
+			</ul>
 		</div>
 		<!--底部弹出begin-->
 		<footer class="footer footerMask" style="height:99px;bottom:-99px;"></footer>
@@ -56,7 +59,7 @@
 			</span>
 		</div>
 		<!--底部弹出over-->
-		
+
 		<footer id="footerTools" class="footer footerInner clearfix" style="bottom:0;display: none;">
 			<span dir="addFriend" class="floatleft marl15" style="display: none;">关注</span>
 			<span dir="delFriend" class="floatleft marl15" style="display: none;">取消关注</span>
@@ -64,4 +67,5 @@
 		</footer>
 
 	</body>
+
 </html>

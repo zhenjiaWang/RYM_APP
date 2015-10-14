@@ -30,7 +30,7 @@ define(function(require, exports, module) {
 	};
 	exports.trustItem = function(relationYn, endFlag) {
 		var trustItem = new StringBuilder();
-		trustItem.append('<div class="oneCard" viewCount="{viewCount}" numSeq="{numSeq}" productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
+		trustItem.append('<li class="oneCard" viewCount="{viewCount}" numSeq="{numSeq}" productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
 		trustItem.append('<p class="font11 title color-a alignright">\n');
 		trustItem.append('<span class="tips tips-x floatleft strong">{typeName}</span>\n');
 		trustItem.append('<span class="floatleft marl5">{updateTime}</span>\n');
@@ -59,12 +59,12 @@ define(function(require, exports, module) {
 		trustItem.append('<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">{relationCount}</em></span>\n');
 		trustItem.append('<span class="commentBtn"><i class="icon icon-comment"></i></span>\n');
 		trustItem.append('</div>\n');
-		trustItem.append('</div>\n');
+		trustItem.append('</li>\n');
 		return trustItem.toString();
 	};
 	exports.fundItem = function(relationYn, endFlag) {
 		var fundItem = new StringBuilder();
-		fundItem.append('<div class="oneCard" viewCount="{viewCount}" numSeq="{numSeq}"  productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
+		fundItem.append('<li class="oneCard" viewCount="{viewCount}" numSeq="{numSeq}"  productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
 		fundItem.append('<p class="font11 title color-a alignright">\n');
 		fundItem.append('<span class="tips tips-j floatleft strong">{typeName}</span>\n');
 		fundItem.append('<span class="floatleft marl5">{updateTime}</span>\n');
@@ -93,8 +93,25 @@ define(function(require, exports, module) {
 		fundItem.append('<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">{relationCount}</em></span>\n');
 		fundItem.append('<span class="commentBtn"><i class="icon icon-comment"></i></span>\n');
 		fundItem.append('</div>\n');
-		fundItem.append('</div>\n');
+		fundItem.append('</li>\n');
 		return fundItem.toString();
+	};
+	exports.waitingItem = function(relationYn) {
+		var waitingItem = new StringBuilder();
+		waitingItem.append('<li class="oneCard  aligncenter" viewCount="{viewCount}" numSeq="{numSeq}"  productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
+		waitingItem.append('<p class="font11 title color-a alignright">\n');
+		if (relationYn && relationYn == 'Y') {
+			waitingItem.append('<span class="relationSpan" uid="{relationUserId}">关联自<em>{relationUserName}</em></span>\n');
+		}
+		waitingItem.append('</p>\n');
+		waitingItem.append('<p class="color-b opacityMask mart20">我还在为您精心挑选中</p>\n');
+		waitingItem.append('<p class="color-b  opacityMask p-bt20">尽请期待...</p>\n');
+	
+		waitingItem.append('<div class="cardBottom clearfix alignright mart10">\n');
+		waitingItem.append('<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">{relationCount}</em></span>\n');
+		waitingItem.append('</div>\n');
+		waitingItem.append('</li>\n');
+		return waitingItem.toString();
 	};
 	exports.commentContentItem = function(replyFlag) {
 		var commentItem = new StringBuilder();
