@@ -297,7 +297,7 @@ define(function(require, exports, module) {
 		commentItem.append('<p class="mart10">{type}</p>\n');
 		commentItem.append('</div>\n');
 		commentItem.append('<div class="floatright color-9">\n');
-		commentItem.append('<p class="font11 alignright">{updateTime}</p>\n');
+		commentItem.append('<p class="font11 alignright">{updateTime}评论了产品 {productName}</p>\n');
 		commentItem.append('<pre class="color-6">{content}</pre>\n');
 		commentItem.append('</div>\n');
 		commentItem.append('</div>\n');
