@@ -35,7 +35,7 @@ define(function(require, exports, module) {
 		trustItem.append('<span class="tips tips-x floatleft strong">{typeName}</span>\n');
 		trustItem.append('<span class="floatleft marl5">{updateTime}</span>\n');
 		if (relationYn && relationYn == 'Y') {
-			trustItem.append('<span class="relationSpan" uid="{relationUserId}">关联自<em>{relationUserName}</em></span>\n');
+			trustItem.append('<span class="relationSpan" uid="{relationUserId}" rUserName="{relationUserName}">关联自<em>{relationUserName}</em></span>\n');
 		}
 		trustItem.append('</p>\n');
 		trustItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong openView">{name}');
@@ -69,7 +69,7 @@ define(function(require, exports, module) {
 		fundItem.append('<span class="tips tips-j floatleft strong">{typeName}</span>\n');
 		fundItem.append('<span class="floatleft marl5">{updateTime}</span>\n');
 		if (relationYn && relationYn == 'Y') {
-			fundItem.append('<span class="relationSpan" uid="{relationUserId}">关联自<em>{relationUserName}</em></span>\n');
+			fundItem.append('<span class="relationSpan" uid="{relationUserId}" rUserName="{relationUserName}">关联自<em>{relationUserName}</em></span>\n');
 		}
 		fundItem.append('</p>\n');
 		fundItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong openView">{name}');
@@ -147,7 +147,7 @@ define(function(require, exports, module) {
 	};
 	exports.friendPlannerItem = function() {
 		var friendItem = new StringBuilder();
-		friendItem.append('<section class="personBoard" uid="{userId}">\n');
+		friendItem.append('<section class="personBoard" uid="{userId}" userName="{userName}">\n');
 		friendItem.append('<div class="userInfo mart5 clearfix">\n');
 		friendItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		friendItem.append('<div class="floatleft marl15 font13">\n');
@@ -189,7 +189,7 @@ define(function(require, exports, module) {
 	};
 	exports.friendFollowPlannerItem = function(newFlag) {
 		var relationPlannerItem = new StringBuilder();
-		relationPlannerItem.append('<section class="UserCard" userId="{userId}" saleCount="{saleCount}">\n');
+		relationPlannerItem.append('<section class="UserCard" userId="{userId}" saleCount="{saleCount}" userName="{userName}">\n');
 		if(newFlag){
 			relationPlannerItem.append('<span class="icon-new"></span>\n');
 			relationPlannerItem.append('<span class="rightBtn rightBtnAdd"></span>\n');
@@ -255,7 +255,7 @@ define(function(require, exports, module) {
 	
 	exports.visitItem = function() {
 		var visitItem = new StringBuilder();
-		visitItem.append('<section class="personBoard" userId="{userId}">\n');
+		visitItem.append('<section class="personBoard" userId="{userId}" visitType="{visitType}" userName="{userName}">\n');
 		visitItem.append('<div class="userInfo mart5 clearfix">\n');
 		visitItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		visitItem.append('<div class="floatleft marl15 mart10 font13">\n');
@@ -272,7 +272,7 @@ define(function(require, exports, module) {
 	
 	exports.likeItem = function() {
 		var likeItem = new StringBuilder();
-		likeItem.append('<section class="personBoard" userId="{userId}" productId="{productId}">\n');
+		likeItem.append('<section class="personBoard" userId="{userId}" productId="{productId}" likeType="{likeType}" userName="{userName}">\n');
 		likeItem.append('<div class="userInfo mart5 clearfix">\n');
 		likeItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		likeItem.append('<div class="floatleft marl15 mart10 font13">\n');
@@ -303,5 +303,15 @@ define(function(require, exports, module) {
 		commentItem.append('</div>\n');
 		commentItem.append('</section>\n');
 		return commentItem.toString();
+	};
+	exports.weixinShare = function() {
+		var weixinShare = new StringBuilder();
+		weixinShare.append('https://open.weixin.qq.com/connect/oauth2/authorize?');
+		weixinShare.append('appid=wx7ec527daa5585fc3');
+		weixinShare.append('&redirect_uri={url}');
+		weixinShare.append('&response_type=code');
+		weixinShare.append('&scope=snsapi_base');
+		weixinShare.append('&state=1#wechat_redirect');
+		return weixinShare.toString();
 	};
 });

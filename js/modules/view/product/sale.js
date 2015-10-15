@@ -259,9 +259,10 @@ define(function(require, exports, module) {
 		$common.touchSE($('.relationSpan', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
 			event.stopPropagation();
 			var userId = $(o).attr('uid');
-			if (userId) {
+			var rUserName = $(o).attr('rUserName');
+			if (userId&&rUserName) {
 				if (userId != $userInfo.get('userId')) {
-					$windowManager.create('product_header_pop', 'headerPop.html?userId=' + userId, false, true, function(show) {
+					$windowManager.create('product_header_pop', 'headerPop.html?userId=' + userId+'&userName='+rUserName, false, true, function(show) {
 						show();
 					});
 				}

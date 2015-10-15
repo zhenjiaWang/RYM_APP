@@ -48,30 +48,25 @@ define(function(require, exports, module) {
 				var value = $(this).val();
 				if (value == '') {
 					goAdd();
+				}else{
+					loadData();
 				}
 				$('#keyword').trigger('blur');
 			}
 		});
 		$('#keyword').off('blur').on('blur', function(e) {
 			var value = $(this).val();
-			if (value == '') {
+			if (value != '') {
+				loadData();
+			}else{
 				goAdd();
-			}
-		});
-		$('#keyword').off('keyup').on('keyup', function(e) {
-			var value = $(this).val();
-			if (value ) {
-				if (value == '') {
-					goAdd();
-				}else{
-					loadData();
-				}
 			}
 		});
 		$common.touchSE($('.UserCard', '#friendUL'), function(event, startTouch, o) {}, function(event, o) {
 			var userId = $(o).attr('userId');
-			if (userId) {
-				$windowManager.create('product_header_pop', '../product/headerPop.html?userId='+userId, false, true, function(show) {
+			var userName = $(o).attr('userName');
+			if (userId&&userName) {
+				$windowManager.create('product_header_pop', '../product/headerPop.html?userId='+userId+'&userName='+userName, false, true, function(show) {
 					show();
 				});
 			}

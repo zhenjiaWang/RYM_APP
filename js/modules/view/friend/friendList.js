@@ -70,8 +70,9 @@ define(function(require, exports, module) {
 		
 		$common.touchSE($('.personBoard', '#friendUL'), function(event, startTouch, o) {}, function(event, o) {
 			var userId = $(o).attr('uid');
-			if (userId) {
-				$windowManager.create('product_header_pop', '../product/headerPop.html?userId='+userId, false, true, function(show) {
+			var userName = $(o).attr('userName');
+			if (userId&&userName) {
+				$windowManager.create('product_header_pop', '../product/headerPop.html?userId='+userId+'&userName='+userName, false, true, function(show) {
 					show();
 				});
 			}

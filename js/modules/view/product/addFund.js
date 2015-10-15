@@ -139,7 +139,7 @@ define(function(require, exports, module) {
 	loadOrg = function(orgCompany) {
 		$nativeUIManager.watting('请稍等...');
 		var controlValue = $('#productOrgId').val();
-		$windowManager.create('selectOrg', 'selectOrg.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue+'&win=product_add', false, true, function(show) {
+		$windowManager.create('selectOrg', 'selectOrg.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue + '&win=product_add', false, true, function(show) {
 			show();
 			$nativeUIManager.wattingClose();
 		});
@@ -158,7 +158,7 @@ define(function(require, exports, module) {
 						if (fundTypeList && $(fundTypeList).size() > 0) {
 							$userInfo.put("selectList", JSON.stringify(fundTypeList));
 							var controlValue = $('#fundType').val();
-							$windowManager.create('select', 'select.html?title=基金类型&controlId=fundType&controlValue=' + controlValue+'&win=product_add', false, true, function(show) {
+							$windowManager.create('select', 'select.html?title=基金类型&controlId=fundType&controlValue=' + controlValue + '&win=product_add', false, true, function(show) {
 								show();
 								$nativeUIManager.wattingClose();
 							});
@@ -403,7 +403,8 @@ define(function(require, exports, module) {
 		bindValidate();
 		loadData();
 		bindEvent();
-		
+		autosize(document.querySelectorAll('.textBox'));
+
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});

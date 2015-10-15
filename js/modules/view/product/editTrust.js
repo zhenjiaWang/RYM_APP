@@ -528,6 +528,7 @@ define(function(require, exports, module) {
 		});
 		bindValidate();
 		loadData();
+		autosize(document.querySelectorAll('.textBox'));
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});

@@ -27,12 +27,6 @@ define(function(require, exports, module) {
 				goSearch(value);
 			}
 		});
-		$('#keyword').off('keyup').on('keyup', function(e) {
-			var value = $(this).val();
-			if (value && value != '') {
-				goSearch(value);
-			}
-		});
 		$common.touchSE($('#addPhoneContacts'), function(event, startTouch, o) {}, function(event, o) {
 			//$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
 			$windowManager.create('friend_phoneList_header', 'phoneListHeader.html', false, true, function(show) {

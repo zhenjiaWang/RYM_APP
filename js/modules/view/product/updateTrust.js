@@ -135,7 +135,7 @@ define(function(require, exports, module) {
 			});
 		});
 	};
-	
+
 	bindEvent = function() {
 		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
 			var uid = $(o).attr('uid');
@@ -162,7 +162,7 @@ define(function(require, exports, module) {
 			}, 500);
 		});
 
-		
+
 		$common.touchSE($('#uploadBtn'), function(event, startTouch, o) {}, function(event, o) {
 			var imgCount = $('div', '#imgUL').find('img').size();
 			if (imgCount < 6) {
@@ -309,6 +309,7 @@ define(function(require, exports, module) {
 		});
 		bindValidate();
 		loadData();
+		autosize(document.querySelectorAll('.textBox'));
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});

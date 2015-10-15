@@ -87,6 +87,9 @@ define(function(require, exports, module) {
 				$nativeUIManager.alert('提示', '无法使用微信登录', 'OK', function() {});
 			});
 		});
+		window.addEventListener('resize', function() {
+			    document.getElementById("bottomBtn").style.display = document.body.clientHeight <= 400 ? 'none' : 'block';
+			}, false);
 		plus.navigator.closeSplashscreen();
 	};
 	if (window.plus) {

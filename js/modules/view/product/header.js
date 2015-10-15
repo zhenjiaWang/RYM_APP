@@ -2,6 +2,7 @@ define(function(require, exports, module) {
 	var $common = require('core/common');
 	var $userInfo = require('core/userInfo');
 	var $authorize = require('core/authorize');
+	var $shareManage = require('manager/share');
 	var $nativeUIManager = require('manager/nativeUI');
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
@@ -35,7 +36,28 @@ define(function(require, exports, module) {
 				function(index) {
 					if (index > 0) {
 						if (index == 1) {
-							$nativeUIManager.alert('提示', '微信浏览域名没办法用，暂关闭', 'OK', function() {});
+							$nativeUIManager.confactionSheetirm('请选择操作', '取消', [{
+									title: '分享到微信好友'
+								}, {
+									title: '分享到微信朋友圈'
+								}],
+								function(index) {
+									if (index > 0) {
+										if (index == 1) {
+											$shareManage.share('weixin','WXSceneSession',{
+												url:'http://dev.lcruyimen.com/product/info/planner?userId='+userId,
+												content:$userInfo.get('userName')+'在理财如意门的理财室，快来看看吧！',
+												title:'打开如意门，理财找对人'
+											});
+										} else if (index == 2) {
+											$shareManage.share('weixin','WXSceneTimeline',{
+												url:'http://dev.lcruyimen.com/product/info/planner?userId='+userId,
+												content:$userInfo.get('userName')+'在理财如意门的理财室，快来看看吧！',
+												title:'打开如意门，理财找对人'
+											});
+										}
+									}
+								});
 						}
 					}
 				});
@@ -57,7 +79,6 @@ define(function(require, exports, module) {
 	}
 	plusReady = function() {
 		loadWebview();
-		
 	};
 	if (window.plus) {
 		plusReady();

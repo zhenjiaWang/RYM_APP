@@ -113,7 +113,7 @@ define(function(require, exports, module) {
 				data: {
 					id: attId,
 					type: type,
-					attIgnore:'Y',
+					attIgnore: 'Y',
 					'org.guiceside.web.jsp.taglib.Token': tokenId
 				},
 				success: function(jsonData) {
@@ -142,8 +142,7 @@ define(function(require, exports, module) {
 			if (uid && type) {
 				$nativeUIManager.confirm('提示', '你确定删除此图片?删除将无法恢复!', ['确定', '取消'], function() {
 					deleteAtt(uid, type);
-				}, function() {
-				});
+				}, function() {});
 			}
 		});
 
@@ -296,7 +295,7 @@ define(function(require, exports, module) {
 
 		bindValidate();
 		loadData();
-
+		autosize(document.querySelectorAll('.textBox'));
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});

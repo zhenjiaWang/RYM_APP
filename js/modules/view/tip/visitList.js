@@ -42,11 +42,18 @@ define(function(require, exports, module) {
 
 		$common.touchSE($('.personBoard', '#visitDIV'), function(event, startTouch, o) {}, function(event, o) {
 			var userId = $(o).attr('userId');
-			if (userId) {
-				$windowManager.create('product_header_pop', '../product/headerPop.html?userId=' + userId, false, true, function(show) {
-					show();
-				});
+			var visitType = $(o).attr('visitType');
+			var userName = $(o).attr('userName');
+			if (visitType && visitType == 'app') {
+				if (userId && userName) {
+					$windowManager.create('product_header_pop', '../product/headerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
+						show();
+					});
+				}
+			}else{
+				$nativeUIManager.watting('客户没有理财室信息供给查看',1000);
 			}
+
 		});
 		document.addEventListener("plusscrollbottom", function() {
 			var next = $('#visitDIV').attr('nextIndex');
@@ -80,7 +87,7 @@ define(function(require, exports, module) {
 					if (jsonData['result'] == '0') {
 						var tipListWin = $windowManager.getById('tip_list');
 						if (tipListWin) {
-							$userInfo.put('visitCount','0');
+							$userInfo.put('visitCount', '0');
 							tipListWin.evalJS('loadTip()');
 						}
 						var visitArray = jsonData['visitArray'];
@@ -90,6 +97,7 @@ define(function(require, exports, module) {
 							$(visitArray).each(function(i, o) {
 								sb.append(String.formatmodel($templete.visitItem(), {
 									userId: o['userId'],
+									visitType: o['visitType'],
 									userName: o['userName'],
 									headImgUrl: o['headImgUrl'],
 									type: o['type'],

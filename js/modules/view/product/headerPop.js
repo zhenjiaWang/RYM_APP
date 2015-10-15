@@ -3,10 +3,12 @@ define(function(require, exports, module) {
 	var $userInfo = require('core/userInfo');
 	var $authorize = require('core/authorize');
 	var $nativeUIManager = require('manager/nativeUI');
+	var $shareManage = require('manager/share');
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
 	var queryMap = parseURL();
 	var userId = queryMap.get('userId');
+	var userName = queryMap.get('userName');
 	bindEvent = function() {
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
@@ -34,7 +36,28 @@ define(function(require, exports, module) {
 				function(index) {
 					if (index > 0) {
 						if (index == 1) {
-							$nativeUIManager.alert('提示', '微信浏览域名没办法用，暂关闭', 'OK', function() {});
+							$nativeUIManager.confactionSheetirm('请选择操作', '取消', [{
+									title: '分享到微信好友'
+								}, {
+									title: '分享到微信朋友圈'
+								}],
+								function(index) {
+									if (index > 0) {
+										if (index == 1) {
+											$shareManage.share('weixin','WXSceneSession',{
+												url:'http://dev.lcruyimen.com/product/info/planner?userId='+userId,
+												content:userName+'在理财如意门的理财室，快来看看吧！',
+												title:'打开如意门，理财找对人'
+											});
+										} else if (index == 2) {
+											$shareManage.share('weixin','WXSceneTimeline',{
+												url:'http://dev.lcruyimen.com/product/info/planner?userId='+userId,
+												content:userName+'在理财如意门的理财室，快来看看吧！',
+												title:'打开如意门，理财找对人'
+											});
+										}
+									}
+								});
 						}
 					}
 				});

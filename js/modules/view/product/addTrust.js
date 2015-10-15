@@ -505,6 +505,7 @@ define(function(require, exports, module) {
 		});
 		$('#typeId').val(typeId);
 		$('.placeTxt', '#selectProductType').text(typeName);
+		autosize(document.querySelectorAll('.textBox'));
 		bindValidate();
 		bindEvent();
 		loadData();
