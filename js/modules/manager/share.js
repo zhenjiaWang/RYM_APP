@@ -21,29 +21,31 @@ define(function(require, exports, module) {
 		msg.pictures = ["_www/logo.png"];
 		s.send(msg, function() {}, function(e) {});
 	};
-	exports.share = function(id, ex, shareObj) {
+	exports.auth = function(id) {
 		plus.share.getServices(function(s) {
 			shares = {};
 			for (var i in s) {
 				var t = s[i];
 				shares[t.id] = t;
-				shareFlag = true;
+				var s = shares[id];
+				if (s.authenticated) {
+					shareFlag = true;
+				} else {
+					s.authorize(function() {
+						shareFlag = true;
+					}, function(e) {
+						$nativeUIManager.alert('提示', '暂时无法分享' + e.code + " - " + e.message, 'OK', function() {});
+					});
+				}
 			}
 		}, function(e) {
 			shareFlag = false;
-			$nativeUIManager.alert('提示', '分享失败' + e.code + " - " + e.message, 'OK', function() {});
+			$nativeUIManager.alert('提示', '暂时无法分享' + e.code + " - " + e.message, 'OK', function() {});
 		});
+	};
+	exports.share = function(id, ex, shareObj) {
 		if (shareFlag) {
-			var s = shares[id];
-			if (s.authenticated) {
-				shareMessage(s, ex, shareObj);
-			} else {
-				s.authorize(function() {
-					shareMessage(s, ex, shareObj);
-				}, function(e) {
-					$nativeUIManager.alert('提示', '分享失败' + e.code + " - " + e.message, 'OK', function() {});
-				});
-			}
+			shareMessage(s, ex, shareObj);
 		}
 	};
 

@@ -46,14 +46,14 @@ define(function(require, exports, module) {
 										if (index == 1) {
 											$shareManage.share('weixin','WXSceneSession',{
 												url:'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-room_userId-'+userId,
-												content:userName+'在理财如意门的理财室，快来看看吧！',
-												title:'打开如意门，理财找对人'
+												content:userName+'的产品更新了，有你感兴趣的吗？',
+												title:userName+'的理财室'
 											});
 										} else if (index == 2) {
 											$shareManage.share('weixin','WXSceneTimeline',{
 												url:'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-room_userId-'+userId,
-												content:userName+'在理财如意门的理财室，快来看看吧！',
-												title:'打开如意门，理财找对人'
+												content:userName+'的产品更新了，有你感兴趣的吗？',
+												title:userName+'的理财室'
 											});
 										}
 									}
@@ -82,6 +82,7 @@ define(function(require, exports, module) {
 	plusReady = function() {
 		loadWebview();
 		bindEvent();
+		$shareManage.auth('weixin');
 	};
 	if (window.plus) {
 		plusReady();

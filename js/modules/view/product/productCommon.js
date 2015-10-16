@@ -307,10 +307,10 @@ define(function(require, exports, module) {
 						}, function() {});
 					} else if (jsonData['result'] == '1') {
 						$nativeUIManager.wattingClose();
-						$nativeUIManager.alert('提示', '该产品已经存在下游关系', 'OK', function() {});
-						//						$nativeUIManager.confirm('提示', '该产品已经存在下游关系，你确定要下架当前产品吗?', ['确定', '取消'], function() {
-						//							offActionCommon();
-						//						}, function() {});
+						//$nativeUIManager.alert('提示', '该产品已经存在下游关系', 'OK', function() {});
+						$nativeUIManager.confirm('提示', '该产品已经存在下游关系，你确定要下架当前产品吗?', ['确定', '取消'], function() {
+							offActionCommon();
+						}, function() {});
 					} else {
 						$nativeUIManager.wattingClose();
 						$nativeUIManager.alert('提示', '下架产品失败', 'OK', function() {});
@@ -512,6 +512,7 @@ define(function(require, exports, module) {
 		}
 	};
 	exports.showMoreAction = function(id, tab, name, pid, numSeq, uid) {
+		$shareManage.auth('weixin');
 		ID = id;
 		productName = name;
 		productId = pid;
@@ -540,14 +541,14 @@ define(function(require, exports, module) {
 												if (shareIndex == 1) {
 													$shareManage.share('weixin', 'WXSceneSession', {
 														url: 'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-product_pId-' + ID + '_tab-' + productTab,
-														content: productName + '理财产品！',
-														title: '打开如意门，理财找对人'
+														content: productName + '（产品名）',
+														title: $userInfo.get('userName')+'推荐的产品'
 													});
 												} else if (shareIndex == 2) {
 													$shareManage.share('weixin', 'WXSceneTimeline', {
 														url: 'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-product_pId-' + ID + '_tab-' + productTab,
-														content: productName + '理财产品！',
-														title: '打开如意门，理财找对人'
+														content: productName + '（产品名）',
+														title: $userInfo.get('userName')+'推荐的产品'
 													});
 												}
 											}
