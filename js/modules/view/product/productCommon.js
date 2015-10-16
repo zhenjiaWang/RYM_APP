@@ -3,6 +3,7 @@ define(function(require, exports, module) {
 	var $userInfo = require('core/userInfo');
 	var $nativeUIManager = require('manager/nativeUI');
 	var $windowManager = require('manager/window');
+	var $shareManage = require('manager/share');
 	var ID;
 	var productName;
 	var productId;
@@ -507,7 +508,7 @@ define(function(require, exports, module) {
 				$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + ID + '&tab=' + productTab, false, true, function(show) {
 					show();
 				});
-			}
+			} 
 		}
 	};
 	exports.showMoreAction = function(id, tab, name, pid, numSeq, uid) {
@@ -529,7 +530,37 @@ define(function(require, exports, module) {
 							var moreAction = moreActionObj[index + ''];
 							if (moreAction) {
 								if (moreAction == 'share') {
-									$nativeUIManager.alert('提示', '微信浏览域名没办法用，暂关闭', 'OK', function() {});
+									$nativeUIManager.confactionSheetirm('请选择操作', '取消', [{
+											title: '分享'
+										}],
+										function(index) {
+											if (index > 0) {
+												if (index == 1) {
+													$nativeUIManager.confactionSheetirm('请选择操作', '取消', [{
+															title: '分享到微信好友'
+														}, {
+															title: '分享到微信朋友圈'
+														}],
+														function(index) {
+															if (index > 0) {
+																if (index == 1) {
+																	$shareManage.share('weixin', 'WXSceneSession', {
+																		url: 'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-product_id-' + ID + '&tab-' + productTab,
+																		content: userName + '在理财如意门的理财室，快来看看吧！',
+																		title: '打开如意门，理财找对人'
+																	});
+																} else if (index == 2) {
+																	$shareManage.share('weixin', 'WXSceneTimeline', {
+																		url: 'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-product_id-' + ID + '&tab-' + productTab,
+																		content: userName + '在理财如意门的理财室，快来看看吧！',
+																		title: '打开如意门，理财找对人'
+																	});
+																}
+															}
+														});
+												}
+											}
+										});
 								} else if (moreAction == 'edit') {
 									editActionCommon();
 								}

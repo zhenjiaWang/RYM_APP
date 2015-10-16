@@ -45,13 +45,13 @@ define(function(require, exports, module) {
 									if (index > 0) {
 										if (index == 1) {
 											$shareManage.share('weixin','WXSceneSession',{
-												url:'http://dev.lcruyimen.com/product/info/planner?userId='+userId,
+												url:'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-room_userId-'+userId,
 												content:userName+'在理财如意门的理财室，快来看看吧！',
 												title:'打开如意门，理财找对人'
 											});
 										} else if (index == 2) {
 											$shareManage.share('weixin','WXSceneTimeline',{
-												url:'http://dev.lcruyimen.com/product/info/planner?userId='+userId,
+												url:'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-room_userId-'+userId,
 												content:userName+'在理财如意门的理财室，快来看看吧！',
 												title:'打开如意门，理财找对人'
 											});

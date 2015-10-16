@@ -273,9 +273,9 @@ define(function(require, exports, module) {
 						$('li[dir="plannerNo"]', '#editUL').find('span').last().text(jsonData['plannerNo']);
 						$('li[dir="signature"]', '#editUL').find('span').last().text(jsonData['signature']);
 						$('li[dir="orgName"]', '#editUL').find('span').last().text(jsonData['orgName']);
-						var openID = jsonData['openID'];
-						if (openID) {
-							if (openID == '-1') {
+						var unionId = jsonData['unionId'];
+						if (unionId) {
+							if (unionId == '-1') {
 								$('li[dir="wechat"]', '#editUL').find('span').first().text('绑定微信号').attr('lang', 'bind');
 							} else {
 								$('li[dir="wechat"]', '#editUL').find('span').first().text('解绑微信号').attr('lang', 'unbind');
