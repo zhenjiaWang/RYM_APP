@@ -508,7 +508,7 @@ define(function(require, exports, module) {
 				$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + ID + '&tab=' + productTab, false, true, function(show) {
 					show();
 				});
-			} 
+			}
 		}
 	};
 	exports.showMoreAction = function(id, tab, name, pid, numSeq, uid) {
@@ -531,33 +531,24 @@ define(function(require, exports, module) {
 							if (moreAction) {
 								if (moreAction == 'share') {
 									$nativeUIManager.confactionSheetirm('请选择操作', '取消', [{
-											title: '分享'
+											title: '分享到微信好友'
+										}, {
+											title: '分享到微信朋友圈'
 										}],
-										function(index) {
-											if (index > 0) {
-												if (index == 1) {
-													$nativeUIManager.confactionSheetirm('请选择操作', '取消', [{
-															title: '分享到微信好友'
-														}, {
-															title: '分享到微信朋友圈'
-														}],
-														function(index) {
-															if (index > 0) {
-																if (index == 1) {
-																	$shareManage.share('weixin', 'WXSceneSession', {
-																		url: 'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-product_id-' + ID + '&tab-' + productTab,
-																		content: userName + '在理财如意门的理财室，快来看看吧！',
-																		title: '打开如意门，理财找对人'
-																	});
-																} else if (index == 2) {
-																	$shareManage.share('weixin', 'WXSceneTimeline', {
-																		url: 'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-product_id-' + ID + '&tab-' + productTab,
-																		content: userName + '在理财如意门的理财室，快来看看吧！',
-																		title: '打开如意门，理财找对人'
-																	});
-																}
-															}
-														});
+										function(shareIndex) {
+											if (shareIndex > 0) {
+												if (shareIndex == 1) {
+													$shareManage.share('weixin', 'WXSceneSession', {
+														url: 'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-product_pId-' + ID + '_tab-' + productTab,
+														content: productName + '理财产品！',
+														title: '打开如意门，理财找对人'
+													});
+												} else if (shareIndex == 2) {
+													$shareManage.share('weixin', 'WXSceneTimeline', {
+														url: 'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-product_pId-' + ID + '_tab-' + productTab,
+														content: productName + '理财产品！',
+														title: '打开如意门，理财找对人'
+													});
 												}
 											}
 										});
