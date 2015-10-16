@@ -30,7 +30,7 @@ define(function(require, exports, module) {
 			}
 		});
 	}
-	exports.loginWechat = function(openId, successCallback, errorCallback, openCallback) {
+	exports.loginWechat = function(unionId, successCallback, errorCallback, openCallback) {
 		var pushInfo = $pushManager.pushInfo();
 		var deviceToken = pushInfo['token'];
 		var clientId = pushInfo['clientid']
@@ -39,7 +39,7 @@ define(function(require, exports, module) {
 			url: $common.getRestApiURL() + '/common/authorize/loginWeChat',
 			dataType: 'json',
 			data: {
-				openId: openId,
+				unionId: unionId,
 				deviceToken: deviceToken,
 				clientId: clientId,
 				osName: plus.os.name
@@ -55,7 +55,7 @@ define(function(require, exports, module) {
 					}else if (jsonData['result'] == '1') {
 						$userInfo.put('authorize', '-1');
 						if (typeof openCallback == 'function') {
-							openCallback(jsonData['openId'], jsonData['mobilePhone']);
+							openCallback(jsonData['unionId'], jsonData['mobilePhone']);
 						}
 					} else {
 						$userInfo.put('authorize', '-1');

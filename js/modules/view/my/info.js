@@ -66,9 +66,8 @@ define(function(require, exports, module) {
 		$common.touchSE($('#logoutBtn'), function(event, startTouch, o) {
 			$nativeUIManager.confirm('提示', '你确定要退出登录吗?', ['确定', '取消'], function() {
 				$authorize.logout();
-			},function(){});
-		}, function(event, o) {
-		});
+			}, function() {});
+		}, function(event, o) {});
 		$common.touchSE($('li', '#editUL'), function(event, startTouch, o) {}, function(event, o) {
 			var dir = $(o).attr('dir');
 			if (dir) {
@@ -109,39 +108,42 @@ define(function(require, exports, module) {
 								var s = auths[0];
 								s.login(function(e) {
 									if (s.authResult) {
-										value = s.authResult['openid'];
-										if (value) {
-											$common.refreshToken(function(tokenId) {
-												$.ajax({
-													type: 'POST',
-													url: $common.getRestApiURL() + '/sys/planner/bindWeChat',
-													dataType: 'json',
-													data: {
-														'org.guiceside.web.jsp.taglib.Token': tokenId,
-														codeValue: value
-													},
-													success: function(jsonData) {
-														if (jsonData) {
-															if (jsonData['result'] == '0') {
-																$nativeUIManager.wattingTitle('绑定成功!');
-																window.setTimeout(function() {
+										s.getUserInfo(function(e) {
+											value = s.userInfo['unionid'];
+											if (value) {
+												$common.refreshToken(function(tokenId) {
+													$.ajax({
+														type: 'POST',
+														url: $common.getRestApiURL() + '/sys/planner/bindWeChat',
+														dataType: 'json',
+														data: {
+															'org.guiceside.web.jsp.taglib.Token': tokenId,
+															codeValue: value
+														},
+														success: function(jsonData) {
+															if (jsonData) {
+																if (jsonData['result'] == '0') {
+																	$nativeUIManager.wattingTitle('绑定成功!');
+																	$(o).find('span').first().text('解绑微信号');
+																	window.setTimeout(function() {
+																		$nativeUIManager.wattingClose();
+																	}, 1000);
+																} else {
 																	$nativeUIManager.wattingClose();
-																}, 1000);
-															} else {
-																$nativeUIManager.wattingClose();
-																$nativeUIManager.alert('提示', '绑定失败', 'OK', function() {});
+																	$nativeUIManager.alert('提示', '绑定失败', 'OK', function() {});
+																}
 															}
+														},
+														error: function(XMLHttpRequest, textStatus, errorThrown) {
+															$nativeUIManager.wattingClose();
+															$nativeUIManager.alert('提示', '绑定失败', 'OK', function() {});
 														}
-													},
-													error: function(XMLHttpRequest, textStatus, errorThrown) {
-														$nativeUIManager.wattingClose();
-														$nativeUIManager.alert('提示', '绑定失败', 'OK', function() {});
-													}
+													});
 												});
-											});
-										} else {
-											$nativeUIManager.wattingClose();
-										}
+											} else {
+												$nativeUIManager.wattingClose();
+											}
+										}, function(e) {});
 									}
 								}, function(e) {
 									$nativeUIManager.wattingClose();
@@ -164,6 +166,7 @@ define(function(require, exports, module) {
 												if (jsonData) {
 													if (jsonData['result'] == '0') {
 														$nativeUIManager.wattingTitle('解绑成功!');
+														$(o).find('span').first().text('绑定微信号');
 														window.setTimeout(function() {
 															$nativeUIManager.wattingClose();
 														}, 1000);
@@ -302,8 +305,8 @@ define(function(require, exports, module) {
 		loadData();
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
-			var productUserWin=$windowManager.getById('product_user');
-			if(productUserWin){
+			var productUserWin = $windowManager.getById('product_user');
+			if (productUserWin) {
 				productUserWin.evalJS('reloadMyInfo()');
 			}
 		});

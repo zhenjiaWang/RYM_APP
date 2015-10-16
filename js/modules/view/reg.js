@@ -7,7 +7,7 @@ define(function(require, exports, module) {
 	var $validator = require('core/validator');
 	var intervalObj = false;
 	var queryMap = parseURL();
-	var openId = queryMap.get('openId');
+	var unionId = queryMap.get('unionId');
 	var mobilePhone = queryMap.get('mobilePhone');
 	getVerifyCode = function(mobilePhone, callback) {
 		$nativeUIManager.watting('请稍等...');
@@ -237,8 +237,8 @@ define(function(require, exports, module) {
 		});
 	};
 	plusReady = function() {
-		if(openId){
-			$('#openId').val(openId);
+		if(unionId){
+			$('#unionId').val(unionId);
 			if(mobilePhone&&mobilePhone!=undefined&&mobilePhone!='undefined'){
 				$('#mobilePhone').val(mobilePhone).attr('readonly','readonly');
 			}

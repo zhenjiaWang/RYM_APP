@@ -17,9 +17,9 @@ define(function(require, exports, module) {
 			}, 1000);
 		});
 	};
-	loginWechat = function(openId) {
+	loginWechat = function(unionId) {
 		$nativeUIManager.wattingTitle('微信授权登陆...', false);
-		$authorize.loginWechat(openId, function() {
+		$authorize.loginWechat(unionId, function() {
 			$windowManager.load('home.html');
 			$nativeUIManager.wattingClose();
 		}, function(message) {
@@ -27,9 +27,9 @@ define(function(require, exports, module) {
 			window.setTimeout(function() {
 				$nativeUIManager.wattingClose();
 			}, 1000);
-		}, function(openId, mobilePhone) {
+		}, function(unionId, mobilePhone) {
 			$nativeUIManager.wattingClose();
-			$windowManager.create('reg', 'reg.html?openId=' + openId + '&mobilePhone=' + mobilePhone, false, true, function(show) {
+			$windowManager.create('reg', 'reg.html?unionId=' + unionId + '&mobilePhone=' + mobilePhone, false, true, function(show) {
 				show();
 			});
 		});
@@ -74,10 +74,15 @@ define(function(require, exports, module) {
 				var s = auths[0];
 				s.login(function(e) {
 					if (s.authResult) {
-						value = s.authResult['openid'];
-						if (value) {
-							loginWechat(value);
-						}
+						s.getUserInfo(function() {
+							value = s.userInfo['unionid'];
+							if (value) {
+								loginWechat(value);
+							}
+						}, function(e) {
+							$nativeUIManager.wattingClose();
+							$nativeUIManager.alert('提示', '无法使用微信登录', 'OK', function() {});
+						});
 					}
 				}, function(e) {
 					$nativeUIManager.wattingClose();
@@ -88,8 +93,8 @@ define(function(require, exports, module) {
 			});
 		});
 		window.addEventListener('resize', function() {
-			    document.getElementById("bottomBtn").style.display = document.body.clientHeight <= 400 ? 'none' : 'block';
-			}, false);
+			document.getElementById("bottomBtn").style.display = document.body.clientHeight <= 400 ? 'none' : 'block';
+		}, false);
 		plus.navigator.closeSplashscreen();
 	};
 	if (window.plus) {

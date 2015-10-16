@@ -14,7 +14,7 @@ define(function(require, exports, module) {
 						$windowManager.load('login.html');
 					});
 				}else if(authorizeType=='weChat'){
-					$authorize.loginWechat($userInfo.get('openId'), function() {
+					$authorize.loginWechat($userInfo.get('unionId'), function() {
 						$windowManager.load('home.html');
 					}, function() {
 						$windowManager.load('login.html');

@@ -52,10 +52,10 @@ define(function(require, exports, module) {
 							}
 						}
 					} else if (authorizeType == 'weChat') {
-						var openId = plus.storage.getItem('openId');
+						var unionId = plus.storage.getItem('unionId');
 						var mobilePhone = plus.storage.getItem('mobilePhone');
-						if (mobilePhone && openId) {
-							if ($.trim(mobilePhone).length > 0 && $.trim(openId).length > 0) {
+						if (mobilePhone && unionId) {
+							if ($.trim(mobilePhone).length > 0 && $.trim(unionId).length > 0) {
 								flag = true;
 							}
 						}
