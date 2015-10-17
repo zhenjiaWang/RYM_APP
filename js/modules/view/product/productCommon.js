@@ -541,13 +541,13 @@ define(function(require, exports, module) {
 												if (shareIndex == 1) {
 													$shareManage.share( 'WXSceneSession', {
 														url: 'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-product_pId-' + ID + '_tab-' + productTab,
-														content: productName + '（产品名）',
+														content: productName ,
 														title: $userInfo.get('userName')+'推荐的产品'
 													});
 												} else if (shareIndex == 2) {
 													$shareManage.share('WXSceneTimeline', {
 														url: 'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-product_pId-' + ID + '_tab-' + productTab,
-														content: productName + '（产品名）',
+														content: productName ,
 														title: $userInfo.get('userName')+'推荐的产品'
 													});
 												}
