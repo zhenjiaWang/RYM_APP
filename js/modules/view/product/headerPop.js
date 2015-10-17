@@ -44,13 +44,13 @@ define(function(require, exports, module) {
 								function(index) {
 									if (index > 0) {
 										if (index == 1) {
-											$shareManage.share('weixin','WXSceneSession',{
+											$shareManage.share('WXSceneSession',{
 												url:'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-room_userId-'+userId,
 												content:userName+'的产品更新了，有你感兴趣的吗？',
 												title:userName+'的理财室'
 											});
 										} else if (index == 2) {
-											$shareManage.share('weixin','WXSceneTimeline',{
+											$shareManage.share('WXSceneTimeline',{
 												url:'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-room_userId-'+userId,
 												content:userName+'的产品更新了，有你感兴趣的吗？',
 												title:userName+'的理财室'

@@ -5,7 +5,8 @@ define(function(require, exports, module) {
 	var $userInfo = require('core/userInfo');
 	var shares = null;
 	var shareFlag = false;
-	shareMessage = function(s, ex, shareObj) {
+	var service=false;
+	shareMessage = function(ex, shareObj) {
 		var shareUrl = String.formatmodel($templete.weixinShare(), {
 			url: shareObj['url']
 		});
@@ -19,7 +20,7 @@ define(function(require, exports, module) {
 		};
 		msg.thumbs = ["_www/logo.png"];
 		msg.pictures = ["_www/logo.png"];
-		s.send(msg, function() {}, function(e) {});
+		service.send(msg, function() {}, function(e) {});
 	};
 	exports.auth = function(id) {
 		plus.share.getServices(function(s) {
@@ -27,11 +28,11 @@ define(function(require, exports, module) {
 			for (var i in s) {
 				var t = s[i];
 				shares[t.id] = t;
-				var s = shares[id];
-				if (s.authenticated) {
+				service = shares[id];
+				if (service.authenticated) {
 					shareFlag = true;
 				} else {
-					s.authorize(function() {
+					service.authorize(function() {
 						shareFlag = true;
 					}, function(e) {
 						$nativeUIManager.alert('提示', '暂时无法分享' + e.code + " - " + e.message, 'OK', function() {});
@@ -43,9 +44,9 @@ define(function(require, exports, module) {
 			$nativeUIManager.alert('提示', '暂时无法分享' + e.code + " - " + e.message, 'OK', function() {});
 		});
 	};
-	exports.share = function(id, ex, shareObj) {
+	exports.share = function(ex, shareObj) {
 		if (shareFlag) {
-			shareMessage(s, ex, shareObj);
+			shareMessage(ex, shareObj);
 		}
 	};
 

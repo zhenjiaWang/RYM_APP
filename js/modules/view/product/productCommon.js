@@ -539,13 +539,13 @@ define(function(require, exports, module) {
 										function(shareIndex) {
 											if (shareIndex > 0) {
 												if (shareIndex == 1) {
-													$shareManage.share('weixin', 'WXSceneSession', {
+													$shareManage.share( 'WXSceneSession', {
 														url: 'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-product_pId-' + ID + '_tab-' + productTab,
 														content: productName + '（产品名）',
 														title: $userInfo.get('userName')+'推荐的产品'
 													});
 												} else if (shareIndex == 2) {
-													$shareManage.share('weixin', 'WXSceneTimeline', {
+													$shareManage.share('WXSceneTimeline', {
 														url: 'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-product_pId-' + ID + '_tab-' + productTab,
 														content: productName + '（产品名）',
 														title: $userInfo.get('userName')+'推荐的产品'
