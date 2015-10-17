@@ -11,6 +11,64 @@ define(function(require, exports, module) {
 	var currentWindow;
 	var queryMap = parseURL();
 	var userId = queryMap.get('userId');
+
+	showUpdate = function() {
+		var updateInfoJson = $userInfo.get('updateInfo');
+		if (updateInfoJson) {
+			var inf = JSON.parse(updateInfoJson);
+			if (inf) {
+				$('#updateTip').remove();
+				$('body').append(String.formatmodel($templete.getUpdateDIV(), {}));
+				$('#updateContent', '#updateTip').append(String.formatmodel($templete.getUpdate(), inf));
+				$('#updateTip').show();
+				$('.mask').show();
+				var homeWin = $windowManager.getById($windowManager.getLaunchWindowId());
+				var productHeaderWin = $windowManager.getById('product_header');
+				if (homeWin) {
+					homeWin.evalJS('showUpdate()');
+				}
+				if (productHeaderWin) {
+					productHeaderWin.evalJS('showUpdate()');
+				}
+				$common.touchSE($('#cancelUpdate'), function(event, startTouch, o) {
+					$(o).addClass('current');
+				}, function(event, o) {
+					$(o).removeClass('current');
+					$('#updateTip').hide();
+					$('.mask').hide();
+					if (homeWin) {
+						homeWin.evalJS('closeUpdate()');
+					}
+					if (productHeaderWin) {
+						productHeaderWin.evalJS('closeUpdate()');
+					}
+				});
+
+				$common.touchSE($('#nowUpdate'), function(event, startTouch, o) {
+					$(o).addClass('current');
+				}, function(event, o) {
+					$(o).removeClass('current');
+					$('#updateTip').hide();
+					$('.mask').hide();
+					if (homeWin) {
+						homeWin.evalJS('closeUpdate()');
+					}
+					if (productHeaderWin) {
+						productHeaderWin.evalJS('closeUpdate()');
+					}
+					$common.switchOS(function() {
+						plus.runtime.openURL(inf['url'], function() {
+							$nativeUIManager.alert('更新失败', '抱歉服务器出现临时故障', '确认', false);
+						});
+					}, function() {
+						plus.runtime.openURL(inf['url'], function() {
+							$nativeUIManager.alert('更新失败', '抱歉服务器出现临时故障', '确认', false);
+						});
+					});
+				});
+			}
+		}
+	};
 	reloadMyInfo = function() {
 		$.ajax({
 			type: 'POST',
@@ -260,9 +318,9 @@ define(function(require, exports, module) {
 			event.stopPropagation();
 			var userId = $(o).attr('uid');
 			var rUserName = $(o).attr('rUserName');
-			if (userId&&rUserName) {
+			if (userId && rUserName) {
 				if (userId != $userInfo.get('userId')) {
-					$windowManager.create('product_header_pop', 'headerPop.html?userId=' + userId+'&userName='+rUserName, false, true, function(show) {
+					$windowManager.create('product_header_pop', 'headerPop.html?userId=' + userId + '&userName=' + rUserName, false, true, function(show) {
 						show();
 					});
 				}

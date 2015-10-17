@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+		<title>个人信息</title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/my/about');
+		</script>
+	</head>
+
+	<body>
+		<header class="header">
+			<span class="icon icon-back floatleft" id="backBtn"></span>
+			<!--<span class="headerBtn prev_step aligncenter">上一步</span>-->
+			<h1 class="aligncenter font17">关于如意门</h1>
+		</header>
+
+		<div class="main" style="position: absolute;bottom: 0px;top: 50px;">
+			<p class="aligncenter p-top35"><img src="../../img/app_logo.png" width="60"></p>
+			<p class="aligncenter font15 mart5 color-6" id="version"></p>
+			<ul class="inputList ulBg mart20">
+				<li class="clearfix">
+					<span class="lable">功能介绍</span>
+				</li>
+				<li class="clearfix">
+					<span class="lable font16">帮助与反馈</span>
+				</li>
+				<li class="clearfix">
+					<span class="lable font16">客服联系方式</span>
+				</li>
+			</ul>
+		</div>
+	</body>
+
+</html>

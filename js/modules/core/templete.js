@@ -6,6 +6,18 @@ define(function(require, exports, module) {
 		update.append('<p>{note}</p>\n');
 		return update.toString();
 	};
+	exports.getUpdateDIV = function() {
+		var updateDIV = new StringBuilder();
+		updateDIV.append('<div class="choosenet update" style="display:none;" id="updateTip">\n');
+		updateDIV.append('<div class="choosenetin font12" id="updateContent">\n');
+		updateDIV.append('</div>\n');
+		updateDIV.append('<p class="bottomB font14 clearfix">\n');
+		updateDIV.append('<span class="quitBtn aligncenter" id="cancelUpdate">暂不更新</span>\n');
+		updateDIV.append('<span class="quitBtn aligncenter" id="nowUpdate">立刻更新</span>\n');
+		updateDIV.append('</p>\n');
+		updateDIV.append('</div>\n');
+		return updateDIV.toString();
+	};
 	exports.selectItem = function() {
 		var selectItem = new StringBuilder();
 		selectItem.append('<li uid="{uid}" class="clearfix">\n');
@@ -162,6 +174,19 @@ define(function(require, exports, module) {
 		friendItem.append('</div>\n');
 		friendItem.append('<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i><span class="txt_hidden">{signature}</span></div>\n');
 		friendItem.append('</section>\n');
+		return friendItem.toString();
+	};
+	exports.friendInvestorItem = function(status) {
+		var friendItem = new StringBuilder();
+		friendItem.append('<li class="clearfix" uid="{userId}" userName="{userName}">\n');
+		friendItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
+		friendItem.append('<p class="mart15"><span class="font16 marl10">{userName}</span></p>\n');
+		if(status==0){
+			friendItem.append('<span class="addBtn nobg noboder color-b">等待验证</span>\n');
+		}else{
+			friendItem.append('<span class="addBtn btnAgree">私信</span>\n');
+		}
+		friendItem.append('</li>\n');
 		return friendItem.toString();
 	};
 	exports.relationPlannerItem = function() {

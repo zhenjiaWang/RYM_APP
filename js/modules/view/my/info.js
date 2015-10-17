@@ -8,6 +8,9 @@ define(function(require, exports, module) {
 	var server = "/common/common/uploadData";
 	var files = [];
 	var auths = null;
+	logout = function() {
+		$authorize.logout();
+	};
 	upload = function() {
 		if (files.length <= 0) {
 			plus.nativeUI.alert("没有添加上传文件！");
@@ -63,6 +66,11 @@ define(function(require, exports, module) {
 		task.start();
 	};
 	bindEvent = function() {
+		$common.touchSE($('#settingBtn'), function(event, startTouch, o) {
+			$windowManager.create('my_setting', 'setting.html', false, true, function(show) {
+				show();
+			});
+		}, function(event, o) {});
 		$common.touchSE($('#logoutBtn'), function(event, startTouch, o) {
 			$nativeUIManager.confirm('提示', '你确定要退出登录吗?', ['确定', '取消'], function() {
 				$authorize.logout();
@@ -78,7 +86,9 @@ define(function(require, exports, module) {
 						show();
 					});
 				} else if (dir == 'password') {
-					$nativeUIManager.alert('提示', '暂停功能方便测试', 'OK', function() {});
+					$windowManager.create('my_password', 'password.html', false, true, function(show) {
+						show();
+					});
 				} else if (dir == 'plannerNo') {
 					value = $(o).find('span').last().text();
 					$windowManager.create('my_edit', 'edit.html?code=' + dir + '&value=' + value, false, true, function(show) {

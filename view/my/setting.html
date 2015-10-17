@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+		<title>个人信息</title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/my/setting');
+		</script>
+	</head>
+
+	<body>
+		<header class="header">
+			<span class="icon icon-back floatleft" id="backBtn"></span>
+			<!--<span class="headerBtn prev_step aligncenter">上一步</span>-->
+			<h1 class="aligncenter font17">设置</h1>
+		</header>
+
+		<div class="main" style="position: absolute;bottom: 0px;top: 50px;">
+			<ul class="inputList mart15">
+				<li class="clearfix">
+					<span class="lable">夜间防骚扰模式</span>
+					<span class="switch off floatright"><em></em></span>
+				</li>
+			</ul>
+			<p class="font14 aligncenter color-6 mart10">开启夜间防骚扰模式,将自动屏蔽23:00-8:00间的任何提醒</p>
+			<ul class="inputList mart15" id="editUL">
+				<li class="clearfix" id="about">
+					<span class="lable">关于如意门</span>
+					<span class="alignright placeTxt"></span>
+				</li>
+			</ul>
+		</div>
+	</body>
+
+</html>

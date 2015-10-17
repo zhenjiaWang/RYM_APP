@@ -28,13 +28,9 @@ define(function(require, exports, module) {
 			}
 		});
 		$common.touchSE($('#addPhoneContacts'), function(event, startTouch, o) {}, function(event, o) {
-			//$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
 			$windowManager.create('friend_phoneList_header', 'phoneListHeader.html', false, true, function(show) {
 				show();
 			});
-		});
-		$common.touchSE($('#investorBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$nativeUIManager.alert('提示', '和微信一起开放', 'OK', function() {});
 		});
 		$common.touchSE($('.addBtn'), function(event, startTouch, o) {}, function(event, o) {
 			if (!$(o).hasClass('nobg') && !$(o).hasClass('addDone')) {

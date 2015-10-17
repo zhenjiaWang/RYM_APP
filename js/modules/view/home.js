@@ -5,6 +5,13 @@ define(function(require, exports, module) {
 	var $nativeUIManager = require('manager/nativeUI');
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
+	var $updateManager = require('manager/update');
+	showUpdate = function() {
+		$('.mask').show();
+	};
+	closeUpdate = function() {
+		$('.mask').hide();
+	};
 	plusRest = function() {
 		if ($('#plusBtn').hasClass('current')) {
 			$('#plusBtn').removeClass('current');
@@ -17,6 +24,8 @@ define(function(require, exports, module) {
 					currentProductWinId = 'friend_list';
 				} else if (dir == 'tip') {
 					currentProductWinId = 'tip_list';
+				}else if (dir == 'customer') {
+					currentProductWinId = 'customer_list';
 				}
 				var productWindow = $windowManager.getById(currentProductWinId);
 				if (productWindow) {
@@ -37,10 +46,6 @@ define(function(require, exports, module) {
 		}, function(event, o) {
 			var dir = $(o).attr('dir');
 			if (dir) {
-				if (dir == 'customer') {
-					$nativeUIManager.alert('提示', '和微信一起开放', 'OK', function() {});
-					return false;
-				}
 				if (dir == 'plusBtn') {
 					var currentDir = $('#footerAction').attr('current');
 					var plusWinId = false;
@@ -51,6 +56,8 @@ define(function(require, exports, module) {
 							plusWinId = 'friend_list';
 						} else if (currentDir == 'tip') {
 							plusWinId = 'tip_list';
+						}else if (currentDir == 'customer') {
+							plusWinId = 'customer_list';
 						}
 					}
 					if (plusWinId) {
@@ -107,6 +114,17 @@ define(function(require, exports, module) {
 									$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
 									$('#footerAction').attr('current', dir);
 								}, false);
+							}else if (dir == 'customer') {
+								var customerHead = plus.webview.create("customer/header.html", "customer_header", {
+									top: "0px",
+									bottom: "50px"
+								});
+								customerHead.addEventListener("loaded", function() { //叶面加载完成后才显示
+									$windowManager.current().append(customerHead);
+									$('span[dir!="plusBtn"]', '#footerAction').removeClass('current');
+									$('span[dir="' + dir + '"]', '#footerAction').addClass('current');
+									$('#footerAction').attr('current', dir);
+								}, false);
 							}
 							if (oldDir) {
 								if (oldDir == 'room') {
@@ -122,6 +140,13 @@ define(function(require, exports, module) {
 									window.setTimeout(function() {
 										$windowManager.closeById('friend_header', 'none');
 										$windowManager.closeById('friend_list', 'none');
+									}, 500);
+								}else if (oldDir == 'customer') {
+									$controlWindow.windowHide('customer_header');
+									$controlWindow.windowHide('customer_list');
+									window.setTimeout(function() {
+										$windowManager.closeById('customer_header', 'none');
+										$windowManager.closeById('customer_list', 'none');
 									}, 500);
 								} else if (oldDir == 'tip') {
 									$controlWindow.windowHide('tip_header');
@@ -149,6 +174,9 @@ define(function(require, exports, module) {
 			if ($('span.current', '#footerAction').size() == 0) {
 				$('span', '#footerAction').first().addClass('current');
 				$('#footerAction').attr('current', 'room');
+				window.setTimeout(function(){
+					$updateManager.execute();
+				},1000);
 			}
 		}, false);
 	};
@@ -204,6 +232,7 @@ define(function(require, exports, module) {
 			$authorize.timeout();
 		}, false);
 		plus.navigator.closeSplashscreen();
+		
 	};
 	if (window.plus) {
 		plusReady();

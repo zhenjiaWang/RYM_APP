@@ -7,6 +7,12 @@ define(function(require, exports, module) {
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
 	var userId;
+	showUpdate = function() {
+		$('.mask').show();
+	};
+	closeUpdate = function() {
+		$('.mask').hide();
+	};
 	bindEvent = function() {
 		$common.touchSE($('#myBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.create('my_info', '../my/info.html', false, true, function(show) {
