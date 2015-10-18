@@ -6,15 +6,13 @@ define(function(require, exports, module) {
 	var $templete = require('core/templete');
 	var checkInterval = 1000 * 60 * 60 * 24;
 	checkUpdateData = function(j) {
-		//var curVer = plus.runtime.version;
-		var curVer='0.9.2';
+		var curVer = plus.runtime.version;
 		var inf = j[plus.os.name];
 		if (inf) {
 			$userInfo.put('updateInfo', JSON.stringify(inf));
 			var srvVer = inf['version'];
-			if (!compareVersion(curVer, srvVer)) {
+			if (compareVersion(curVer, srvVer)) {
 				var productWin = $windowManager.getById('product_user');
-
 				if (productWin) {
 					productWin.evalJS('showUpdate()');
 				}

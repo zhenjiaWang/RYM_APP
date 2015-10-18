@@ -27,7 +27,7 @@ define(function(require, exports, module) {
 		return type == networkInfo.CONNECTION_ETHERNET || type == networkInfo.CONNECTION_WIFI || type == networkInfo.CONNECTION_CELL2G || type == networkInfo.CONNECTION_CELL3G || type == networkInfo.CONNECTION_CELL4G;
 	};
 	exports.getRestApiURL = function() {
-		return "http://192.168.1.108:8080";
+		return "http://dev.lcruyimen.com";
 	};
 	exports.switchOS = function(IOS, ANDROID) {
 		switch (plus.os.name) {
@@ -75,13 +75,15 @@ define(function(require, exports, module) {
 							x = endX - startX;
 							y = endY - startY;
 							if (y != 0) {
-								if (y > 20 || y < -20) {
-									trueTouch = true;
-								}
+								trueTouch = true;
+//								if (y > 2 || y < -2) {
+//									trueTouch = true;
+//								}
 							} else if (x != 0) {
-								if (x > 20 || x < -20) {
-									trueTouch = true;
-								}
+								trueTouch = true;
+//								if (x > 2 || x < -2) {
+//									trueTouch = true;
+//								}
 							}
 						}
 					});
