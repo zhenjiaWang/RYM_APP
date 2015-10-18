@@ -12,6 +12,9 @@ define(function(require, exports, module) {
 	var queryMap = parseURL();
 	var userId = queryMap.get('userId');
 
+	setFollow=function(followCount){
+		$('#follow').text(followCount);
+	}
 	showUpdate = function() {
 		var updateInfoJson = $userInfo.get('updateInfo');
 		if (updateInfoJson) {

@@ -28,6 +28,7 @@ define(function(require, exports, module) {
 				data: {
 					id: id,
 					tab: tab,
+					userId:userId,
 					content: content,
 					replyUserId: replyUserId,
 					'org.guiceside.web.jsp.taglib.Token': tokenId
@@ -42,6 +43,7 @@ define(function(require, exports, module) {
 									$('#blank').hide();
 								}
 								$('#commentUL').prepend(String.formatmodel($templete.commentContentItem(commentObj['replyFlag']), {
+									uid: commentObj['uid'],
 									userId: commentObj['userId'],
 									headImgUrl: commentObj['headImgUrl'],
 									userName: commentObj['userName'],
@@ -213,6 +215,7 @@ define(function(require, exports, module) {
 						data: {
 							id: id,
 							tab: tab,
+							userId:userId,
 							'org.guiceside.web.jsp.taglib.Token': tokenId
 						},
 						success: function(jsonData) {

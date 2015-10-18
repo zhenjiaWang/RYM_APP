@@ -67,12 +67,12 @@ define(function(require, exports, module) {
 				loadData();
 			}
 		});
-		
+
 		$common.touchSE($('.personBoard', '#friendUL'), function(event, startTouch, o) {}, function(event, o) {
 			var userId = $(o).attr('uid');
 			var userName = $(o).attr('userName');
-			if (userId&&userName) {
-				$windowManager.create('product_header_pop', '../product/headerPop.html?userId='+userId+'&userName='+userName, false, true, function(show) {
+			if (userId && userName) {
+				$windowManager.create('product_header_pop', '../product/headerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
 					show();
 				});
 			}
@@ -200,6 +200,10 @@ define(function(require, exports, module) {
 						if (page) {
 							if (page['hasNextPage'] == true) {
 								$('#friendUL').attr('nextIndex', page['nextIndex']);
+							}
+							var productUserWin = $windowManager.getById('product_user');
+							if (productUserWin) {
+								productUserWin.evalJS('setFollow('+page['totalRecord']+')');
 							}
 						}
 						pullToRefreshEvent();

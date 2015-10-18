@@ -196,7 +196,7 @@ define(function(require, exports, module) {
 		$nativeUIManager.watting('请稍等...');
 		$.ajax({
 			type: 'POST',
-			url: $common.getRestApiURL() + '/product/info/newOnExist',
+			url: $common.getRestApiURL() + '/product/info/onExist',
 			dataType: 'json',
 			data: {
 				id: ID,
