@@ -155,51 +155,48 @@ define(function(require, exports, module) {
 	bindEvent = function() {
 		$common.touchSE($('.addBtn'), function(event, startTouch, o) {}, function(event, o) {
 			if (!$(o).hasClass('nobg') && !$(o).hasClass('addDone')) {
-				$nativeUIManager.watting('请稍等...');
-				window.setTimeout(function() {
-					$nativeUIManager.wattingTitle('微信通知发送失败 请暂时从微信主动添加理财师');
-					window.setTimeout(function() {
-						$nativeUIManager.wattingClose();
-					}, 1000);
-				}, 1000);
-				//				var li = $(o).closest('li');
-				//				var friendId = $(li).attr('userId');
-				//				if (friendId) {
-				//					$nativeUIManager.watting('请稍等...');
-				//					$common.refreshToken(function(tokenId) {
-				//						$.ajax({
-				//							type: 'POST',
-				//							url: $common.getRestApiURL() + '/social/friendPlanner/addFriend',
-				//							dataType: 'json',
-				//							data: {
-				//								'org.guiceside.web.jsp.taglib.Token': tokenId,
-				//								friendId: friendId
-				//							},
-				//							success: function(jsonData) {
-				//								if (jsonData) {
-				//									if (jsonData['result'] == '0') {
-				//										$nativeUIManager.wattingTitle('关注成功!');
-				//										$(o).text(jsonData['text']).addClass('nobg noboder color-b');
-				//										window.setTimeout(function() {
-				//											$nativeUIManager.wattingClose();
-				//											var addNewWin = $windowManager.getById('friend_addNew');
-				//											if (addNewWin) {
-				//												addNewWin.evalJS('loadContactsTip('+jsonData['unAddCount']+')');
-				//											}
-				//										}, 1000);
-				//									} else {
-				//										$nativeUIManager.wattingClose();
-				//										$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
-				//									}
-				//								}
-				//							},
-				//							error: function(XMLHttpRequest, textStatus, errorThrown) {
-				//								$nativeUIManager.wattingClose();
-				//								$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
-				//							}
-				//						});
-				//					});
-				//				}
+				var li = $(o).closest('li');
+				if (li) {
+					var friendId = $(li).attr('userId');
+					var status = $(li).attr('status');
+					if (friendId && status) {
+						$nativeUIManager.watting('请稍等...');
+						$common.refreshToken(function(tokenId) {
+							$.ajax({
+								type: 'POST',
+								url: $common.getRestApiURL() + '/social/friendInvestor/addFriend',
+								dataType: 'json',
+								data: {
+									'org.guiceside.web.jsp.taglib.Token': tokenId,
+									friendId: friendId,
+									status: status
+								},
+								success: function(jsonData) {
+									if (jsonData) {
+										if (jsonData['result'] == '0') {
+											$nativeUIManager.wattingTitle('已发送好友邀请!');
+											$(o).text(jsonData['text']).addClass('nobg noboder color-b');
+											window.setTimeout(function() {
+												var customerListWin = $windowManager.getById('customer_list');
+												if (customerListWin) {
+													customerListWin.evalJS('onRefresh()');
+												}
+												$nativeUIManager.wattingClose();
+											}, 1000);
+										} else {
+											$nativeUIManager.wattingClose();
+											$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+										}
+									}
+								},
+								error: function(XMLHttpRequest, textStatus, errorThrown) {
+									$nativeUIManager.wattingClose();
+									$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+								}
+							});
+						});
+					}
+				}
 			}
 		});
 	};
@@ -226,7 +223,8 @@ define(function(require, exports, module) {
 										mobilePhone: o['mobilePhone'],
 										userId: o['userId'],
 										headImgUrl: o['headImgUrl'],
-										text: o['add'] == 'Y' ? '添加 ' : '已添加'
+										text: o['text'],
+										status: o['status']
 									}));
 								}
 							});

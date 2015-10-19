@@ -6,29 +6,23 @@ define(function(require, exports, module) {
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
 	bindEvent = function() {
-		$common.touchSE($('#plusBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('customer_addNew_header', 'addNewHeader.html', false, true, function(show) {
-				show();
-			});
+		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
+			$windowManager.close();
 		});
 	};
 	loadWebview = function() {
-		var friendListWin = plus.webview.create("customerList.html", "customer_list", {
+		var addNewWin = plus.webview.create("addNew.html", "customer_addNew", {
 			top: "50px",
 			bottom: "0px",
 			scrollIndicator: 'vertical'
 		});
-		if (friendListWin) {
-			friendListWin.addEventListener("loaded", function() {
-				$windowManager.current().append(friendListWin);
+		if (addNewWin) {
+			addNewWin.addEventListener("loaded", function() {
+				$windowManager.current().append(addNewWin);
 			}, false);
 		}
 	}
-	loadTip = function() {
-		
-	};
 	plusReady = function() {
-		loadTip();
 		loadWebview();
 		bindEvent();
 	};

@@ -37,7 +37,7 @@ define(function(require, exports, module) {
 			}
 		}, onRefresh);
 	};
-	goAdd=function(){
+	goAdd = function() {
 		$windowManager.load('addNew.html');
 	};
 	bindEvent = function() {
@@ -48,7 +48,7 @@ define(function(require, exports, module) {
 				var value = $(this).val();
 				if (value == '') {
 					goAdd();
-				}else{
+				} else {
 					loadData();
 				}
 				$('#keyword').trigger('blur');
@@ -58,15 +58,15 @@ define(function(require, exports, module) {
 			var value = $(this).val();
 			if (value != '') {
 				loadData();
-			}else{
+			} else {
 				goAdd();
 			}
 		});
 		$common.touchSE($('.UserCard', '#friendUL'), function(event, startTouch, o) {}, function(event, o) {
 			var userId = $(o).attr('userId');
 			var userName = $(o).attr('userName');
-			if (userId&&userName) {
-				$windowManager.create('product_header_pop', '../product/headerPop.html?userId='+userId+'&userName='+userName, false, true, function(show) {
+			if (userId && userName) {
+				$windowManager.create('product_header_pop', '../product/headerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
 					show();
 				});
 			}
@@ -95,6 +95,10 @@ define(function(require, exports, module) {
 									$('.icon-new', section).remove();
 									$(o).text('已关注').removeClass('rightBtnAdd').off('touchstart').off('touchend');
 									window.setTimeout(function() {
+										var friendListWin = $windowManager.getById('friend_list');
+										if (friendListWin) {
+											friendListWin.evalJS('onRefresh()');
+										}
 										$nativeUIManager.wattingClose();
 									}, 1000);
 								} else {
@@ -147,15 +151,15 @@ define(function(require, exports, module) {
 						if (friendArray && $(friendArray).size() > 0) {
 							$('#blank').hide();
 							$(friendArray).each(function(i, o) {
-								var productInfo=o['productInfo'];
+								var productInfo = o['productInfo'];
 								sb.append(String.formatmodel($templete.friendFollowPlannerItem(o['state'] == '-1'), {
 									userId: o['userId'],
 									userName: o['userName'],
 									headImgUrl: o['headImgUrl'],
 									saleCount: o['saleCount'],
-									financialContent:productInfo['financialContent'],
-									trustContent:productInfo['trustContent'],
-									fundContent:productInfo['fundContent']
+									financialContent: productInfo['financialContent'],
+									trustContent: productInfo['trustContent'],
+									fundContent: productInfo['fundContent']
 								}));
 							});
 						} else {

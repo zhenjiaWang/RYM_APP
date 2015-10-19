@@ -7,11 +7,13 @@ define(function(require, exports, module) {
 	var $controlWindow = require('manager/controlWindow');
 	var $keyManager = require('manager/key');
 	var $templete = require('core/templete');
+	var queryMap = parseURL();
+	var keyword = queryMap.get('keyword');
 	var nextIndex = 0;
 	var currentWindow;
 	onRefresh = function() {
 		nextIndex = 0;
-		$('#friendUL').attr('nextIndex', 0);
+		$('#phoneListUL').attr('nextIndex', 0);
 		window.setTimeout(function() {
 			loadData(function() {
 				currentWindow.endPullToRefresh();
@@ -35,13 +37,8 @@ define(function(require, exports, module) {
 			}
 		}, onRefresh);
 	};
-	showAddTools = function() {
-		$('.footerMask').css('bottom', '0px');
-		$('#bottomPop').addClass('current');
-	};
-	hideAddTools = function() {
-		$('.footerMask').css('bottom', '-99px');
-		$('#bottomPop').removeClass('current');
+	goAdd = function() {
+		$windowManager.load('addNew.html');
 	};
 	bindEvent = function() {
 		$('#keyword').off('keydown').on('keydown', function(e) {
@@ -50,6 +47,8 @@ define(function(require, exports, module) {
 			if (keyCode == 13) {
 				var value = $(this).val();
 				if (value == '') {
+					goAdd();
+				} else {
 					loadData();
 				}
 				$('#keyword').trigger('blur');
@@ -57,67 +56,67 @@ define(function(require, exports, module) {
 		});
 		$('#keyword').off('blur').on('blur', function(e) {
 			var value = $(this).val();
-			if (value == '') {
+			if (value != '') {
 				loadData();
-			}
-		});
-		$('#keyword').off('keyup').on('keyup', function(e) {
-			var value = $(this).val();
-			if (value && value != '') {
-				loadData();
-			}
-		});
-		
-		
-		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('product_add', '../product/add.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
-		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
-		$common.touchSE($('.checkWord'), function(event, startTouch, o) {}, function(event, o) {
-			if (!$('.wordList').hasClass('current')) {
-				$('.wordList').addClass('current');
 			} else {
-				$('.wordList').removeClass('current');
+				goAdd();
 			}
 		});
-		$common.touchSE($('td', '.wordList'), function(event, startTouch, o) {}, function(event, o) {
-			if (!$('span', o).hasClass('current')) {
-				$('td', '.wordList').find('span').removeClass('current');
-				$('span', o).addClass('current');
-				var dir = $(o).attr('dir');
-				if (dir) {
-					loadData();
-					$('.wordList').removeClass('current');
-					$('.checkWord').text('dir');
+
+		$common.touchSE($('.addBtn', '#phoneListUL'), function(event, startTouch, o) {}, function(event, o) {
+			if (!$(o).hasClass('nobg')) {
+				var li = $(o).closest('li');
+				if (li) {
+					var friendId = $(li).attr('userId');
+					var status = $(li).attr('status');
+					if (friendId && status) {
+						$nativeUIManager.watting('请稍等...');
+						$common.refreshToken(function(tokenId) {
+							$.ajax({
+								type: 'POST',
+								url: $common.getRestApiURL() + '/social/friendInvestor/addFriend',
+								dataType: 'json',
+								data: {
+									'org.guiceside.web.jsp.taglib.Token': tokenId,
+									friendId: friendId,
+									status: status
+								},
+								success: function(jsonData) {
+									if (jsonData) {
+										if (jsonData['result'] == '0') {
+											$nativeUIManager.wattingTitle('已发送好友邀请!');
+											$(o).text(jsonData['text']).addClass('nobg noboder color-b');
+											window.setTimeout(function() {
+												var customerListWin = $windowManager.getById('customer_list');
+												if (customerListWin) {
+													customerListWin.evalJS('onRefresh()');
+												}
+												$nativeUIManager.wattingClose();
+											}, 1000);
+										} else {
+											$nativeUIManager.wattingClose();
+											$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+										}
+									}
+								},
+								error: function(XMLHttpRequest, textStatus, errorThrown) {
+									$nativeUIManager.wattingClose();
+									$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+								}
+							});
+						});
+					}
 				}
-			} else {
-				$('span', o).removeClass('current');
-				$('.wordList').removeClass('current');
-				$('.checkWord').text('筛选');
-				loadData();
 			}
 		});
+
 		document.addEventListener("plusscrollbottom", function() {
-			var next = $('#friendUL').attr('nextIndex');
+			var next = $('#phoneListUL').attr('nextIndex');
 			if (next) {
 				if (next > 0) {
 					nextIndex = next;
 					$nativeUIManager.watting('正在加载更多...');
-					$('#friendUL').attr('nextIndex', 0);
+					$('#phoneListUL').attr('nextIndex', 0);
 					window.setTimeout(function() {
 						loadData(function() {
 							$nativeUIManager.wattingClose();
@@ -128,60 +127,56 @@ define(function(require, exports, module) {
 		});
 	};
 	loadData = function(callback, append) {
-		$('.checkWord').hide();
 		if (!callback) {
 			$nativeUIManager.watting('正在加载...');
 		}
 		$.ajax({
 			type: 'POST',
-			url: $common.getRestApiURL() + '/social/friendInvestor',
+			url: $common.getRestApiURL() + '/sys/investor/list',
 			dataType: 'json',
 			data: {
 				start: nextIndex > 0 ? nextIndex : '',
-				keyword: $('#keyword').val(),
-				userFirst: $('span.current', '.wordList').closest('td').attr('dir')
+				keyword: $('#keyword').val()
 			},
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
-						$('td', '.wordList').addClass('noData');
-						$('td', '.wordList').each(function() {
-							$(this).attr('dir', $('span', this).text());
-						});
-						var firstArray = jsonData['firstArray'];
-						if (firstArray && $(firstArray).size() > 0) {
-							$(firstArray).each(function(i, jp) {
-								$('td[dir="' + jp + '"]', '.wordList').removeClass('noData');
-							});
-						}
-						var friendInvestorArray = jsonData['friendInvestorArray'];
+						var investorArray = jsonData['investorArray'];
 						var sb = new StringBuilder();
-						if (friendInvestorArray && $(friendInvestorArray).size() > 0) {
+						if (investorArray && $(investorArray).size() > 0) {
 							$('#blank').hide();
-							$('.checkWord').show();
-							$('#friendUL').show();
-							$(friendInvestorArray).each(function(i, o) {
-								sb.append(String.formatmodel($templete.friendInvestorItem(o['status']), {
+							$('#phoneListUL').show();
+							$(investorArray).each(function(i, o) {
+								var addFlag = false;
+								if (o['status'] == '-1') {
+									addFlag = true;
+								} else if (o['status'] == '2') {
+									addFlag = true;
+								}
+								sb.append(String.formatmodel($templete.contactPlannerItem(addFlag), {
+									name: o['userName'],
+									mobilePhone: o['mobilePhone'],
 									userId: o['userId'],
-									userName: o['userName'],
-									headImgUrl: o['headImgUrl']
+									status: o['status'],
+									headImgUrl: o['headImgUrl'],
+									text: o['text']
 								}));
 							});
 						} else {
 							$('#blank').show();
-							$('#friendUL').hide();
+							$('#phoneListUL').hide();
 						}
 						if (append) {
-							$('#friendUL').append(sb.toString());
+							$('#phoneListUL').append(sb.toString());
 						} else {
-							$('#friendUL').empty().append(sb.toString());
+							$('#phoneListUL').empty().append(sb.toString());
 						}
 						nextIndex = 0;
-						$('#friendUL').attr('nextIndex', 0);
+						$('#phoneListUL').attr('nextIndex', 0);
 						var page = jsonData['page'];
 						if (page) {
 							if (page['hasNextPage'] == true) {
-								$('#friendUL').attr('nextIndex', page['nextIndex']);
+								$('#phoneListUL').attr('nextIndex', page['nextIndex']);
 							}
 						}
 						pullToRefreshEvent();
@@ -220,6 +215,7 @@ define(function(require, exports, module) {
 		}, function() {
 
 		});
+		$('#keyword').val(keyword);
 		loadData();
 	};
 	if (window.plus) {

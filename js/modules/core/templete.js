@@ -146,7 +146,7 @@ define(function(require, exports, module) {
 	};
 	exports.contactPlannerItem = function(addFlag) {
 		var contactItem = new StringBuilder();
-		contactItem.append('<li class="clearfix" userId="{userId}" mobilePhone="{mobilePhone}">\n');
+		contactItem.append('<li class="clearfix" userId="{userId}" mobilePhone="{mobilePhone}" status="{status}">\n');
 		contactItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		contactItem.append('<p class="mart15"><span class="font16 marl10">{name}</span></p>\n');
 		if (addFlag) {

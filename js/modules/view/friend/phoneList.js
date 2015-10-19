@@ -177,7 +177,11 @@ define(function(require, exports, module) {
 											$nativeUIManager.wattingClose();
 											var addNewWin = $windowManager.getById('friend_addNew');
 											if (addNewWin) {
-												addNewWin.evalJS('loadContactsTip('+jsonData['unAddCount']+')');
+												addNewWin.evalJS('loadContactsTip(' + jsonData['unAddCount'] + ')');
+											}
+											var friendListWin = $windowManager.getById('friend_list');
+											if (friendListWin) {
+												friendListWin.evalJS('onRefresh()');
 											}
 										}, 1000);
 									} else {

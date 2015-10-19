@@ -167,6 +167,8 @@ define(function(require, exports, module) {
 						if (friendPlannerArray && $(friendPlannerArray).size() > 0) {
 							$('#blank').hide();
 							$('.checkWord').show();
+							$('#friendUL').show();
+							$('.main').addClass('bgwhite');
 							$(friendPlannerArray).each(function(i, o) {
 								var textClass = '';
 								if (o['state'] == '1') {
@@ -188,6 +190,8 @@ define(function(require, exports, module) {
 							});
 						} else {
 							$('#blank').show();
+							$('#friendUL').hide();
+							$('.main').removeClass('bgwhite');
 						}
 						if (append) {
 							$('#friendUL').append(sb.toString());
