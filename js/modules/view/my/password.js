@@ -1,6 +1,7 @@
 define(function(require, exports, module) {
 	var $common = require('core/common');
 	var $userInfo = require('core/userInfo');
+	var $authorize = require('core/authorize');
 	var $nativeUIManager = require('manager/nativeUI');
 	var $windowManager = require('manager/window');
 	var $validator = require('core/validator');
@@ -29,11 +30,7 @@ define(function(require, exports, module) {
 									if (jsonData['result'] == '0') {
 										$nativeUIManager.wattingClose();
 										$nativeUIManager.alert('提示', '重置密码成功，请重新登录！', 'OK', function() {
-											$windowManager.close();
-											var myInfoWin=$windowManager.getById('my_info');
-											if(myInfoWin){
-												myInfoWin.evalJS('logout()');
-											}
+											$authorize.logout();
 										});
 									} else {
 										$nativeUIManager.wattingClose();

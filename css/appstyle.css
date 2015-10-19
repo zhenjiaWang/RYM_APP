@@ -1,13 +1,5 @@
 /*reset*/
 html{color:#333;}
-pre {
-white-space: pre-wrap;
-white-space: -moz-pre-wrap;
-white-space: -pre-wrap;
-white-space: -o-pre-wrap;
-word-wrap: break-word;
-white-space : normal ;      
-}
 body{font-size:12px;line-height:1.8em;font-family:Tahoma,Arial;background:#eee;position: relative;}
 html,body{height:100%;}
 body, div, ul, ol, li, h1, h2, h3, h4, h5, h6, form, fieldset, legend, input, textarea, p, th, td, dl, dt, dd,pre{margin:0;padding:0;}
@@ -122,6 +114,7 @@ label.checkbox,label.radio,label.text{padding-left:4px;vertical-align:top;}
 .strong{font-weight: bold;}
 .width-auto{width: auto!important;}
 .opacityMask{ -webkit-filter: grayscale(1); opacity: 0.7;}
+.inputList li.opacityMask{opacity:0.4;}
 /*clear*/
 .clear{clear:both;line-height:0;height:0;font-size:0;}
 .clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
@@ -202,7 +195,7 @@ margin-top:-11px;transition:0.3s;-webkit-transition:0.3s;}
 .current .icon-3b{background-image: url(../img/icon-3bh.png);}
 .footer span i.icon.icon-p,.feedList span i.icon.icon-p,i.icon.icon-p{font-size:10px;position: absolute;text-align:center;width:14px;height:14px;line-height:14px;color:#fff;border-radius:50%;background:#ff030f;top:5px;left:50%;margin-left:2px;}
 .feedList span.userPhoto{position: relative;}
-.feedList span i.icon.icon-p{left:38px;top:-2px;}
+.inputList.feedList span i.icon.icon-p{left:38px;top:5px;}
 .icon-addf i.icon.icon-p{width:6px;height:6px;left:28px;top:12px;}
 .inputList li i.icon.icon-p{width:20px;height:20px;line-height:20px;left: initial;right:40px;top:50%;margin-top:-10px;
 font-size:12px;}
@@ -221,7 +214,7 @@ font-size:12px;}
 .loginInt input{width:100%;height:30px;line-height:38px;border-bottom:1px solid #eee;display:block;text-indent:40px;font-size:14px;}
 .loginInt p .icon{position: absolute;top:-2px;left:0;}
 .loginInt p .icon-clear{left:inherit;right:10px;top:50%;margin-top:-10px;display: none;}
-.bottomBtn{position:fixed;bottom:0;left:30px;right:30px;bottom:10px;}
+.bottomBtn{position:fixed;left:30px;right:30px;bottom:10px;}
 .bottomBtn a{display: inline-block;width:42%;height:39px;line-height:39px;border:1px solid #aaa;border-radius:30px;}
 .bottomBtn span{display: inline-block;height:40px;border-left:1px solid #d9d9d9;position: absolute;left:50%;margin-left:-1px;}
 .change{color:#3875a9;}
@@ -258,7 +251,7 @@ font-size:12px;}
 .getNum{display:inline-block;height:40px;line-height:40px;padding:0 20px;border-radius:3px;background:#812990;color:#fff;}
 .waitNum{background:#aaa;}
 .textareaLi li p:last-child{height:20px;line-height:20px;color:#bbb;}
-.inputList li textarea{margin-top:-10px;width:97%;height:60px;line-height:20px;color:#8d8d8d;}
+.inputList li textarea,.inputList li .textBox{margin-top:-10px;width:97%;min-height:60px;line-height:20px;color:#8d8d8d;outline: 0;}
 .imgList {padding:10px 0;}
 .imgList li{width:100%;overflow-y:hidden;overflow-x: auto;}
 .imgList .ImgBox span{display: inline-block;width:120px;margin:0 2px;float:left;position:relative;}
@@ -416,7 +409,7 @@ margin:-11px 0 0 -11px;-webkit-transform:rotate(0deg);transition:0.3s;-webkit-tr
 .wordList span{display:block;height:36px;line-height:36px;text-align:center;}
 .wordList span.current{box-shadow:0 1px 1px #666 inset;}
 .wordList td.noData{background:#f5f5f5;color:#bbb;}
-.wordList.current{top:0;transition:0.2s;-webkit-transition:0.2s;}
+.wordList.current{top:0;transition:0.2s;-webkit-transition:0.2s;z-index:210;}
 .shareBox{background:#fff;padding:10px 0;}
 .shareBox li img{width:50px;}
 .shareBox li {display: inline-block;text-align: center;width:32%;margin:15px 0;}
@@ -454,7 +447,8 @@ margin:-11px 0 0 -11px;-webkit-transform:rotate(0deg);transition:0.3s;-webkit-tr
 
 .numberInt{width:50%;height:30px;border:0;background:#fff;border:1px solid #ccc;text-indent:5px;}
 .UserCard{margin:0 15px;border:1px solid #dcdcdc;border-radius:2px;background:#fff;padding:0 10px;position:relative;padding-bottom:15px;border-bottom-color:#b8b8b8;box-shadow:0px 1px 0.2px #dcdcdc;border-top:0;margin-top:40px;}
-.UserBg{width:65px;height:65px;margin:0 auto;background: url(../img/w-bg.png) no-repeat center bottom;background-size: 100%;position: relative;top:-33px;}
+.UserBg{width:65px;height:65px;margin:0 auto;background:#ddd url(../img/w-bg.png) no-repeat center bottom;
+background-size: 100%;position: relative;top:-33px;border-radius:50% 50% 0 0;}
 .UserBg img{width:59px;height:59px;border-radius:50%;position: absolute;left:50%;margin-left:-29px;top:3px;}
 .UserCard table th,.UserCard table td{text-align: center;height:24px;font-size:14px;color:#2a2a2a;width:33%;border-right:1px solid #d9d9d9;}
 .UserCard table th{color:#888888;font-size:13px;}

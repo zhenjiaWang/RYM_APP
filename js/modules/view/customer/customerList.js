@@ -61,7 +61,7 @@ define(function(require, exports, module) {
 				loadData();
 			}
 		});
-		$('#keyword').off('keyup').on('keyup', function(e) {
+		$('#keyword').off('valuechange').on('valuechange', function(e) {
 			var value = $(this).val();
 			if (value && value != '') {
 				loadData();

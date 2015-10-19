@@ -129,6 +129,8 @@ define(function(require, exports, module) {
 		var productUserWindow = $windowManager.getById('product_user');
 		var friendHeaderWindow = $windowManager.getById('friend_header');
 		var friendListListWindow = $windowManager.getById('friend_list');
+		var myInfoWindow = $windowManager.getById('my_info');
+		var myPasswordWindow = $windowManager.getById('my_password');
 		
 		if (productHeaderWindow) {
 			productHeaderWindow.close();
@@ -142,7 +144,12 @@ define(function(require, exports, module) {
 		if (friendListListWindow) {
 			friendListListWindow.close();
 		}
-		
+		if (myInfoWindow) {
+			myInfoWindow.close();
+		}
+		if (myPasswordWindow) {
+			myPasswordWindow.close();
+		}
 	};
 
 	exports.attListWindowHide = function() {

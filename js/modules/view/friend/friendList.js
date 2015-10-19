@@ -61,7 +61,8 @@ define(function(require, exports, module) {
 				loadData();
 			}
 		});
-		$('#keyword').off('keyup').on('keyup', function(e) {
+		
+		$('#keyword').off('valuechange').on('valuechange', function(e,previous) {
 			var value = $(this).val();
 			if (value && value != '') {
 				loadData();
@@ -140,6 +141,7 @@ define(function(require, exports, module) {
 		if (!callback) {
 			$nativeUIManager.watting('正在加载...');
 		}
+		console.info('search '+$('#keyword').val());
 		$.ajax({
 			type: 'POST',
 			url: $common.getRestApiURL() + '/social/friendPlanner',
