@@ -206,24 +206,6 @@ define(function(require, exports, module) {
 				}
 			}, 500);
 		});
-		$common.touchSE($('#selectProductType'), function(event, startTouch, o) {}, function(event, o) {
-			$nativeUIManager.confactionSheetirm('请选择产品类型', '取消', [{
-					title: '理财'
-				}, {
-					title: '信托|资管'
-				}],
-				function(index) {
-					if (index > 0) {
-						if (index == 1) {
-
-						} else if (index == 2) {
-
-						} else if (index == 3) {
-							//nothing
-						}
-					}
-				});
-		});
 		$common.touchSE($('#selectProductOrg'), function(event, startTouch, o) {}, function(event, o) {
 			$nativeUIManager.watting('请稍等...');
 			$.ajax({

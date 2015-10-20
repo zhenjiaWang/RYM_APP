@@ -108,6 +108,63 @@ define(function(require, exports, module) {
 		fundItem.append('</li>\n');
 		return fundItem.toString();
 	};
+	exports.financialItem = function(relationYn, endFlag) {
+		var financialItem = new StringBuilder();
+		financialItem.append('<li class="oneCard" viewCount="{viewCount}" numSeq="{numSeq}" productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');
+		financialItem.append('<p class="font11 title color-a alignright">\n');
+		financialItem.append('<span class="tips floatleft strong">{typeName}</span>\n');
+		financialItem.append('<span class="floatleft marl5">{updateTime}</span>\n');
+		if (relationYn && relationYn == 'Y') {
+			financialItem.append('<span class="relationSpan" uid="{relationUserId}" rUserName="{relationUserName}">关联自<em>{relationUserName}</em></span>\n');
+		}
+		financialItem.append('</p>\n');
+		financialItem.append('<p style="width:78%;" class="color-3 marl10 font17 mart10 strong openView">{name}');
+		if (endFlag) {
+			if (endFlag == 'Y') {
+				financialItem.append('<span class="tip tip-over font12">募集期结束</span>\n');
+			} else if (endFlag == 'N') {
+				financialItem.append('<span class="tip font12">在售</span>\n');
+			}
+		}
+		financialItem.append('</p>\n');
+		financialItem.append('<div class="clearfix mart5 openView">\n');
+		financialItem.append('<span class="font14 floatleft inlineblock marl10 p-top25 color-9">期限:<em class="color-6">{dayLimit}天</em></span>\n');
+		financialItem.append('<div class="floatright alignright marr10">\n');
+		financialItem.append('<p class="font11 color-a">预计年化率</p>\n');
+		financialItem.append('<span class="tipsBig tips-x font20 color-white">{yield}<em class="font14 color-white">%</em></span>\n');
+		financialItem.append('</div>\n');
+		financialItem.append('</div>\n');
+		financialItem.append('<div class="cardBottom clearfix alignright mart10">\n');
+		financialItem.append('<span class="clearfix floatleft viewSpan"><i class="icon icon-eye floatleft"></i><em class="color-9 floatleft">{viewCount}</em></span>\n');
+		financialItem.append('<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">{relationCount}</em></span>\n');
+		financialItem.append('<span class="commentBtn"><i class="icon icon-comment"></i></span>\n');
+		financialItem.append('</div>\n');
+		financialItem.append('</li>\n');
+		return financialItem.toString();
+	};
+	exports.financialViewItem = function() {
+		var financialViewItem = new StringBuilder();
+		financialViewItem.append('<ul class="inputList ulBg detail mart10">\n');
+		financialViewItem.append('<li class="clearfix financialItem" uid="{uid}">\n');
+		financialViewItem.append('<span class="lable color-3">{financialName}</span>\n');
+		financialViewItem.append('</li>\n');
+		financialViewItem.append('<li class="clearfix noboder nobg">\n');
+		financialViewItem.append('<div class="">\n');
+		financialViewItem.append('<p class="font20 color-3">{expireDate}</p>\n');
+		financialViewItem.append('<p>募集截止日期</p>\n');
+		financialViewItem.append('</div>\n');
+		financialViewItem.append('<div class="">\n');
+		financialViewItem.append('<p class="font20 color-3">{purchaseAmount}</p>\n');
+		financialViewItem.append('<p>起购金额(万元)</p>\n');
+		financialViewItem.append('</div>\n');
+		financialViewItem.append('<div class="">\n');
+		financialViewItem.append('<p class="font20">{yield}</p>\n');
+		financialViewItem.append('<p>预计年收益率(%)</p>\n');
+		financialViewItem.append('</div>\n');
+		financialViewItem.append('</li>\n');
+		financialViewItem.append('</ul>\n');
+		return financialViewItem.toString();
+	};
 	exports.waitingItem = function(relationYn) {
 		var waitingItem = new StringBuilder();
 		waitingItem.append('<li class="oneCard  aligncenter" viewCount="{viewCount}" numSeq="{numSeq}"  productName="{name}" typeId="{typeId}" uid="{uid}" productId="{productId}" userId="{userId}">\n');

@@ -37,11 +37,9 @@ define(function(require, exports, module) {
 		}, onRefresh);
 	};
 	showAddTools = function() {
-		$('.footerMask').css('bottom', '0px');
 		$('#bottomPop').addClass('current');
 	};
 	hideAddTools = function() {
-		$('.footerMask').css('bottom', '-99px');
 		$('#bottomPop').removeClass('current');
 	};
 	bindEvent = function() {
@@ -200,7 +198,6 @@ define(function(require, exports, module) {
 						pullToRefreshEvent();
 						bindEvent();
 						window, setTimeout(function() {
-							$('.main').show();
 							if (!callback) {
 								$nativeUIManager.wattingClose();
 							} else {

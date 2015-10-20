@@ -98,7 +98,6 @@ define(function(require, exports, module) {
 		});
 	};
 	clear = function() {
-		$('.main').hide();
 		$('.cardBox').empty();
 	};
 	onRefresh = function() {
@@ -180,11 +179,9 @@ define(function(require, exports, module) {
 		task.start();
 	};
 	showAddTools = function() {
-		$('.footerMask').css('bottom', '0px');
 		$('#bottomPop').addClass('current');
 	};
 	hideAddTools = function() {
-		$('.footerMask').css('bottom', '-99px');
 		$('#bottomPop').removeClass('current');
 	};
 	bindEvent = function() {
@@ -437,6 +434,7 @@ define(function(require, exports, module) {
 					if (jsonData['result'] == '0') {
 						var planner = jsonData['planner'];
 						if (planner) {
+							$('.personBoard').show();
 							if (userId != $userInfo.get('userId')) {
 								var friendYn = planner['friendYn'];
 								if (friendYn) {
@@ -490,8 +488,25 @@ define(function(require, exports, module) {
 												updateTime: o['updateTime']
 											}));
 										} else {
-											if (typeId == 1) {
-
+											if (typeId == 1) {//financialItem
+												var financialObj = o['financial'];
+												if (financialObj) {
+													sb.append(String.formatmodel($templete.financialItem(relationYn, endFlag), {
+														productId: o['productId'],
+														userId: o['userId'],
+														relationUserName: o['relationUserName'],
+														relationUserId: o['relationUserId'],
+														viewCount: o['viewCount'],
+														relationCount: o['relationCount'],
+														uid: uid,
+														typeId: typeId,
+														typeName: o['typeName'],
+														name: o['name'],
+														updateTime: o['updateTime'],
+														yield: financialObj['minYield']+'-'+financialObj['maxYield'],
+														dayLimit: financialObj['minLimitDay']+'-'+financialObj['maxLimitDay']
+													}));
+												}
 											} else if (typeId == 2) {
 												var fundObj = o['fund'];
 												if (fundObj) {
@@ -542,7 +557,6 @@ define(function(require, exports, module) {
 						pullToRefreshEvent();
 						bindEvent();
 						window, setTimeout(function() {
-							$('.main').show();
 							if (!callback) {
 								$nativeUIManager.wattingClose();
 							} else {

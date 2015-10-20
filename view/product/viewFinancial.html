@@ -15,7 +15,7 @@
 		seajs.config({
 			base: "../../js/modules/"
 		});
-		seajs.use('view/product/viewTrust');
+		seajs.use('view/product/viewFinancial');
 	</script>
 
 	<body class="androidMain">
@@ -26,18 +26,18 @@
 					<div class="floatleft marl15 mart10 font13">
 						<p class="font17" id="userName"></p>
 						<p id="plannerOrgName"></p>
-						<p >工号：<span id="plannerNo"></span></p>
+						<p>工号：<span id="plannerNo"></span></p>
 					</div>
 					<div class="floatright mart15 alignright color-6" id="myFollowDIV">
-						<p ><span id="follow"></span><i class="icon icon-3 marl5"></i></p>
-						<p ><span id="friends"></span><i class="icon icon-4 marl5"></i></p>
+						<p><span id="follow"></span><i class="icon icon-3 marl5"></i></p>
+						<p><span id="friends"></span><i class="icon icon-4 marl5"></i></p>
 					</div>
 				</div>
 				<div class="signature mart5 font12 color-6"><i class="icon icon-arrow-t"></i><span id="signature" class="txt_hidden"></span></div>
 			</section>
-			<div class="oneCard detail">
+			<div class="oneCard detail mart10">
 				<div class="font11 title color-a alignright">
-					<span class="tips tips-x floatleft strong">信 托</span>
+					<span class="tips floatleft strong">理 财</span>
 					<span class="color-3 font17 strong txt_hidden" style="width:86%;" id="name"></span>
 				</div>
 				<div class="clearfix mart5">
@@ -53,37 +53,7 @@
 					<span class="clearfix marr10"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft" id="relationCount"></em></span>
 				</div>
 			</div>
-			<ul class="inputList detail mart10">
-				<li class="clearfix">
-					<span class="lable">发行机构</span>
-					<span class="alignright placeTxt nobg nopadding" id="orgName"></span>
-				</li>
-				<li class="clearfix">
-					<span class="lable">收益类型</span>
-					<span class="alignright placeTxt nobg nopadding" id="payOffType"></span>
-				</li>
-				<li class="clearfix">
-					<span class="lable">起购金额</span>
-					<span class="alignright placeTxt nobg nopadding" id="purchaseAmount"></span>
-				</li>
-				<li class="clearfix">
-					<span class="lable">募集起止日期</span>
-					<span class="alignright placeTxt nobg nopadding"><span id="startDate"></span> 至 <span id="endDate"></span></span>
-				</li>
-				<li class="clearfix">
-					<span class="lable">计息天数</span>
-					<span class="alignright placeTxt nobg nopadding" id="accrualDay"></span>
-				</li>
-				<li class="clearfix">
-					<span class="lable">到期日</span>
-					<span class="alignright placeTxt nobg nopadding" id="expireDate"></span>
-				</li>
-				<li class="clearfix">
-					<span class="lable">预期收益率</span>
-					<span class="alignright placeTxt nobg nopadding" id="yield"></span>
-				</li>
-			</ul>
-			<ul class="inputList mart10">
+			<ul class="inputList mart10" id="productDesc">
 				<li class="clearfix noboder">
 					<span class="lable">产品描述</span>
 					<pre class="font15 txt" id="remarks">
@@ -99,6 +69,7 @@
 				</li>
 			</ul>
 		</div>
+
 		<!--<footer class="footer footerInner clearfix" id="showImgBtn" style="display: none;">
 			<p class="aligncenter font14 color-8">点击查看图片详情</p>
 		</footer>-->

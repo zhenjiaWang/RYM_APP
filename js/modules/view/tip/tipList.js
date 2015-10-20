@@ -10,11 +10,9 @@ define(function(require, exports, module) {
 	var nextIndex = 0;
 	var currentWindow;
 	showAddTools = function() {
-		$('.footerMask').css('bottom', '0px');
 		$('#bottomPop').addClass('current');
 	};
 	hideAddTools = function() {
-		$('.footerMask').css('bottom', '-99px');
 		$('#bottomPop').removeClass('current');
 	};
 	bindEvent = function() {

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<meta charset="utf-8">
+	<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+	<meta name="apple-touch-fullscreen" content="yes" />
+	<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+	<title>产品详情</title>
+	<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+	<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+	<script type="text/javascript" src="../../js/sea.js"></script>
+	<script type="text/javascript" src="../../js/json2.js"></script>
+	<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+	<script type="text/javascript" src="../../js/support.js"></script>
+	<script>
+		seajs.config({
+			base: "../../js/modules/"
+		});
+		seajs.use('view/product/viewFinancialItem');
+	</script>
+
+	<body class="androidMain">
+		<header class="header">
+			<span class="icon icon-back" id="backBtn"></span>
+			<h1 class="aligncenter font17"></h1>
+		</header>
+		<div class="main" style="min-height:50%;padding:50px 0 0 0" >
+			<ul class="inputList detail mart10">
+				<li class="clearfix">
+					<span class="lable">代码</span>
+					<span class="alignright placeTxt nobg nopadding" id="code"></span>
+				</li>
+				<li class="clearfix">
+					<span class="lable">名称</span>
+					<span class="alignright placeTxt nobg nopadding" id="name"></span>
+				</li>
+				<li class="clearfix">
+					<span class="lable">发行机构</span>
+					<span class="alignright placeTxt nobg nopadding" id="orgName"></span>
+				</li>
+				<li class="clearfix">
+					<span class="lable">收益类型</span>
+					<span class="alignright placeTxt nobg nopadding" id="payOffType"></span>
+				</li>
+				<li class="clearfix">
+					<span class="lable">起购金额</span>
+					<span class="alignright placeTxt nobg nopadding" id="purchaseAmount"></span>
+				</li>
+				<li class="clearfix">
+					<span class="lable">募集起止日期</span>
+					<span class="alignright placeTxt nobg nopadding"><span id="startDate"></span> 至 <span id="endDate"></span></span>
+				</li>
+				<li class="clearfix">
+					<span class="lable">计息天数</span>
+					<span class="alignright placeTxt nobg nopadding" id="accrualDay"></span>
+				</li>
+				<li class="clearfix">
+					<span class="lable">到期日</span>
+					<span class="alignright placeTxt nobg nopadding" id="expireDate"></span>
+				</li>
+				<li class="clearfix">
+					<span class="lable">预期收益率</span>
+					<span class="alignright placeTxt nobg nopadding" id="yield"></span>
+				</li>
+			</ul>
+		</div>
+	</body>
+
+</html>

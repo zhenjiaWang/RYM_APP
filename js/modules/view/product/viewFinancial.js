@@ -6,12 +6,37 @@ define(function(require, exports, module) {
 	var $templete = require('core/templete');
 	var showImgFlag = false;
 	bindEvent = function() {
-		$common.touchSE($('#showImgBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$nativeUIManager.watting('请稍等...');
-			$windowManager.create('product_img', 'img.html', 'slide-in-bottom', true, function(show) {
-				$nativeUIManager.wattingClose();
-				show();
-			});
+		$common.touchSE($('.financialItem'), function(event, startTouch, o) {}, function(event, o) {
+			var uid = $(o).attr('uid');
+			if (uid) {
+				$nativeUIManager.watting('请稍等...');
+				$.ajax({
+					type: 'POST',
+					url: $common.getRestApiURL() + '/product/info/viewFinancialItem',
+					dataType: 'json',
+					data: {
+						id: uid
+					},
+					success: function(jsonData) {
+						if (jsonData) {
+							if (jsonData['result'] == '0') {
+								$userInfo.put('financialItem',JSON.stringify(jsonData));
+								$windowManager.create('product_view_financialItem', 'viewFinancialItem.html', false, true, function(show) {
+									show();
+									$nativeUIManager.wattingClose();
+								});
+							} else {
+								$nativeUIManager.wattingClose();
+								$nativeUIManager.alert('提示', '获取信息失败', 'OK', function() {});
+							}
+						}
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						$nativeUIManager.wattingClose();
+						$nativeUIManager.alert('提示', '获取信息失败', 'OK', function() {});
+					}
+				});
+			}
 		});
 	};
 	loadData = function() {
@@ -37,17 +62,31 @@ define(function(require, exports, module) {
 						$('img', '.userPhoto').attr('src', headImgUrl);
 					}
 				}
-				var fund = jsonData['fund'];
+				var financial = jsonData['financial'];
 				var productInfo = jsonData['productInfo'];
-				if (productInfo && fund) {
+				if (productInfo && financial) {
 					$('#name').text(productInfo['name']);
 					$('#updateTime').text(productInfo['updateTime']);
 					$('#viewCount').text(productInfo['viewCount']);
 					$('#relationCount').text(productInfo['relationCount']);
 					$('#orgName').text(productInfo['orgName']);
 					$('#remarks').text(productInfo['remarks']);
-					$('#fundTypeDesc').text(fund['fundType']);
-					$('#fundType').text(fund['fundType']);
+					$('#dayLimit').text(financial['minLimitDay'] + '-' + financial['maxLimitDay'] + '天');
+					$('#yieldDesc').text(financial['minYield'] + '-' + financial['maxYield']);
+					var financialArray = financial['financialArray'];
+					if (financialArray && $(financialArray).size() > 0) {
+						var sb = new StringBuilder();
+						$(financialArray).each(function(i, o) {
+							sb.append(String.formatmodel($templete.financialViewItem(), {
+								financialName: o['financialName'],
+								purchaseAmount: o['purchaseAmount'],
+								yield: o['yield'],
+								expireDate: o['expireDate'],
+								uid: o['uid']
+							}));
+						});
+						$('#productDesc').before(sb.toString());
+					}
 					var attArray = jsonData['attArray'];
 					if (attArray && $(attArray).size() > 0) {
 						$('#productImg').show();
