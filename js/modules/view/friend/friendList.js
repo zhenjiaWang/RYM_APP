@@ -5,6 +5,7 @@ define(function(require, exports, module) {
 	var $nativeUIManager = require('manager/nativeUI');
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
+	var $scrollEvent = require('manager/scrollEvent');
 	var $keyManager = require('manager/key');
 	var $templete = require('core/templete');
 	var nextIndex = 0;
@@ -59,12 +60,36 @@ define(function(require, exports, module) {
 				loadData();
 			}
 		});
-		
-		$('#keyword').off('valuechange').on('valuechange', function(e,previous) {
+
+		$('#keyword').off('valuechange').on('valuechange', function(e, previous) {
 			var value = $(this).val();
 			if (value && value != '') {
 				loadData();
 			}
+		});
+		
+		$scrollEvent.bindEvent(function() {
+			$('#addProductBtn').off('touchstart').off('touchstart');
+			$('#relationProductBtn').off('touchstart').off('touchstart');
+		}, function() {
+			$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
+				$windowManager.create('product_add', '../product/add.html', false, true, function(show) {
+					show();
+					var lunchWindow = $windowManager.getLaunchWindow();
+					if (lunchWindow) {
+						lunchWindow.evalJS('plusRest()');
+					}
+				});
+			});
+			$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
+				$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
+					show();
+					var lunchWindow = $windowManager.getLaunchWindow();
+					if (lunchWindow) {
+						lunchWindow.evalJS('plusRest()');
+					}
+				});
+			});
 		});
 
 		$common.touchSE($('.personBoard', '#friendUL'), function(event, startTouch, o) {}, function(event, o) {
@@ -76,24 +101,7 @@ define(function(require, exports, module) {
 				});
 			}
 		});
-		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('product_add', '../product/add.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
-		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
+		
 		$common.touchSE($('.checkWord'), function(event, startTouch, o) {}, function(event, o) {
 			if (!$('.wordList').hasClass('current')) {
 				$('.wordList').addClass('current');
@@ -139,7 +147,7 @@ define(function(require, exports, module) {
 		if (!callback) {
 			$nativeUIManager.watting('正在加载...');
 		}
-		console.info('search '+$('#keyword').val());
+		console.info('search ' + $('#keyword').val());
 		$.ajax({
 			type: 'POST',
 			url: $common.getRestApiURL() + '/social/friendPlanner',
@@ -207,7 +215,7 @@ define(function(require, exports, module) {
 							}
 							var productUserWin = $windowManager.getById('product_user');
 							if (productUserWin) {
-								productUserWin.evalJS('setFollow('+page['totalRecord']+')');
+								productUserWin.evalJS('setFollow(' + page['totalRecord'] + ')');
 							}
 						}
 						pullToRefreshEvent();

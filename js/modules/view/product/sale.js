@@ -5,14 +5,14 @@ define(function(require, exports, module) {
 	var $nativeUIManager = require('manager/nativeUI');
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
+	var $scrollEvent = require('manager/scrollEvent');
 	var $templete = require('core/templete');
 	var server = "/common/common/uploadData";
 	var files = [];
 	var currentWindow;
 	var queryMap = parseURL();
 	var userId = queryMap.get('userId');
-
-	setFollow=function(followCount){
+	setFollow = function(followCount) {
 		$('#follow').text(followCount);
 	}
 	showUpdate = function() {
@@ -185,91 +185,116 @@ define(function(require, exports, module) {
 		$('#bottomPop').removeClass('current');
 	};
 	bindEvent = function() {
-		$common.touchSE($('span', '#footerTools'), function(event, startTouch, o) {}, function(event, o) {
-			var dir = $(o).attr('dir');
-			if (dir) {
-				if (dir == 'message') {
-					$nativeUIManager.alert('提示', '私信和微信体系一起开放', 'OK', function() {});
-				} else if (dir == 'addFriend') {
-					var friendId = $(o).closest('footer').attr('userId');
-					if (friendId) {
-						$nativeUIManager.watting('请稍等...');
-						$common.refreshToken(function(tokenId) {
-							$.ajax({
-								type: 'POST',
-								url: $common.getRestApiURL() + '/social/friendPlanner/addFriend',
-								dataType: 'json',
-								data: {
-									'org.guiceside.web.jsp.taglib.Token': tokenId,
-									friendId: friendId
-								},
-								success: function(jsonData) {
-									if (jsonData) {
-										if (jsonData['result'] == '0') {
-											$nativeUIManager.wattingTitle('关注成功!');
-											$('span[dir="delFriend"]', '#footerTools').show();
-											$(o).hide();
-											window.setTimeout(function() {
-												$nativeUIManager.wattingClose();
-												var friendListWin = $windowManager.getById('friend_list');
-												if (friendListWin) {
-													friendListWin.evalJS('onRefresh()');
-												}
-											}, 1000);
-										} else {
-											$nativeUIManager.wattingClose();
-											$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
-										}
-									}
-								},
-								error: function(XMLHttpRequest, textStatus, errorThrown) {
-									$nativeUIManager.wattingClose();
-									$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
-								}
-							});
-						});
+		$scrollEvent.bindEvent(function() {
+			$('span', '#footerTools').off('touchstart').off('touchstart');
+			$('#addProductBtn').off('touchstart').off('touchstart');
+			$('#relationProductBtn').off('touchstart').off('touchstart');
+		}, function() {
+			$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
+				$windowManager.create('product_add', 'add.html', false, true, function(show) {
+					show();
+					var lunchWindow = $windowManager.getLaunchWindow();
+					if (lunchWindow) {
+						lunchWindow.evalJS('plusRest()');
 					}
-				} else if (dir == 'delFriend') {
-					var friendId = $(o).closest('footer').attr('userId');
-					if (friendId) {
-						$nativeUIManager.watting('请稍等...');
-						$common.refreshToken(function(tokenId) {
-							$.ajax({
-								type: 'POST',
-								url: $common.getRestApiURL() + '/social/friendPlanner/delFriend',
-								dataType: 'json',
-								data: {
-									'org.guiceside.web.jsp.taglib.Token': tokenId,
-									friendId: friendId
-								},
-								success: function(jsonData) {
-									if (jsonData) {
-										if (jsonData['result'] == '0') {
-											$nativeUIManager.wattingTitle('取消关注成功!');
-											$('span[dir="addFriend"]', '#footerTools').show();
-											$(o).hide();
-											window.setTimeout(function() {
+				});
+			});
+			$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
+				$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
+					show();
+					var lunchWindow = $windowManager.getLaunchWindow();
+					if (lunchWindow) {
+						lunchWindow.evalJS('plusRest()');
+					}
+				});
+			});
+
+			$common.touchSE($('span', '#footerTools'), function(event, startTouch, o) {}, function(event, o) {
+				var dir = $(o).attr('dir');
+				if (dir) {
+					if (dir == 'message') {
+						$nativeUIManager.alert('提示', '私信和微信体系一起开放', 'OK', function() {});
+					} else if (dir == 'addFriend') {
+						var friendId = $(o).closest('footer').attr('userId');
+						if (friendId) {
+							$nativeUIManager.watting('请稍等...');
+							$common.refreshToken(function(tokenId) {
+								$.ajax({
+									type: 'POST',
+									url: $common.getRestApiURL() + '/social/friendPlanner/addFriend',
+									dataType: 'json',
+									data: {
+										'org.guiceside.web.jsp.taglib.Token': tokenId,
+										friendId: friendId
+									},
+									success: function(jsonData) {
+										if (jsonData) {
+											if (jsonData['result'] == '0') {
+												$nativeUIManager.wattingTitle('关注成功!');
+												$('span[dir="delFriend"]', '#footerTools').show();
+												$(o).hide();
+												window.setTimeout(function() {
+													$nativeUIManager.wattingClose();
+													var friendListWin = $windowManager.getById('friend_list');
+													if (friendListWin) {
+														friendListWin.evalJS('onRefresh()');
+													}
+												}, 1000);
+											} else {
 												$nativeUIManager.wattingClose();
-												var friendListWin = $windowManager.getById('friend_list');
-												if (friendListWin) {
-													friendListWin.evalJS('onRefresh()');
-												}
-											}, 1000);
-										} else {
-											$nativeUIManager.wattingClose();
-											$nativeUIManager.alert('提示', '取消关注失败', 'OK', function() {});
+												$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+											}
 										}
+									},
+									error: function(XMLHttpRequest, textStatus, errorThrown) {
+										$nativeUIManager.wattingClose();
+										$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
 									}
-								},
-								error: function(XMLHttpRequest, textStatus, errorThrown) {
-									$nativeUIManager.wattingClose();
-									$nativeUIManager.alert('提示', '取消关注失败', 'OK', function() {});
-								}
+								});
 							});
-						});
+						}
+					} else if (dir == 'delFriend') {
+						var friendId = $(o).closest('footer').attr('userId');
+						if (friendId) {
+							$nativeUIManager.watting('请稍等...');
+							$common.refreshToken(function(tokenId) {
+								$.ajax({
+									type: 'POST',
+									url: $common.getRestApiURL() + '/social/friendPlanner/delFriend',
+									dataType: 'json',
+									data: {
+										'org.guiceside.web.jsp.taglib.Token': tokenId,
+										friendId: friendId
+									},
+									success: function(jsonData) {
+										if (jsonData) {
+											if (jsonData['result'] == '0') {
+												$nativeUIManager.wattingTitle('取消关注成功!');
+												$('span[dir="addFriend"]', '#footerTools').show();
+												$(o).hide();
+												window.setTimeout(function() {
+													$nativeUIManager.wattingClose();
+													var friendListWin = $windowManager.getById('friend_list');
+													if (friendListWin) {
+														friendListWin.evalJS('onRefresh()');
+													}
+												}, 1000);
+											} else {
+												$nativeUIManager.wattingClose();
+												$nativeUIManager.alert('提示', '取消关注失败', 'OK', function() {});
+											}
+										}
+									},
+									error: function(XMLHttpRequest, textStatus, errorThrown) {
+										$nativeUIManager.wattingClose();
+										$nativeUIManager.alert('提示', '取消关注失败', 'OK', function() {});
+									}
+								});
+							});
+						}
 					}
 				}
-			}
+			});
 		});
 		$common.touchSE($('#myFollowDIV'), function(event, startTouch, o) {}, function(event, o) {
 			var followCount = $('#follow').text();
@@ -283,24 +308,7 @@ define(function(require, exports, module) {
 				}
 			}
 		});
-		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('product_add', 'add.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
-		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
+
 
 		$common.touchSE($('.commentBtn', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
 			event.stopPropagation();
@@ -488,7 +496,7 @@ define(function(require, exports, module) {
 												updateTime: o['updateTime']
 											}));
 										} else {
-											if (typeId == 1) {//financialItem
+											if (typeId == 1) { //financialItem
 												var financialObj = o['financial'];
 												if (financialObj) {
 													sb.append(String.formatmodel($templete.financialItem(relationYn, endFlag), {
@@ -503,8 +511,8 @@ define(function(require, exports, module) {
 														typeName: o['typeName'],
 														name: o['name'],
 														updateTime: o['updateTime'],
-														yield: financialObj['minYield']+'-'+financialObj['maxYield'],
-														dayLimit: financialObj['minLimitDay']+'-'+financialObj['maxLimitDay']
+														yield: financialObj['minYield'] + '-' + financialObj['maxYield'],
+														dayLimit: financialObj['minLimitDay'] + '-' + financialObj['maxLimitDay']
 													}));
 												}
 											} else if (typeId == 2) {
@@ -585,6 +593,9 @@ define(function(require, exports, module) {
 
 		});
 		loadData();
+		window.onscroll = function() {
+			topValue = $('body').scrollTop();
+		}
 	};
 	if (window.plus) {
 		plusReady();

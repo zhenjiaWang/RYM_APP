@@ -15,7 +15,7 @@ define(function(require, exports, module) {
 	reset = function() {
 		$('#content').attr('replyUserId', '').text('');
 		$('#replyTip').text('').hide();
-		//$(document).animate({ scrollTop: 0 });
+		$("html,body").animate({scrollTop:0},200);	
 	};
 	reply = function(uid, userName) {
 		$nativeUIManager.watting();
@@ -218,10 +218,7 @@ define(function(require, exports, module) {
 								}
 							});
 					} else {
-						var commentFooterWin = $windowManager.getById('product_commentFooter');
-						if (commentFooterWin) {
-							reply(userID, userName);
-						}
+						reply(userID, userName);
 					}
 				}
 			}

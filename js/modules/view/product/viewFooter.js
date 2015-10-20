@@ -7,17 +7,22 @@ define(function(require, exports, module) {
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
 	var $productCommon = require('view/product/productCommon');
+	var $scrollEvent = require('manager/scrollEvent');
 	var queryMap = parseURL();
 	var typeId = queryMap.get('typeId');
 	bindEvent = function() {
-		$common.touchSE($('span', '#footerTools'), function(event, startTouch, o) {}, function(event, o) {
-			var dir = $(o).attr('dir');
-			if (dir) {
-				var productViewHeaderWin = $windowManager.getById('product_view_header');
-				if (productViewHeaderWin) {
-					productViewHeaderWin.evalJS('doAction("' + dir + '")');
+		$scrollEvent.bindEvent(function() {
+			$('span', '#footerTools').off('touchstart').off('touchend');
+		}, function() {
+			$common.touchSE($('span', '#footerTools'), function(event, startTouch, o) {}, function(event, o) {
+				var dir = $(o).attr('dir');
+				if (dir) {
+					var productViewHeaderWin = $windowManager.getById('product_view_header');
+					if (productViewHeaderWin) {
+						productViewHeaderWin.evalJS('doAction("' + dir + '")');
+					}
 				}
-			}
+			});
 		});
 	};
 	loadData = function() {

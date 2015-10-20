@@ -7,6 +7,7 @@ define(function(require, exports, module) {
 	var $controlWindow = require('manager/controlWindow');
 	var $keyManager = require('manager/key');
 	var $templete = require('core/templete');
+	var $scrollEvent = require('manager/scrollEvent');
 	var nextIndex = 0;
 	var currentWindow;
 	onRefresh = function() {
@@ -66,25 +67,30 @@ define(function(require, exports, module) {
 			}
 		});
 		
+		$scrollEvent.bindEvent(function() {
+			$('#addProductBtn').off('touchstart').off('touchstart');
+			$('#relationProductBtn').off('touchstart').off('touchstart');
+		}, function() {
+			$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
+				$windowManager.create('product_add', '../product/add.html', false, true, function(show) {
+					show();
+					var lunchWindow = $windowManager.getLaunchWindow();
+					if (lunchWindow) {
+						lunchWindow.evalJS('plusRest()');
+					}
+				});
+			});
+			$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
+				$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
+					show();
+					var lunchWindow = $windowManager.getLaunchWindow();
+					if (lunchWindow) {
+						lunchWindow.evalJS('plusRest()');
+					}
+				});
+			});
+		});
 		
-		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('product_add', '../product/add.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
-		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
 		$common.touchSE($('.checkWord'), function(event, startTouch, o) {}, function(event, o) {
 			if (!$('.wordList').hasClass('current')) {
 				$('.wordList').addClass('current');

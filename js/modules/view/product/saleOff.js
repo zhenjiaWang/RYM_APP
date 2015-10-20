@@ -6,6 +6,7 @@ define(function(require, exports, module) {
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
 	var $templete = require('core/templete');
+	var $scrollEvent = require('manager/scrollEvent');
 	var nextIndex = 0;
 	var currentWindow;
 	var queryMap = parseURL();
@@ -43,6 +44,118 @@ define(function(require, exports, module) {
 		$('#bottomPop').removeClass('current');
 	};
 	bindEvent = function() {
+		$scrollEvent.bindEvent(function() {
+			$('span', '#footerTools').off('touchstart').off('touchstart');
+			$('#addProductBtn').off('touchstart').off('touchstart');
+			$('#relationProductBtn').off('touchstart').off('touchstart');
+		}, function() {
+			$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
+				$windowManager.create('product_add', 'add.html', false, true, function(show) {
+					show();
+					var lunchWindow = $windowManager.getLaunchWindow();
+					if (lunchWindow) {
+						lunchWindow.evalJS('plusRest()');
+					}
+				});
+			});
+			$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
+				$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
+					show();
+					var lunchWindow = $windowManager.getLaunchWindow();
+					if (lunchWindow) {
+						lunchWindow.evalJS('plusRest()');
+					}
+				});
+			});
+
+			$common.touchSE($('span', '#footerTools'), function(event, startTouch, o) {}, function(event, o) {
+				var dir = $(o).attr('dir');
+				if (dir) {
+					if (dir == 'message') {
+						$nativeUIManager.alert('提示', '私信和微信体系一起开放', 'OK', function() {});
+					} else if (dir == 'addFriend') {
+						var friendId = $(o).closest('footer').attr('userId');
+						if (friendId) {
+							$nativeUIManager.watting('请稍等...');
+							$common.refreshToken(function(tokenId) {
+								$.ajax({
+									type: 'POST',
+									url: $common.getRestApiURL() + '/social/friendPlanner/addFriend',
+									dataType: 'json',
+									data: {
+										'org.guiceside.web.jsp.taglib.Token': tokenId,
+										friendId: friendId
+									},
+									success: function(jsonData) {
+										if (jsonData) {
+											if (jsonData['result'] == '0') {
+												$nativeUIManager.wattingTitle('关注成功!');
+												$('span[dir="delFriend"]', '#footerTools').show();
+												$(o).hide();
+												window.setTimeout(function() {
+													$nativeUIManager.wattingClose();
+													var friendListWin = $windowManager.getById('friend_list');
+													if (friendListWin) {
+														friendListWin.evalJS('onRefresh()');
+													}
+												}, 1000);
+											} else {
+												$nativeUIManager.wattingClose();
+												$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+											}
+										}
+									},
+									error: function(XMLHttpRequest, textStatus, errorThrown) {
+										$nativeUIManager.wattingClose();
+										$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+									}
+								});
+							});
+						}
+					} else if (dir == 'delFriend') {
+						var friendId = $(o).closest('footer').attr('userId');
+						if (friendId) {
+							$nativeUIManager.watting('请稍等...');
+							$common.refreshToken(function(tokenId) {
+								$.ajax({
+									type: 'POST',
+									url: $common.getRestApiURL() + '/social/friendPlanner/delFriend',
+									dataType: 'json',
+									data: {
+										'org.guiceside.web.jsp.taglib.Token': tokenId,
+										friendId: friendId
+									},
+									success: function(jsonData) {
+										if (jsonData) {
+											if (jsonData['result'] == '0') {
+												$nativeUIManager.wattingTitle('取消关注成功!');
+												$('span[dir="addFriend"]', '#footerTools').show();
+												$(o).hide();
+												window.setTimeout(function() {
+													$nativeUIManager.wattingClose();
+													var friendListWin = $windowManager.getById('friend_list');
+													if (friendListWin) {
+														friendListWin.evalJS('onRefresh()');
+													}
+												}, 1000);
+											} else {
+												$nativeUIManager.wattingClose();
+												$nativeUIManager.alert('提示', '取消关注失败', 'OK', function() {});
+											}
+										}
+									},
+									error: function(XMLHttpRequest, textStatus, errorThrown) {
+										$nativeUIManager.wattingClose();
+										$nativeUIManager.alert('提示', '取消关注失败', 'OK', function() {});
+									}
+								});
+							});
+						}
+					}
+				}
+			});
+		});
+
 		$common.touchSE($('.openView', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
 			var typeId = $(o).closest('.oneCard').attr('typeId');
 			var uid = $(o).closest('.oneCard').attr('uid');
@@ -52,47 +165,31 @@ define(function(require, exports, module) {
 				});
 			}
 		});
-		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('product_add', 'add.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
+
 		$common.touchSE($('.viewSpan', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
 			event.stopPropagation();
 			var viewCount = $(o).closest('.oneCard').attr('viewCount');
 			var uid = $(o).closest('.oneCard').attr('uid');
 			var productName = $(o).closest('.oneCard').attr('productName');
-			if (viewCount&&uid&&productName) {
+			if (viewCount && uid && productName) {
 				viewCount = parseInt(viewCount);
 				if (viewCount > 0) {
 					if (userId == $userInfo.get('userId')) {
-						$windowManager.create('product_view_list_header', '../productView/header.html?id=' + uid + '&tab=sale&productName='+productName, false, true, function(show) {
+						$windowManager.create('product_view_list_header', '../productView/header.html?id=' + uid + '&tab=sale&productName=' + productName, false, true, function(show) {
 							show();
 						});
 					}
 				}
 			}
 		});
-		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
+
 		$common.touchSE($('.commentBtn', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
 			event.stopPropagation();
 			var card = $(o).closest('.oneCard');
 			if (card) {
 				var uid = $(card).attr('uid');
 				if (uid) {
-					$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + uid+'&tab=saleOff', false, true, function(show) {
+					$windowManager.create('product_commentHeader', 'commentHeader.html?id=' + uid + '&tab=saleOff', false, true, function(show) {
 						show();
 					});
 				}
@@ -114,7 +211,7 @@ define(function(require, exports, module) {
 			}
 		});
 	};
-	loadData = function(callback,append) {
+	loadData = function(callback, append) {
 		if (!callback) {
 			$nativeUIManager.watting('正在加载...');
 		}
@@ -129,9 +226,20 @@ define(function(require, exports, module) {
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
-						if(userId!=$userInfo.get('userId')){
-							$('#footerTools').show();
-							$('.main').css('padding-bottom','50px');
+						if (userId != $userInfo.get('userId')) {
+							var planner = jsonData['planner'];
+							if (planner) {
+								var friendYn = planner['friendYn'];
+								if (friendYn) {
+									if (friendYn == 'Y') {
+										$('span[dir="delFriend"]', '#footerTools').show();
+									} else {
+										$('span[dir="addFriend"]', '#footerTools').show();
+									}
+								}
+								$('#footerTools').show().attr('userId', userId);
+								$('.main').css('padding-bottom', '50px');
+							}
 						}
 						var productArray = jsonData['productArray'];
 						var sb = new StringBuilder();
@@ -144,7 +252,24 @@ define(function(require, exports, module) {
 								var uid = o['uid'];
 								if (typeId && relationYn) {
 									if (typeId == 1) {
-
+										var financialObj = o['financial'];
+										if (financialObj) {
+											sb.append(String.formatmodel($templete.financialItem(relationYn), {
+												productId: o['productId'],
+												userId: o['userId'],
+												relationUserName: o['relationUserName'],
+												relationUserId: o['relationUserId'],
+												viewCount: o['viewCount'],
+												relationCount: o['relationCount'],
+												uid: uid,
+												typeId: typeId,
+												typeName: o['typeName'],
+												name: o['name'],
+												updateTime: o['updateTime'],
+												yield: financialObj['minYield'] + '-' + financialObj['maxYield'],
+												dayLimit: financialObj['minLimitDay'] + '-' + financialObj['maxLimitDay']
+											}));
+										}
 									} else if (typeId == 2) {
 										var fundObj = o['fund'];
 										if (fundObj) {

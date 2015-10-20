@@ -6,6 +6,7 @@ define(function(require, exports, module) {
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
 	var $templete = require('core/templete');
+	var $scrollEvent = require('manager/scrollEvent');
 	var nextIndex = 0;
 	var currentWindow;
 	var queryMap = parseURL();
@@ -43,6 +44,29 @@ define(function(require, exports, module) {
 		$('#bottomPop').removeClass('current');
 	};
 	bindEvent = function() {
+		$scrollEvent.bindEvent(function() {
+			$('#addProductBtn').off('touchstart').off('touchstart');
+			$('#relationProductBtn').off('touchstart').off('touchstart');
+		}, function() {
+			$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
+				$windowManager.create('product_add', 'add.html', false, true, function(show) {
+					show();
+					var lunchWindow = $windowManager.getLaunchWindow();
+					if (lunchWindow) {
+						lunchWindow.evalJS('plusRest()');
+					}
+				});
+			});
+			$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
+				$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
+					show();
+					var lunchWindow = $windowManager.getLaunchWindow();
+					if (lunchWindow) {
+						lunchWindow.evalJS('plusRest()');
+					}
+				});
+			});
+		});
 		$common.touchSE($('.openView', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
 			var typeId = $(o).closest('.oneCard').attr('typeId');
 			var uid = $(o).closest('.oneCard').attr('uid');
@@ -51,15 +75,6 @@ define(function(require, exports, module) {
 					show();
 				});
 			}
-		});
-		$common.touchSE($('#addProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.create('product_add', 'add.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
 		});
 		$common.touchSE($('.viewSpan', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
 			event.stopPropagation();
@@ -77,23 +92,13 @@ define(function(require, exports, module) {
 				}
 			}
 		});
-		$common.touchSE($('#relationProductBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$nativeUIManager.alert('提示', '需要等忆星的短信验证码 后台变更过 线上服务器不支持了', 'OK', function() {});
-			$windowManager.create('relation_header', '../relation/header.html', false, true, function(show) {
-				show();
-				var lunchWindow = $windowManager.getLaunchWindow();
-				if (lunchWindow) {
-					lunchWindow.evalJS('plusRest()');
-				}
-			});
-		});
 		$common.touchSE($('.commentBtn', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
 			event.stopPropagation();
 			var card = $(o).closest('.oneCard');
 			if (card) {
 				var uid = $(card).attr('uid');
 				if (uid) {
-					$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + uid + '&tab=favorites', false, true, function(show) {
+					$windowManager.create('product_commentHeader', 'commentHeader.html?id=' + uid + '&tab=favorites', false, true, function(show) {
 						show();
 					});
 				}
@@ -141,7 +146,24 @@ define(function(require, exports, module) {
 								var uid = o['uid'];
 								if (typeId && relationYn) {
 									if (typeId == 1) {
-
+										var financialObj = o['financial'];
+										if (financialObj) {
+											sb.append(String.formatmodel($templete.financialItem(relationYn), {
+												productId: o['productId'],
+												userId: o['userId'],
+												relationUserName: o['relationUserName'],
+												relationUserId: o['relationUserId'],
+												viewCount: o['viewCount'],
+												relationCount: o['relationCount'],
+												uid: uid,
+												typeId: typeId,
+												typeName: o['typeName'],
+												name: o['name'],
+												updateTime: o['updateTime'],
+												yield: financialObj['minYield'] + '-' + financialObj['maxYield'],
+												dayLimit: financialObj['minLimitDay'] + '-' + financialObj['maxLimitDay']
+											}));
+										}
 									} else if (typeId == 2) {
 										var fundObj = o['fund'];
 										if (fundObj) {
