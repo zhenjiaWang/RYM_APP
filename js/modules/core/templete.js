@@ -188,7 +188,6 @@ define(function(require, exports, module) {
 		commentItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		commentItem.append('<div class="marl60 marr10">\n');
 		commentItem.append('<p class="font12 alignright clearfix">\n');
-		console.info(replyFlag);
 		if (replyFlag == '0') {
 			commentItem.append('<span class="font17 floatleft"><em class="nameSpan">{userName}</em>回复<em class="nameSpan">{replyUserName}</em></span>\n');
 		} else {
@@ -196,7 +195,7 @@ define(function(require, exports, module) {
 		}
 		commentItem.append('<span class="color-a">{dateTime}</span>\n');
 		commentItem.append('</p>\n');
-		commentItem.append('<p class="font14 color-9">{content}</p>\n');
+		commentItem.append('<p class="font14 color-9"><pre>{content}</pre></p>\n');
 		commentItem.append('</div>\n');
 		commentItem.append('</li>\n');
 		return commentItem.toString();

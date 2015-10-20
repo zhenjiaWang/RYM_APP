@@ -25,10 +25,7 @@ define(function(require, exports, module) {
 	plusReady = function() {
 		loadWebview();
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
-			var commentFooterWin = $windowManager.getById('product_commentFooter');
-			if (commentFooterWin) {
-				commentFooterWin.close();
-			}
+			$windowManager.close();
 		});
 	};
 	if (window.plus) {

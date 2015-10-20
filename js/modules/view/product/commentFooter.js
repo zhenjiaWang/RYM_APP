@@ -37,26 +37,18 @@ define(function(require, exports, module) {
 				$nativeUIManager.alert('提示', '请先输入评论内容', 'OK', function() {});
 			}
 		});
-		$('#content').off('keydown').on('keydown', function(e) {
-			e = (e) ? e : ((window.event) ? window.event : "")
-			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
-			if (keyCode) {
-				var value = $(this).text();
-				if (value && value != '') {
-					$('#replyTip').hide();
-				}
-			}
-		});
-		$('#content').off('keyup').on('keyup', function(e) {
-			e = (e) ? e : ((window.event) ? window.event : "")
-			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
-			if (keyCode) {
-				var value = $(this).text();
-				if (value == '') {
-					$('#replyTip').show();
-				}
-			}
-		});
+//		$('#content').off('valuechange').on('valuechange', function(e) {
+//			e = (e) ? e : ((window.event) ? window.event : "")
+//			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
+//			if (keyCode) {
+//				var value = $(this).text();
+//				if (value && value != '') {
+//					$('#replyTip').hide();
+//				}else{
+//					$('#replyTip').show();
+//				}
+//			}
+//		});
 		$('#content').off('blur').on('blur', function(e) {
 			var value = $(this).text();
 			if (value && value != '') {

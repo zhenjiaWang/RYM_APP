@@ -13,10 +13,19 @@ define(function(require, exports, module) {
 	var currentWindow;
 	var productUserId = false;
 	reset = function() {
-		var commentFooterWin = $windowManager.getById('product_commentFooter');
-		if (commentFooterWin) {
-			commentFooterWin.evalJS('reset()');
-		}
+		$('#content').attr('replyUserId', '').text('');
+		$('#replyTip').text('').hide();
+		//$(document).animate({ scrollTop: 0 });
+	};
+	reply = function(uid, userName) {
+		$nativeUIManager.watting();
+		window.setTimeout(function() {
+			$keyManager.openSoftKeyboard(function() {
+				$('#replyTip').text('回复 ' + userName).show();
+				$('#content').attr('replyUserId', uid).text('').get(0).focus();
+				$nativeUIManager.wattingClose();
+			});
+		}, 500)
 	};
 	sendComment = function(content, replyUserId, callback) {
 		$nativeUIManager.watting('请稍等...');
@@ -28,7 +37,7 @@ define(function(require, exports, module) {
 				data: {
 					id: id,
 					tab: tab,
-					userId:userId,
+					userId: userId,
 					content: content,
 					replyUserId: replyUserId,
 					'org.guiceside.web.jsp.taglib.Token': tokenId
@@ -147,6 +156,27 @@ define(function(require, exports, module) {
 		});
 	};
 	bindEvent = function() {
+		$('#content').off('valuechange').on('valuechange', function(e) {
+			var value = $(this).text();
+			if (value) {
+				if (value != '') {
+					$('#replyTip').hide();
+				} else {
+					$('#replyTip').show();
+				}
+			} else {
+				$('#replyTip').show();
+			}
+		});
+		$common.touchSE($('.btnSend'), function(event, startTouch, o) {}, function(event, o) {
+			var content = $('#content').html();
+			if (content && content != '') {
+				var replyUserId = $('#content').attr('replyUserId');
+				sendComment(content, replyUserId, reset);
+			} else {
+				$nativeUIManager.alert('提示', '请先输入评论内容', 'OK', function() {});
+			}
+		});
 		$common.touchSE($('li', '#commentUL'), function(event, startTouch, o) {}, function(event, o) {
 			var userName = $(o).attr('userName');
 			var userID = $(o).attr('userId');
@@ -161,10 +191,7 @@ define(function(require, exports, module) {
 						function(index) {
 							if (index > 0) {
 								if (index == 1) {
-									var commentFooterWin = $windowManager.getById('product_commentFooter');
-									if (commentFooterWin) {
-										commentFooterWin.evalJS('reply("' + userID + '","' + userName + '")');
-									}
+									reply(userID, userName);
 								} else if (index == 2) {
 									$nativeUIManager.confirm('提示', '你确定要删除该条评论?', ['确定', '取消'], function() {
 										deleteComment(uid);
@@ -182,10 +209,7 @@ define(function(require, exports, module) {
 							function(index) {
 								if (index > 0) {
 									if (index == 1) {
-										var commentFooterWin = $windowManager.getById('product_commentFooter');
-										if (commentFooterWin) {
-											commentFooterWin.evalJS('reply("' + userID + '","' + userName + '")');
-										}
+										reply(userID, userName);
 									} else if (index == 2) {
 										$nativeUIManager.confirm('提示', '你确定要删除该条评论?', ['确定', '取消'], function() {
 											deleteComment(uid);
@@ -196,7 +220,7 @@ define(function(require, exports, module) {
 					} else {
 						var commentFooterWin = $windowManager.getById('product_commentFooter');
 						if (commentFooterWin) {
-							commentFooterWin.evalJS('reply("' + userID + '","' + userName + '")');
+							reply(userID, userName);
 						}
 					}
 				}
@@ -215,7 +239,7 @@ define(function(require, exports, module) {
 						data: {
 							id: id,
 							tab: tab,
-							userId:userId,
+							userId: userId,
 							'org.guiceside.web.jsp.taglib.Token': tokenId
 						},
 						success: function(jsonData) {
@@ -300,7 +324,7 @@ define(function(require, exports, module) {
 			data: {
 				id: id,
 				tab: tab,
-				userId:userId
+				userId: userId
 			},
 			success: function(jsonData) {
 				if (jsonData) {

@@ -308,7 +308,7 @@ define(function(require, exports, module) {
 			if (card) {
 				var uid = $(card).attr('uid');
 				if (uid) {
-					$windowManager.create('product_commentFooter', 'commentFooter.html?id=' + uid + '&tab=sale', false, true, function(show) {
+					$windowManager.create('product_commentHeader', 'commentHeader.html?id=' + uid + '&tab=sale', false, true, function(show) {
 						show();
 					});
 				}

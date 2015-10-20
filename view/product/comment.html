@@ -19,9 +19,14 @@
 			});
 			seajs.use('view/product/comment');
 		</script>
+		<style>
+		#content,#content *{
+			-webkit-user-select: auto;
+		}
+		</style>
 	</head>
 	<body>
-		<div class="main" >
+		<div class="main" style="min-height:50%;padding: 0 0 50px 0">
 			<section class="commentTop" style="display: none;">
 				<span id="commentCount"><i class="icon icon-con"></i><em>0</em></span>
 				<span id="likeSpan"><i class="icon icon-zan"></i><em>0</em></span>
@@ -32,10 +37,12 @@
 				
 			</ul>
 		</div>
-		<!--<footer class="footer footerInner clearfix " style="height:auto;min-height:49px;">
+		<!--产品评论的底部begin-->
+		<footer class="footer footerInner clearfix " style="height:auto;min-height:49px;">
 			<div class="commentInt floatleft color-9"  style="position: absolute;display: none;" id="replyTip"></div>
 			<div id="content" name="content" class="commentInt floatleft" contenteditable="true"></div>
 			<a class="btnSend floatleft" href="javascript:;">发 送</a>
-		</footer>-->
+		</footer>
+		<!--产品评论的底部over-->
 	</body>
 </html>
