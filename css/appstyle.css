@@ -337,7 +337,7 @@ opacity: 0.5;border-radius:3px;position: absolute;z-index: 2;text-align: center;
 .cardBottom span{display:inline-block;height:35px;line-height:35px;}
 .cardBottom span em{padding:0;margin-left:-5px;}
 .cardBottom i.icon{width:40px;height:35px;}
-.bottomPop{width:100%;height:99px;position:fixed;border-top:1px solid #d9d9d9;left:0;z-index:20;transition:0.2s;-webkit-transition:0.2s;-webkit-transform:translate(0,100px);background:url(../img/footer_bg.png) repeat;}
+.bottomPop{width:100%;height:99px;position:fixed;border-top:1px solid #d9d9d9;left:0;z-index:20;transition:0.2s;-webkit-transition:0.2s;-webkit-transform:translate(0,130px);background:url(../img/footer_bg.png) repeat;}
 .popBtn{display:inline-block;margin:0 10%;margin-top:15px;}
 .popBtn .icon{display:block;width:50px;height:50px;border-radius:50%;margin-bottom:3px;}
 .icon-plus-big{background-color:#16c1f3;background-image: url(../img/icon-plus.png);background-size:30px;}

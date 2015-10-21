@@ -263,78 +263,93 @@ define(function(require, exports, module) {
 			}, function() {});
 		});
 	};
+	addProduct = function() {
+		var size = $('.productDataUL').size();
+		if (size) {
+			var index = (size + 1);
+			var ul = $('.productDataUL').eq(0).clone(false);
+			if (ul) {
+				$('.delProduct').hide();
+				$('li', ul).removeClass('has-error');
+				$(ul).attr('index', index);
+				var codeObj = $('input[name="code_1"]', ul);
+				if (codeObj) {
+					$(codeObj).attr('name', 'code_' + index).attr('id', 'code_' + index).val('');
+				}
+				var nameObj = $('input[name="name_1"]', ul);
+				if (nameObj) {
+					$(nameObj).attr('name', 'name_' + index).attr('id', 'name_' + index).val('');
+				}
+				var selectProductOrgObj = $('li[name="selectProductOrg_1"]', ul);
+				if (selectProductOrgObj) {
+					$(selectProductOrgObj).attr('name', 'selectProductOrg_' + index).attr('id', 'selectProductOrg_' + index).find('.placeTxt').text('请选择');
+				}
+				var productOrgIdObj = $('input[name="productOrgId_1"]', ul);
+				if (productOrgIdObj) {
+					$(productOrgIdObj).attr('name', 'productOrgId_' + index).attr('id', 'productOrgId_' + index).val('');
+				}
+				var selectPayOffTypeObj = $('li[name="selectPayOffType_1"]', ul);
+				if (selectPayOffTypeObj) {
+					$(selectPayOffTypeObj).attr('name', 'selectPayOffType_' + index).attr('id', 'selectPayOffType_' + index).find('.placeTxt').text('请选择');
+				}
+				var payOffTypeObj = $('input[name="payOffType_1"]', ul);
+				if (payOffTypeObj) {
+					$(payOffTypeObj).attr('name', 'payOffType_' + index).attr('id', 'payOffType_' + index).val('');
+				}
+				var purchaseAmountObj = $('input[name="purchaseAmount_1"]', ul);
+				if (purchaseAmountObj) {
+					$(purchaseAmountObj).attr('name', 'purchaseAmount_' + index).attr('id', 'purchaseAmount_' + index).val('');
+				}
+				var selectDateObj = $('li[name="selectDate_1"]', ul);
+				if (selectDateObj) {
+					$(selectDateObj).attr('name', 'selectDate_' + index).attr('id', 'selectDate_' + index).find('.placeTxt').text('请选择');
+				}
+				var startDateObj = $('input[name="startDate_1"]', ul);
+				if (startDateObj) {
+					$(startDateObj).attr('name', 'startDate_' + index).attr('id', 'startDate_' + index).val('');
+				}
+				var endDateObj = $('input[name="endDate_1"]', ul);
+				if (endDateObj) {
+					$(endDateObj).attr('name', 'endDate_' + index).attr('id', 'endDate_' + index).val('');
+				}
+				var accrualDayObj = $('input[name="accrualDay_1"]', ul);
+				if (accrualDayObj) {
+					$(accrualDayObj).attr('name', 'accrualDayObj_' + index).attr('id', 'accrualDayObj_' + index).val('');
+				}
+				var selectExpireDateObj = $('li[name="selectExpireDate_1"]', ul);
+				if (selectExpireDateObj) {
+					$(selectExpireDateObj).attr('name', 'selectExpireDate_' + index).attr('id', 'selectExpireDate_' + index).find('.placeTxt').text('请选择');
+				}
+				var expireDateObj = $('input[name="expireDate_1"]', ul);
+				if (expireDateObj) {
+					$(expireDateObj).attr('name', 'expireDate_' + index).attr('id', 'expireDate_' + index).val('');
+				}
+				var yieldObj = $('input[name="yield_1"]', ul);
+				if (yieldObj) {
+					$(yieldObj).attr('name', 'yield_' + index).attr('id', 'yield_' + index).val('');
+				}
+			}
+			$('#descUL').before('<p class="productTitle title font14 clearfix alignright" style="position:relative;bottom:-5px;"><span class="floatleft marl10">第' + index + '个理财产品</span><span class="marr10 delProduct" style="color:red;display:none;">删 除</span></p>');
+			$('#descUL').before(ul);
+			addValidate(index);
+			$('.delProduct').last().show();
+			$('.delProduct').off('touchstart').off('touchend');
+			$common.touchSE($('.delProduct').last(), function(event, startTouch, o) {}, function(event, o) {
+				$nativeUIManager.confirm('提示', '你确定删除当前产品吗!', ['确定', '取消'], function() {
+					$('.productDataUL').last().remove();
+					$('.productTitle').last().remove();
+				}, function() {
+
+				});
+			});
+		}
+	};
 	bindEvent = function() {
 		$common.touchSE($('#addBtn'), function(event, startTouch, o) {}, function(event, o) {
-			var size = $('.productDataUL').size();
-			if (size) {
-				var index = (size + 1);
-				var ul = $('.productDataUL').eq(0).clone(false);
-				if (ul) {
-					$('li', ul).removeClass('has-error');
-					$(ul).attr('index', index);
-					var codeObj = $('input[name="code_1"]', ul);
-					if (codeObj) {
-						$(codeObj).attr('name', 'code_' + index).attr('id', 'code_' + index);
-					}
-					var nameObj = $('input[name="name_1"]', ul);
-					if (nameObj) {
-						$(nameObj).attr('name', 'name_' + index).attr('id', 'name_' + index);
-					}
-					var selectProductOrgObj = $('li[name="selectProductOrg_1"]', ul);
-					if (selectProductOrgObj) {
-						$(selectProductOrgObj).attr('name', 'selectProductOrg_' + index).attr('id', 'selectProductOrg_' + index);
-					}
-					var productOrgIdObj = $('input[name="productOrgId_1"]', ul);
-					if (productOrgIdObj) {
-						$(productOrgIdObj).attr('name', 'productOrgId_' + index).attr('id', 'productOrgId_' + index);
-					}
-					var selectPayOffTypeObj = $('li[name="selectPayOffType_1"]', ul);
-					if (selectPayOffTypeObj) {
-						$(selectPayOffTypeObj).attr('name', 'selectPayOffType_' + index).attr('id', 'selectPayOffType_' + index);
-					}
-					var payOffTypeObj = $('input[name="payOffType_1"]', ul);
-					if (payOffTypeObj) {
-						$(payOffTypeObj).attr('name', 'payOffType_' + index).attr('id', 'payOffType_' + index);
-					}
-					var purchaseAmountObj = $('input[name="purchaseAmount_1"]', ul);
-					if (purchaseAmountObj) {
-						$(purchaseAmountObj).attr('name', 'purchaseAmount_' + index).attr('id', 'purchaseAmount_' + index);
-					}
-					var selectDateObj = $('li[name="selectDate_1"]', ul);
-					if (selectDateObj) {
-						$(selectDateObj).attr('name', 'selectDate_' + index).attr('id', 'selectDate_' + index);
-					}
-					var startDateObj = $('input[name="startDate_1"]', ul);
-					if (startDateObj) {
-						$(startDateObj).attr('name', 'startDate_' + index).attr('id', 'startDate_' + index);
-					}
-					var endDateObj = $('input[name="endDate_1"]', ul);
-					if (endDateObj) {
-						$(endDateObj).attr('name', 'endDate_' + index).attr('id', 'endDate_' + index);
-					}
-					var accrualDayObj = $('input[name="accrualDay_1"]', ul);
-					if (accrualDayObj) {
-						$(accrualDayObj).attr('name', 'accrualDayObj_' + index).attr('id', 'accrualDayObj_' + index);
-					}
-					var selectExpireDateObj = $('li[name="selectExpireDate_1"]', ul);
-					if (selectExpireDateObj) {
-						$(selectExpireDateObj).attr('name', 'selectExpireDate_' + index).attr('id', 'selectExpireDate_' + index);
-					}
-					var expireDateObj = $('input[name="expireDate_1"]', ul);
-					if (expireDateObj) {
-						$(expireDateObj).attr('name', 'expireDate_' + index).attr('id', 'expireDate_' + index);
-					}
-					var yieldObj = $('input[name="yield_1"]', ul);
-					if (yieldObj) {
-						$(yieldObj).attr('name', 'yield_' + index).attr('id', 'yield_' + index);
-					}
-				}
-				$('#descUL').before('<p class="title font14 clearfix alignright" style="position:relative;bottom:-5px;"><span class="floatleft marl10">第' + index + '个理财产品</span><span class="marr10">删 除</span></p>');
-				$('#descUL').before(ul);
-				addValidate(index);
-				$nativeUIManager.watting('请填写第' + index + '个理财产品', 1500);
-			}
+			addProduct();
+			$nativeUIManager.watting('请填写第' + $('.productDataUL').size() + '个理财产品', 1500);
 		});
+
 		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
 			var uid = $(o).attr('uid');
 			var type = $(o).attr('type');
@@ -449,7 +464,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请填写代码'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'name_' + index,
 			required: true,
@@ -458,7 +473,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请填写名词'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'productOrgId_' + index,
 			required: true,
@@ -467,7 +482,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请选择发行机构'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'payOffType_' + index,
 			required: true,
@@ -476,7 +491,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请选择收益类型'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'purchaseAmount_' + index,
 			required: true,
@@ -493,7 +508,7 @@ define(function(require, exports, module) {
 				exp: '_number1',
 				msg: '正整数或者保留一位小数'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'startDate_' + index,
 			required: true,
@@ -502,7 +517,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请选择募集开始日期'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'endDate_' + index,
 			required: true,
@@ -511,7 +526,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请选择募集结束日期'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'accrualDay_' + index,
 			required: true,
@@ -524,7 +539,7 @@ define(function(require, exports, module) {
 				exp: '==',
 				msg: '计息天数格式不正确'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'expireDate_' + index,
 			required: true,
@@ -533,7 +548,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请选择到期日'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'yield_' + index,
 			required: true,
@@ -546,7 +561,8 @@ define(function(require, exports, module) {
 				exp: '==',
 				msg: '预期收益率格式不正确'
 			}]
-		}, true);
+		});
+		$validator.setUp();
 		dynamicEvent(index);
 	};
 	bindValidate = function() {

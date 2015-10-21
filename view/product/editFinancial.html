@@ -18,28 +18,22 @@
 			seajs.config({
 				base: "../../js/modules/"
 			});
-			seajs.use('view/product/addFinancial');
+			seajs.use('view/product/editFinancial');
 		</script>
 	</head>
 
 	<body>
 		<header class="header">
 			<span class="icon icon-back floatleft" id="backBtn"></span>
-			<h1 class="aligncenter font17" style="left:70px;right:70px;">添加产品</h1>
-			<div class="next_step" id="saveBtn"><span class="headerBtn aligncenter">下一步</span></div>
+			<h1 class="aligncenter font17" style="left:70px;right:70px;">编辑产品</h1>
+			<div class="next_step" id="saveBtn"><span class="headerBtn aligncenter">保存</span></div>
 		</header>
-		<div class="main" style="padding-bottom: 60px;margin-top: 50px;">
+		<div class="main p-bt10 Ios_scroll" style="position: absolute;bottom: 50px;top: 34px;">
 			<form name="editForm" id="editForm">
-				<ul class="inputList mart15">
-					<li class="clearfix" id="selectProductType" controlType="text">
-						<span class="lable">产品类型</span>
-						<span class="alignright placeTxt nobg nopadding">请选择</span>
-						<input type="hidden" class="alignright" id="typeId" name="typeId" />
-						<label class="lableTxt"></label>
-					</li>
+				<ul id="productDataUL" class="inputList mart15">
 					<li class="clearfix" controlType="text">
-						<span class="lable">理财名称</span>
-						<input type="text" id="productName" name="productName" class="alignright" placeholder="未填写" />
+						<span class="lable">名称</span>
+						<input type="text" id="productName" name="productName" class="alignright" placeholder="未填写" readonly="readonly"/>
 						<label class="lableTxt"></label>
 					</li>
 				</ul>
@@ -105,15 +99,17 @@
 						<label class="lableTxt"></label>
 					</li>
 				</ul>
-				<input type="hidden" id="org.guiceside.web.jsp.taglib.Token" name="org.guiceside.web.jsp.taglib.Token"/>
-				<input type="hidden" id="numSeq" name="numSeq"/>
-				<input type="hidden" id="attToken" name="attToken"/>
+				<input type="hidden" id="org.guiceside.web.jsp.taglib.Token" name="org.guiceside.web.jsp.taglib.Token" />
+				<input type="hidden" id="numSeq" name="numSeq" />
+				<input type="hidden" id="id" name="id" />
+				<input type="hidden" id="attToken" name="attToken" />
+				<input type="hidden" class="alignright" id="typeId" name="typeId" />
 				<input type="hidden" id="financialCount" name="financialCount"/>
 			</form>
 			<ul class="inputList imgList mart15" id="imgUL" style="display: none;">
 				<li class="clearfix noboder Ios_scroll" style="overflow-y: hidden;">
 					<div class="ImgBox" style="width:1000px">
-						
+
 					</div>
 				</li>
 			</ul>

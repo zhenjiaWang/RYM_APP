@@ -443,6 +443,7 @@ define(function(require, exports, module) {
 						var planner = jsonData['planner'];
 						if (planner) {
 							$('.personBoard').show();
+							$('#bottomPop').show();
 							if (userId != $userInfo.get('userId')) {
 								var friendYn = planner['friendYn'];
 								if (friendYn) {

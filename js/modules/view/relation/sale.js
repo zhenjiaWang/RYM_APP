@@ -7,7 +7,7 @@ define(function(require, exports, module) {
 	var $controlWindow = require('manager/controlWindow');
 	var $templete = require('core/templete');
 	var currentWindow;
-	relationExist = function(productId,productName,userId,numSeq) {
+	relationExist = function(productId, productName, userId, numSeq) {
 		$nativeUIManager.watting('请稍等...');
 		$.ajax({
 			type: 'POST',
@@ -49,7 +49,7 @@ define(function(require, exports, module) {
 			var productId = $(o).attr('productId');
 			var productName = $(o).attr('productName');
 			if (numSeq && userId && productName && productId) {
-				relationExist(productId,productName,userId,numSeq);
+				relationExist(productId, productName, userId, numSeq);
 			}
 		});
 	};
@@ -69,7 +69,24 @@ define(function(require, exports, module) {
 							var uid = o['uid'];
 							if (typeId && relationYn && uid) {
 								if (typeId == 1) {
-
+									var financialObj = o['financial'];
+									if (financialObj) {
+										sb.append(String.formatmodel($templete.financialItem(relationYn, endFlag), {
+											productId: o['productId'],
+											userId: o['userId'],
+											relationUserName: o['relationUserName'],
+											relationUserId: o['relationUserId'],
+											viewCount: o['viewCount'],
+											relationCount: o['relationCount'],
+											uid: uid,
+											typeId: typeId,
+											typeName: o['typeName'],
+											name: o['name'],
+											updateTime: o['updateTime'],
+											yield: financialObj['minYield'] + '-' + financialObj['maxYield'],
+											dayLimit: financialObj['minLimitDay'] + '-' + financialObj['maxLimitDay']
+										}));
+									}
 								} else if (typeId == 2) {
 									var fundObj = o['fund'];
 									if (fundObj) {

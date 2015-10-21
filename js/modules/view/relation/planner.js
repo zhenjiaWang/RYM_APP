@@ -168,16 +168,32 @@ define(function(require, exports, module) {
 			}
 
 		});
+		
 		$('#keyword').off('keydown').on('keydown', function(e) {
 			e = (e) ? e : ((window.event) ? window.event : "")
 			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
 			if (keyCode == 13) {
 				var value = $(this).val();
-				loadData();
-				$('.checkWord').text('筛选');
+				if (value == '') {
+					loadData();
+				}
 				$('#keyword').trigger('blur');
 			}
 		});
+		$('#keyword').off('blur').on('blur', function(e) {
+			var value = $(this).val();
+			if (value == '') {
+				loadData();
+			}
+		});
+
+		$('#keyword').off('valuechange').on('valuechange', function(e, previous) {
+			var value = $(this).val();
+			if (value && value != '') {
+				loadData();
+			}
+		});
+
 		$common.touchSE($('.checkWord'), function(event, startTouch, o) {}, function(event, o) {
 			if (!$('.wordList').hasClass('current')) {
 				$('.wordList').addClass('current');

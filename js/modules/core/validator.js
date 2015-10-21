@@ -24,6 +24,60 @@ define(function(require, exports, module) {
 	}
 	var modeMapList = false;
 	var modeErrorMapList = false;
+	buildEvent = function (mid) {
+        var mode = modeMapList.get(mid);
+        if (mode) {
+            var obj = $('#' + mid);
+            if (obj) {
+                var elem = $(obj).get(0);
+                if (elem) {
+                    $(obj).off('blur').on('blur', function () {
+                        var mid = $(this).attr('id');
+                        alert(mid);
+                        if (mid) {
+                            mid = mid.replaceAll('\\.', '\\.');
+                            validate(mid);
+                            var callback = mode['callback'];
+                            if (callback && typeof  callback == 'function') {
+                                callback(modeErrorMapList.get(mid));
+                            }
+                        }
+                    });
+                    if (mode['pattern']) {
+                        $(mode['pattern']).each(function (i, o) {
+                            if (o['type'].trim() == 'number') {
+                                $(elem).css({imeMode: 'disabled'});
+                                $(elem).attr({oncopy: 'return false', onpaste: 'return false'});
+                                $(elem).bind('keypress', function (e) {
+                                    e = (e) ? e : ((window.event) ? window.event : "")
+                                    var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
+                                    if ((keyCode >= 48 && keyCode <= 57) || (keyCode == 46 || keyCode == 45) || keyCode == 8) {
+                                        e.returnValue = true;
+                                    } else {
+                                        e.returnValue = false;
+                                        return false;
+                                    }
+                                });
+                            } else if (o['type'].trim() == 'int') {
+                                $(elem).css({imeMode: 'disabled'});
+                                $(elem).attr({oncopy: 'return false', onpaste: 'return false'});
+                                $(elem).bind('keypress', function (e) {
+                                    e = (e) ? e : ((window.event) ? window.event : "")
+                                    var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
+                                    if ((keyCode >= 48 && keyCode <= 57) || keyCode == 8) {
+                                        e.returnValue = true;
+                                    } else {
+                                        e.returnValue = false;
+                                        return false;
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+        }
+    };
 	buildExp = function(condition, value) {
 		var conditions = condition.ToCharArray();
 		var exp = '';
@@ -254,13 +308,15 @@ define(function(require, exports, module) {
 			exports.setUp();
 		}
 	};
-	exports.addMode = function(mode) {
+	exports.addMode = function(mode,be) {
 		if (mode) {
 			if (mode['id']) {
 				if (!modeMapList) {
 					modeMapList = new HashMap();
 				}
-				modeMapList.put(mode['id'], mode);
+				if(!modeMapList.containsKey(mode['id'])){
+                    modeMapList.put(mode['id'], mode);
+                }
 			}
 		}
 	};
