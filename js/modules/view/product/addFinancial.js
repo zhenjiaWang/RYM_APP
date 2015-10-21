@@ -314,7 +314,7 @@ define(function(require, exports, module) {
 				}
 				var accrualDayObj = $('input[name="accrualDay_1"]', ul);
 				if (accrualDayObj) {
-					$(accrualDayObj).attr('name', 'accrualDayObj_' + index).attr('id', 'accrualDayObj_' + index).val('');
+					$(accrualDayObj).attr('name', 'accrualDay_' + index).attr('id', 'accrualDay_' + index).val('');
 				}
 				var selectExpireDateObj = $('li[name="selectExpireDate_1"]', ul);
 				if (selectExpireDateObj) {
@@ -336,9 +336,9 @@ define(function(require, exports, module) {
 			$('.delProduct').off('touchstart').off('touchend');
 			$common.touchSE($('.delProduct').last(), function(event, startTouch, o) {}, function(event, o) {
 				$nativeUIManager.confirm('提示', '你确定删除当前产品吗!', ['确定', '取消'], function() {
+					removeValidate($('.productDataUL').size());
 					$('.productDataUL').last().remove();
 					$('.productTitle').last().remove();
-					removeValidate($('.productDataUL').size());
 				}, function() {
 
 				});

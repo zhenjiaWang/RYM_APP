@@ -213,7 +213,10 @@ define(function(require, exports, module) {
 				var dir = $(o).attr('dir');
 				if (dir) {
 					if (dir == 'message') {
-						$nativeUIManager.alert('提示', '私信和微信体系一起开放', 'OK', function() {});
+						var userName = $('#userName').text();
+						$windowManager.create('pm_header', '../pm/header.html?targetId='+userId+'&targetName='+userName, false, true, function(show) {
+							show();
+						});
 					} else if (dir == 'addFriend') {
 						var friendId = $(o).closest('footer').attr('userId');
 						if (friendId) {

@@ -291,7 +291,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请填写代码'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'name_' + index,
 			required: true,
@@ -300,7 +300,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请填写名词'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'productOrgId_' + index,
 			required: true,
@@ -309,7 +309,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请选择发行机构'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'payOffType_' + index,
 			required: true,
@@ -318,7 +318,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请选择收益类型'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'purchaseAmount_' + index,
 			required: true,
@@ -335,7 +335,7 @@ define(function(require, exports, module) {
 				exp: '_number1',
 				msg: '正整数或者保留一位小数'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'startDate_' + index,
 			required: true,
@@ -344,7 +344,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请选择募集开始日期'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'endDate_' + index,
 			required: true,
@@ -353,7 +353,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请选择募集结束日期'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'accrualDay_' + index,
 			required: true,
@@ -366,7 +366,7 @@ define(function(require, exports, module) {
 				exp: '==',
 				msg: '计息天数格式不正确'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'expireDate_' + index,
 			required: true,
@@ -375,7 +375,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请选择到期日'
 			}]
-		}, true);
+		});
 		$validator.addMode({
 			id: 'yield_' + index,
 			required: true,
@@ -388,7 +388,7 @@ define(function(require, exports, module) {
 				exp: '==',
 				msg: '预期收益率格式不正确'
 			}]
-		}, true);
+		});
 		$validator.setUp();
 		dynamicEvent(index);
 	};
@@ -443,7 +443,7 @@ define(function(require, exports, module) {
 				}
 				var accrualDayObj = $('input[name="accrualDay_1"]', ul);
 				if (accrualDayObj) {
-					$(accrualDayObj).attr('name', 'accrualDayObj_' + index).attr('id', 'accrualDayObj_' + index).val('');
+					$(accrualDayObj).attr('name', 'accrualDay_' + index).attr('id', 'accrualDay_' + index).val('');
 				}
 				var selectExpireDateObj = $('li[name="selectExpireDate_1"]', ul);
 				if (selectExpireDateObj) {
@@ -465,9 +465,9 @@ define(function(require, exports, module) {
 			$('.delProduct').off('touchstart').off('touchend');
 			$common.touchSE($('.delProduct').last(), function(event, startTouch, o) {}, function(event, o) {
 				$nativeUIManager.confirm('提示', '你确定删除当前产品吗!', ['确定', '取消'], function() {
+					removeValidate($('.productDataUL').size());
 					$('.productDataUL').last().remove();
 					$('.productTitle').last().remove();
-					removeValidate($('.productDataUL').size());
 				}, function() {
 
 				});
