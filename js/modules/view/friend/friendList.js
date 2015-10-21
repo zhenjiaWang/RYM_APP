@@ -147,7 +147,6 @@ define(function(require, exports, module) {
 		if (!callback) {
 			$nativeUIManager.watting('正在加载...');
 		}
-		console.info('search ' + $('#keyword').val());
 		$.ajax({
 			type: 'POST',
 			url: $common.getRestApiURL() + '/social/friendPlanner',

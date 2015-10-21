@@ -116,6 +116,7 @@ a:hover,.news-list li a:hover{text-decoration:none;}
 .clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden;}
 .clearfix{zoom:1;}
 .line{width: 100%;border-bottom: 1px solid #ccc;font-size: 0;line-height: 0;margin:20px 0;}
+
 /*分页*/
 .pagenation a{display: inline-block;min-width: 28px;height: 28px;line-height: 28px;color:#a0a0a0;border:1px solid #efefef;margin:0 2px;}
 .pagenation a:hover,.pagenation a.current{background-color:#7c8a96;color:#fff;}

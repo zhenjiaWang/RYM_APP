@@ -145,7 +145,6 @@ define(function(require, exports, module) {
 							success: function(jsonData) {
 								if (jsonData) {
 									if (jsonData['result'] == '0') {
-										console.info(JSON.stringify(jsonData))
 										$userInfo.put('relationSale', JSON.stringify(jsonData));
 										$windowManager.create('relation_sale', 'sale.html', false, true, function(show) {
 											$nativeUIManager.wattingClose();

@@ -495,6 +495,15 @@ define(function(require, exports, module) {
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});
+		var obj=$windowManager.current();
+		if(obj){
+			obj.setStyle({'softinputMode':'adjustResize'});
+		}
+		var height = document.body.clientHeight;
+		var minHeight = (height / 2) + (height / 2 / 2);
+		window.addEventListener('resize', function() {
+			document.getElementById("footerTools").style.display = document.body.clientHeight <= minHeight ? 'none' : 'block';
+		}, false);
 	};
 	if (window.plus) {
 		plusReady();

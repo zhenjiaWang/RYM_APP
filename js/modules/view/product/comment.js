@@ -15,7 +15,7 @@ define(function(require, exports, module) {
 	reset = function() {
 		$('#content').attr('replyUserId', '').text('');
 		$('#replyTip').text('').hide();
-		$("html,body").animate({scrollTop:0},200);	
+		$(".main").animate({scrollTop:0},200);	
 	};
 	reply = function(uid, userName) {
 		$nativeUIManager.watting();
@@ -168,6 +168,12 @@ define(function(require, exports, module) {
 				$('#replyTip').show();
 			}
 		});
+		$common.touchSE($('#replyTip'), function(event, startTouch, o) {}, function(event, o) {
+			$keyManager.openSoftKeyboard(function() {
+				$('#content').get(0).focus();
+			});
+		});
+		
 		$common.touchSE($('.btnSend'), function(event, startTouch, o) {}, function(event, o) {
 			var content = $('#content').html();
 			if (content && content != '') {
@@ -411,6 +417,10 @@ define(function(require, exports, module) {
 		}, function() {
 
 		});
+		var obj=$windowManager.current();
+		if(obj){
+			obj.setStyle({'softinputMode':'adjustResize'});
+		}
 		loadData();
 	};
 	if (window.plus) {

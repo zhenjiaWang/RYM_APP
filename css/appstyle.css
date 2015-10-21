@@ -140,6 +140,13 @@ label.checkbox,label.radio,label.text{padding-left:4px;vertical-align:top;}
     font-style: normal;
 
 }
+pre {font-size:13px;color:#999;line-height:20px;
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
 .blur{background: inherit;-webkit-filter: blur(5px);overflow: hidden;}
 /*图标*/
 .icon{display:inline-block;font-size:0;line-height:0;background-repeat: no-repeat;background-position:center center;}

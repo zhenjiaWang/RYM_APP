@@ -195,7 +195,7 @@ define(function(require, exports, module) {
 		}
 		commentItem.append('<span class="color-a">{dateTime}</span>\n');
 		commentItem.append('</p>\n');
-		commentItem.append('<p class="font14 color-9"><pre>{content}</pre></p>\n');
+		commentItem.append('<pre>{content}</pre>\n');
 		commentItem.append('</div>\n');
 		commentItem.append('</li>\n');
 		return commentItem.toString();
