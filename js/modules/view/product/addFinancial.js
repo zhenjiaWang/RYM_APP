@@ -338,6 +338,7 @@ define(function(require, exports, module) {
 				$nativeUIManager.confirm('提示', '你确定删除当前产品吗!', ['确定', '取消'], function() {
 					$('.productDataUL').last().remove();
 					$('.productTitle').last().remove();
+					removeValidate($('.productDataUL').size());
 				}, function() {
 
 				});
@@ -454,6 +455,18 @@ define(function(require, exports, module) {
 			}
 		});
 		dynamicEvent(1);
+	};
+	removeValidate=function(index){
+		$validator.removeMode('code_' + index);
+		$validator.removeMode('name_' + index);
+		$validator.removeMode('productOrgId_' + index);
+		$validator.removeMode('payOffType_' + index);
+		$validator.removeMode('purchaseAmount_' + index);
+		$validator.removeMode('startDate_' + index);
+		$validator.removeMode('endDate_' + index);
+		$validator.removeMode('accrualDay_' + index);
+		$validator.removeMode('expireDate_' + index);
+		$validator.removeMode('yield_' + index);
 	};
 	addValidate = function(index) {
 		$validator.addMode({
