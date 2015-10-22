@@ -18,7 +18,7 @@
 			seajs.config({
 				base: "../../js/modules/"
 			});
-			seajs.use('view/product/editFinancial');
+			seajs.use('view/product/updateFinancial');
 		</script>
 	</head>
 
@@ -41,35 +41,35 @@
 				<ul class="productDataUL inputList mart5" index="1">
 					<li class="clearfix" controlType="text">
 						<span class="lable">代码</span>
-						<input type="text" id="code_1" name="code_1" class="alignright" placeholder="未填写" />
+						<input type="text" id="code_1" name="code_1" class="alignright" placeholder="未填写" readonly="readonly"/>
 						<label class="lableTxt"></label>
 					</li>
 					<li class="clearfix" controlType="text">
 						<span class="lable">名称</span>
-						<input type="text" id="name_1" name="name_1" class="alignright" placeholder="未填写" />
+						<input type="text" id="name_1" name="name_1" class="alignright" placeholder="未填写" readonly="readonly"/>
 						<label class="lableTxt"></label>
 					</li>
-					<li class="clearfix" controlType="text" id="selectProductOrg_1" name="selectProductOrg_1">
+					<li class="clearfix" controlType="text" id="selectProductOrg_1" name="selectProductOrg_1" readonly="readonly">
 						<span class="lable">发行机构</span>
 						<span class="alignright placeTxt">请选择</span>
-						<input type="hidden" class="alignright" id="productOrgId_1" name="productOrgId_1" />
+						<input type="hidden" class="alignright" id="productOrgId_1" name="productOrgId_1" readonly="readonly"/>
 						<label class="lableTxt"></label>
 					</li>
-					<li class="clearfix" controlType="text" id="selectPayOffType_1" name="selectPayOffType_1">
+					<li class="clearfix" controlType="text" id="selectPayOffType_1" name="selectPayOffType_1" readonly="readonly">
 						<span class="lable">收益类型</span>
-						<input type="hidden" class="alignright" id="payOffType_1" name="payOffType_1" />
+						<input type="hidden" class="alignright" id="payOffType_1" name="payOffType_1" readonly="readonly"/>
 						<span class="alignright placeTxt">请选择</span>
 						<label class="lableTxt"></label>
 					</li>
 					<li class="clearfix"  controlType="text">
 						<span class="lable">起购金额</span><span class="floatright marr10">万元</span>
-						<input type="number" id="purchaseAmount_1" name="purchaseAmount_1" class="alignright" placeholder="未填写" />
+						<input type="number" id="purchaseAmount_1" name="purchaseAmount_1" class="alignright" placeholder="未填写" readonly="readonly"/>
 						<label class="lableTxt"></label>
 					</li>
 					<li class="clearfix"  controlType="text" id="selectDate_1" name="selectDate_1">
 						<span class="lable">募集起止日期</span>
-						<input type="hidden" class="alignright" id="startDate_1" name="startDate_1" />
-						<input type="hidden" class="alignright" id="endDate_1" name="endDate_1" />
+						<input type="hidden" class="alignright" id="startDate_1" name="startDate_1" readonly="readonly"/>
+						<input type="hidden" class="alignright" id="endDate_1" name="endDate_1" readonly="readonly"/>
 						<span class="alignright placeTxt" style="width:52%;">请选择</span>
 						<label class="lableTxt"></label>
 					</li>
@@ -80,13 +80,13 @@
 					</li>
 					<li class="clearfix" controlType="text" id="selectExpireDate_1" name="selectExpireDate_1">
 						<span class="lable">到期日</span>
-						<input type="hidden" class="alignright" id="expireDate_1" name="expireDate_1" />
+						<input type="hidden" class="alignright" id="expireDate_1" name="expireDate_1" readonly="readonly"/>
 						<span class="alignright placeTxt" style="width:52%;">请选择</span>
 						<label class="lableTxt"></label>
 					</li>
 					<li class="clearfix" controlType="number">
 						<span class="lable">预期收益率</span><span class="floatright marr10">%</span>
-						<input type="number" id="yield_1" name="yield_1" class="alignright" placeholder="未填写" />
+						<input type="number" id="yield_1" name="yield_1" class="alignright" placeholder="未填写" readonly="readonly"/>
 						<label class="lableTxt"></label>
 					</li>
 				</ul>
@@ -100,11 +100,11 @@
 					</li>
 				</ul>
 				<input type="hidden" id="org.guiceside.web.jsp.taglib.Token" name="org.guiceside.web.jsp.taglib.Token" />
-				<input type="hidden" id="numSeq" name="numSeq" />
 				<input type="hidden" id="id" name="id" />
 				<input type="hidden" id="attToken" name="attToken" />
 				<input type="hidden" class="alignright" id="typeId" name="typeId" />
 				<input type="hidden" id="financialCount" name="financialCount"/>
+				<input type="hidden" class="alignright" id="productOrgId" name="productOrgId" />
 			</form>
 			<ul class="inputList imgList mart15" id="imgUL" style="display: none;">
 				<li class="clearfix noboder Ios_scroll" style="overflow-y: hidden;">

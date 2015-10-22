@@ -18,11 +18,17 @@ define(function(require, exports, module) {
 				function(index) {
 					if (index > 0) {
 						if (index == 1) {
-							$windowManager.load('addFinancial.html?typeId=1&typeName=理财');
+							$windowManager.create('product_add_footer', 'addFooter.html?typeId=1&typeName=理财', false, true, function(show) {
+								show();
+							});
 						} else if (index == 2) {
-							$windowManager.load('addFund.html?typeId=2&typeName=基金');
+							$windowManager.create('product_add_footer', 'addFooter.html?typeId=2&typeName=基金', false, true, function(show) {
+								show();
+							});
 						} else if (index == 3) {
-							$windowManager.load('addTrust.html?typeId=3&typeName=信托|资管');
+							$windowManager.create('product_add_footer', 'addFooter.html?typeId=3&typeName=信托|资管', false, true, function(show) {
+								show();
+							});
 						}
 					}
 				});

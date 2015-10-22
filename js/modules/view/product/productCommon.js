@@ -374,26 +374,21 @@ define(function(require, exports, module) {
 						var editType = jsonData['editType'];
 						$userInfo.put('editJson', JSON.stringify(jsonData));
 						var editUrl = editType;
-						if (typeId == 1) {
-							$nativeUIManager.wattingClose();
-							$nativeUIManager.alert('提示', '理财产品调试中，修改功能10.21日下午开放', 'OK', function() {});
-						} else {
-							var productInfo = jsonData['productInfo'];
-							if (productInfo) {
-								var typeId = productInfo['typeId'];
-								if (typeId == 1) {
-									editUrl += 'Financial.html';
-								} else if (typeId == 2) {
-									editUrl += 'Fund.html';
-								} else if (typeId == 3) {
-									editUrl += 'Trust.html';
-								}
+						var productInfo = jsonData['productInfo'];
+						if (productInfo) {
+							var typeId = productInfo['typeId'];
+							if (typeId == 1) {
+								editUrl += 'Financial.html';
+							} else if (typeId == 2) {
+								editUrl += 'Fund.html';
+							} else if (typeId == 3) {
+								editUrl += 'Trust.html';
 							}
-							$windowManager.create('product_edit', editUrl, false, true, function(show) {
-								show();
-								$nativeUIManager.wattingClose();
-							});
 						}
+						$windowManager.create('product_edit_footer', 'editFooter.html?typeId='+typeId+'&editType='+editType, false, true, function(show) {
+							show();
+							$nativeUIManager.wattingClose();
+						});
 					} else {
 						$nativeUIManager.wattingClose();
 						$nativeUIManager.alert('提示', '获取产品信息失败', 'OK', function() {});

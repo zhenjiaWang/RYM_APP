@@ -42,7 +42,7 @@ define(function(require, exports, module) {
 		$common.touchSE($('.personBoard', '#commentDIV'), function(event, startTouch, o) {}, function(event, o) {
 			var productId = $(o).attr('productId');
 			if (productId) {
-				$windowManager.create('product_commentHeader', 'commentHeader.html?id=' + productId + '&userId=' + $userInfo.get('userId'), false, true, function(show) {
+				$windowManager.create('product_commentHeader', '../product/commentHeader.html?id=' + productId + '&userId=' + $userInfo.get('userId'), false, true, function(show) {
 					show();
 				});
 			}

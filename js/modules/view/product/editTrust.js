@@ -7,10 +7,19 @@ define(function(require, exports, module) {
 	var $controlWindow = require('manager/controlWindow');
 	var $validator = require('core/validator');
 	var queryMap = parseURL();
-	var typeId = queryMap.get('typeId');
-	var typeName = queryMap.get('typeName');
-	var server = "/common/common/uploadData";
-	var files = [];
+	var attToken = queryMap.get('attToken');
+	addFileSuccess = function(src) {
+		var jsonDataStr = $userInfo.get('uploadFiles');
+		if (jsonDataStr) {
+			var jsonData = JSON.parse(jsonDataStr);
+			if (!$('#imgUL').is(':visible')) {
+				$('#imgUL').show();
+			}
+			$('div', '#imgUL').append('<span type="' + jsonData['type'] + '" uid="' + jsonData['id'] + '"><img src="' + src + '"><em>删 除</em></span>\n');
+			bindEvent();
+			$userInfo.removeItem('uploadFiles');
+		}
+	};
 	saveData = function(numSeq) {
 		$nativeUIManager.watting('正在保存产品...');
 		$common.refreshToken(function(tokenId) {
@@ -32,9 +41,12 @@ define(function(require, exports, module) {
 									$windowManager.reloadOtherWindow('product_view', true);
 									window.setTimeout(function() {
 										$nativeUIManager.wattingClose();
-										$windowManager.close();
-									}, 300);
-								}, 1000);
+										var footerWin = $windowManager.getById('product_edit_footer');
+										if (footerWin) {
+											footerWin.close();
+										}
+									}, 500);
+								}, 1500);
 							}
 						} else {
 							$nativeUIManager.wattingClose();
@@ -49,61 +61,7 @@ define(function(require, exports, module) {
 			});
 		});
 	};
-	upload = function() {
-		if (files.length <= 0) {
-			plus.nativeUI.alert("没有添加上传文件！");
-			return;
-		}
-		var task = plus.uploader.createUpload($common.getRestApiURL() + server, {
-				method: "POST"
-			},
-			function(t, status) { //上传完成
-				if (status == 200) {
-					var resText = JSON.parse(t.responseText);
-					if (resText) {
-						var src = resText['message'] + '!productEdit';
-						$.ajax({
-							type: 'POST',
-							url: $common.getRestApiURL() + '/common/common/uploadCallbackMobile',
-							dataType: 'json',
-							data: {
-								fileKey: resText['message'],
-								attToken: $('#attToken').val()
-							},
-							success: function(jsonData) {
-								if (jsonData) {
-									if (jsonData['result'] == '0') {
-										$nativeUIManager.wattingClose();
-										if (!$('#imgUL').is(':visible')) {
-											$('#imgUL').show();
-										}
-										$('div', '#imgUL').append('<span type="' + jsonData['type'] + '" uid="' + jsonData['id'] + '"><img src="' + src + '"><em>删 除</em></span>\n');
-										bindEvent();
-									} else {
-										$nativeUIManager.wattingClose();
-										$nativeUIManager.alert('提示', '图片保存失败', 'OK', function() {});
-									}
-								}
-							},
-							error: function(XMLHttpRequest, textStatus, errorThrown) {
-								$nativeUIManager.wattingClose();
-								$nativeUIManager.alert('提示', '图片保存失败', 'OK', function() {});
-							}
-						});
-					}
-				} else {
-					$nativeUIManager.wattingClose();
-				}
-			}
-		);
-		for (var i = 0; i < files.length; i++) {
-			var f = files[i];
-			task.addFile(f.path, {
-				key: f.name
-			});
-		}
-		task.start();
-	};
+
 	deleteAtt = function(attId, type) {
 		$nativeUIManager.watting('请稍等...');
 		$common.refreshToken(function(tokenId) {
@@ -146,7 +104,7 @@ define(function(require, exports, module) {
 	loadOrg = function(orgCompany) {
 		$nativeUIManager.watting('请稍等...');
 		var controlValue = $('#productOrgId').val();
-		$windowManager.create('selectOrg', 'selectOrg.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue + '&win=product_edit', false, true, function(show) {
+		$windowManager.create('selectOrg', 'selectOrg.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue + '&win=product_edit_product', false, true, function(show) {
 			show();
 			$nativeUIManager.wattingClose();
 		});
@@ -167,7 +125,7 @@ define(function(require, exports, module) {
 						if (payOffTypeList && $(payOffTypeList).size() > 0) {
 							$userInfo.put("selectList", JSON.stringify(payOffTypeList));
 							var controlValue = $('#payOffType').val();
-							$windowManager.create('select', 'select.html?title=收益类型&controlId=payOffType&controlValue=' + controlValue + '&win=product_edit', false, true, function(show) {
+							$windowManager.create('select', 'select.html?title=收益类型&controlId=payOffType&controlValue=' + controlValue + '&win=product_edit_product', false, true, function(show) {
 								show();
 								$nativeUIManager.wattingClose();
 							});
@@ -288,75 +246,7 @@ define(function(require, exports, module) {
 			}, function() {});
 		});
 
-		$common.touchSE($('#uploadBtn'), function(event, startTouch, o) {}, function(event, o) {
-			var imgCount = $('div', '#imgUL').find('img').size();
-			if (imgCount < 6) {
-				window.setTimeout(function() {
-					files = [];
-					$nativeUIManager.confactionSheetirm('请选择上传方式操作', '取消', [{
-							title: '从照片选取'
-						}, {
-							title: '拍摄'
-						}],
-						function(index) {
-							if (index > 0) {
-								if (index == 1) {
-									plus.gallery.pick(function(p) {
-										plus.io.resolveLocalFileSystemURL(p, function(entry) {
-											$nativeUIManager.watting('正在压缩图片...');
-											window.setTimeout(function() {
-												plus.zip.compressImage({
-														src: entry.toLocalURL(),
-														dst: '_www/wzj.jpg',
-														quality: 40
-													},
-													function(event) {
-														files.push({
-															name: "uploadkey" + index,
-															path: event.target
-														});
-														index++;
-														$nativeUIManager.wattingTitle('正在上传...');
-														window.setTimeout(function() {
-															upload();
-														}, 500);
-													}, function(error) {});
-											}, 500);
-										});
-									});
-								} else if (index == 2) {
-									plus.camera.getCamera().captureImage(function(p) {
-										plus.io.resolveLocalFileSystemURL(p, function(entry) {
-											$nativeUIManager.watting('正在压缩图片...');
-											plus.zip.compressImage({
-													src: entry.toLocalURL(),
-													dst: '_www/wzj.jpg',
-													quality: 40
-												},
-												function(event) {
-													files.push({
-														name: "uploadkey" + index,
-														path: event.target
-													});
-													index++;
-													$nativeUIManager.wattingTitle('正在上传...');
-													upload();
-												}, function(error) {
-													$nativeUIManager.wattingTitle('图片压缩失败...');
-													window.setTimeout(function() {
-														$nativeUIManager.wattingClose();
-													}, 1000);
-												});
-										});
-									});
-								}
-							}
-						});
-				}, 100);
-			} else {
-				$nativeUIManager.alert('提示', '最多只能上传6张图片', 'OK', function() {});
-			}
-		});
+
 
 	};
 	bindValidate = function() {
@@ -464,61 +354,46 @@ define(function(require, exports, module) {
 		$validator.setUp();
 	};
 	loadData = function() {
-		$.ajax({
-			type: 'POST',
-			url: $common.getRestApiURL() + '/common/common/getAttToken',
-			dataType: 'json',
-			data: {},
-			success: function(jsonData) {
-				if (jsonData) {
-					if (jsonData['result'] == '0') {
-						$('#attToken').val(jsonData['attToken']);
-						var editJsonStr = $userInfo.get('editJson');
-						if (editJsonStr) {
-							var editJson = JSON.parse(editJsonStr);
-							if (editJson) {
-								var productInfo = editJson['productInfo'];
-								var trust = editJson['trust'];
-								if (productInfo && trust) {
-									$('#id').val(editJson['id']);
-									$('#typeId').val(productInfo['typeId']);
-									$('#productName').val(productInfo['name']);
-									$('#productOrgId').val(productInfo['productOrgId']);
-									$('.placeTxt', '#selectProductOrg').text(productInfo['orgName']);
-									$('#remarks').val(productInfo['remarks']);
+		var editJsonStr = $userInfo.get('editJson');
+		if (editJsonStr) {
+			var editJson = JSON.parse(editJsonStr);
+			if (editJson) {
+				var productInfo = editJson['productInfo'];
+				var trust = editJson['trust'];
+				if (productInfo && trust) {
+					$('#id').val(editJson['id']);
+					$('#typeId').val(productInfo['typeId']);
+					$('#productName').val(productInfo['name']);
+					$('#productOrgId').val(productInfo['productOrgId']);
+					$('.placeTxt', '#selectProductOrg').text(productInfo['orgName']);
+					$('#remarks').val(productInfo['remarks']);
 
-									$('#payOffType').val(trust['payOffType']);
-									$('.placeTxt', '#selectPayOffType').text(trust['payOffType']);
+					$('#payOffType').val(trust['payOffType']);
+					$('.placeTxt', '#selectPayOffType').text(trust['payOffType']);
 
-									$('#yield').val(trust['yield']);
-									$('#purchaseAmount').val(trust['purchaseAmount']);
-									$('#startDate').val(trust['startDate']);
-									$('#endDate').val(trust['endDate']);
-									$('.placeTxt', '#selectDate').text(trust['startDate'] + ' 至 ' + trust['endDate']);
-									$('#accrualDay').val(trust['accrualDay']);
-									$('#expireDate').val(trust['expireDate']);
-									$('.placeTxt', '#selectExpireDate').text(trust['expireDate']);
+					$('#yield').val(trust['yield']);
+					$('#purchaseAmount').val(trust['purchaseAmount']);
+					$('#startDate').val(trust['startDate']);
+					$('#endDate').val(trust['endDate']);
+					$('.placeTxt', '#selectDate').text(trust['startDate'] + ' 至 ' + trust['endDate']);
+					$('#accrualDay').val(trust['accrualDay']);
+					$('#expireDate').val(trust['expireDate']);
+					$('.placeTxt', '#selectExpireDate').text(trust['expireDate']);
 
-									var attArray = editJson['attArray'];
-									if (attArray && $(attArray).size() > 0) {
-										if (!$('#imgUL').is(':visible')) {
-											$('#imgUL').show();
-										}
-										$(attArray).each(function(i, o) {
-											var src = o['imgSrc'] + '!productEdit';
-											$('div', '#imgUL').append('<span type="' + o['type'] + '" uid="' + o['id'] + '"><img src="' + src + '"><em>删 除</em></span>\n');
-										});
-									}
-									bindEvent();
-								}
-							}
+					var attArray = editJson['attArray'];
+					if (attArray && $(attArray).size() > 0) {
+						if (!$('#imgUL').is(':visible')) {
+							$('#imgUL').show();
 						}
-						$('#footerTools').show();
+						$(attArray).each(function(i, o) {
+							var src = o['imgSrc'] + '!productEdit';
+							$('div', '#imgUL').append('<span type="' + o['type'] + '" uid="' + o['id'] + '"><img src="' + src + '"><em>删 除</em></span>\n');
+						});
 					}
+					bindEvent();
 				}
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {}
-		});
+			}
+		}
 	};
 	plusReady = function() {
 		$common.switchOS(function() {
@@ -526,11 +401,15 @@ define(function(require, exports, module) {
 		}, function() {
 
 		});
+		$('#attToken').val(attToken);
 		bindValidate();
 		loadData();
 		autosize(document.querySelectorAll('.textBox'));
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.close();
+			var footerWin = $windowManager.getById('product_edit_footer');
+			if (footerWin) {
+				footerWin.close();
+			}
 		});
 		var obj = $windowManager.current();
 		if (obj) {

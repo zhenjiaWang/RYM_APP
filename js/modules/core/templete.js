@@ -131,7 +131,7 @@ define(function(require, exports, module) {
 		financialItem.append('<span class="font14 floatleft inlineblock marl10 p-top25 color-9">期限:<em class="color-6">{dayLimit}天</em></span>\n');
 		financialItem.append('<div class="floatright alignright marr10">\n');
 		financialItem.append('<p class="font11 color-a">预计年化率</p>\n');
-		financialItem.append('<span class="tipsBig tips-x font20 color-white">{yield}<em class="font14 color-white">%</em></span>\n');
+		financialItem.append('<span class="tipsBig  font20 color-white">{yield}<em class="font14 color-white">%</em></span>\n');
 		financialItem.append('</div>\n');
 		financialItem.append('</div>\n');
 		financialItem.append('<div class="cardBottom clearfix alignright mart10">\n');
@@ -424,5 +424,20 @@ define(function(require, exports, module) {
 		pmContactItem.append('</div>\n');
 		pmContactItem.append('</li>\n');
 		return pmContactItem.toString();
+	};
+	exports.addFooterImgItem = function() {
+		var footerItem = new StringBuilder();
+		footerItem.append('<footer class="footer footerInner  clearfix" id="footerTools" style="display: none;">\n');
+		footerItem.append('<span class="nofloat block width-auto" id="uploadBtn">使用图片</span>\n');
+		footerItem.append('</footer>\n');
+		return footerItem.toString();
+	};
+	exports.addFooterImgProductItem = function() {
+		var footerItem = new StringBuilder();
+		footerItem.append('<footer class="footer footerInner  clearfix" id="footerTools" style="display: none;">\n');
+		footerItem.append('<span class="floatleft marl15" id="addBtn">增加产品</span>\n');
+		footerItem.append('<span class="floatright" id="uploadBtn">使用图片</span>\n');
+		footerItem.append('</footer>\n');
+		return footerItem.toString();
 	};
 });

@@ -9,8 +9,19 @@ define(function(require, exports, module) {
 	var queryMap = parseURL();
 	var typeId = queryMap.get('typeId');
 	var typeName = queryMap.get('typeName');
-	var server = "/common/common/uploadData";
-	var files = [];
+	var attToken = queryMap.get('attToken');
+	addFileSuccess = function(src) {
+		var jsonDataStr = $userInfo.get('uploadFiles');
+		if (jsonDataStr) {
+			var jsonData = JSON.parse(jsonDataStr);
+			if (!$('#imgUL').is(':visible')) {
+				$('#imgUL').show();
+			}
+			$('div', '#imgUL').append('<span type="' + jsonData['type'] + '" uid="' + jsonData['id'] + '"><img src="' + src + '"><em>删 除</em></span>\n');
+			bindEvent();
+			$userInfo.removeItem('uploadFiles');
+		}
+	};
 	saveData = function(numSeq) {
 		$nativeUIManager.watting('正在发布产品...');
 		$common.refreshToken(function(tokenId) {
@@ -27,7 +38,14 @@ define(function(require, exports, module) {
 							$windowManager.reloadOtherWindow('product_user', true);
 							window.setTimeout(function() {
 								$nativeUIManager.wattingClose();
-								$windowManager.close();
+								var footerWin = $windowManager.getById('product_add_footer');
+								if (footerWin) {
+									footerWin.close();
+								}
+								var addWin = $windowManager.getById('product_add');
+								if (addWin) {
+									addWin.close();
+								}
 							}, 300);
 						} else {
 							$nativeUIManager.wattingClose();
@@ -42,61 +60,7 @@ define(function(require, exports, module) {
 			});
 		});
 	};
-	upload = function() {
-		if (files.length <= 0) {
-			plus.nativeUI.alert("没有添加上传文件！");
-			return;
-		}
-		var task = plus.uploader.createUpload($common.getRestApiURL() + server, {
-				method: "POST"
-			},
-			function(t, status) { //上传完成
-				if (status == 200) {
-					var resText = JSON.parse(t.responseText);
-					if (resText) {
-						var src = resText['message'] + '!productEdit';
-						$.ajax({
-							type: 'POST',
-							url: $common.getRestApiURL() + '/common/common/uploadCallbackMobile',
-							dataType: 'json',
-							data: {
-								fileKey: resText['message'],
-								attToken: $('#attToken').val()
-							},
-							success: function(jsonData) {
-								if (jsonData) {
-									if (jsonData['result'] == '0') {
-										$nativeUIManager.wattingClose();
-										if (!$('#imgUL').is(':visible')) {
-											$('#imgUL').show();
-										}
-										$('div', '#imgUL').append('<span type="' + jsonData['type'] + '" uid="' + jsonData['id'] + '"><img src="' + src + '"><em>删 除</em></span>\n');
-										bindEvent();
-									} else {
-										$nativeUIManager.wattingClose();
-										$nativeUIManager.alert('提示', '图片保存失败', 'OK', function() {});
-									}
-								}
-							},
-							error: function(XMLHttpRequest, textStatus, errorThrown) {
-								$nativeUIManager.wattingClose();
-								$nativeUIManager.alert('提示', '图片保存失败', 'OK', function() {});
-							}
-						});
-					}
-				} else {
-					$nativeUIManager.wattingClose();
-				}
-			}
-		);
-		for (var i = 0; i < files.length; i++) {
-			var f = files[i];
-			task.addFile(f.path, {
-				key: f.name
-			});
-		}
-		task.start();
-	};
+
 	deleteAtt = function(attId, type) {
 		$nativeUIManager.watting('请稍等...');
 		$common.refreshToken(function(tokenId) {
@@ -139,7 +103,7 @@ define(function(require, exports, module) {
 	loadOrg = function(orgCompany) {
 		$nativeUIManager.watting('请稍等...');
 		var controlValue = $('#productOrgId').val();
-		$windowManager.create('selectOrg', 'selectOrg.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue + '&win=product_add', false, true, function(show) {
+		$windowManager.create('selectOrg', 'selectOrg.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue + '&win=product_add_product', false, true, function(show) {
 			show();
 			$nativeUIManager.wattingClose();
 		});
@@ -158,7 +122,7 @@ define(function(require, exports, module) {
 						if (fundTypeList && $(fundTypeList).size() > 0) {
 							$userInfo.put("selectList", JSON.stringify(fundTypeList));
 							var controlValue = $('#fundType').val();
-							$windowManager.create('select', 'select.html?title=基金类型&controlId=fundType&controlValue=' + controlValue + '&win=product_add', false, true, function(show) {
+							$windowManager.create('select', 'select.html?title=基金类型&controlId=fundType&controlValue=' + controlValue + '&win=product_add_product', false, true, function(show) {
 								show();
 								$nativeUIManager.wattingClose();
 							});
@@ -196,7 +160,7 @@ define(function(require, exports, module) {
 					$nativeUIManager.watting('请选择发布栏位...');
 					window.setTimeout(function() {
 						var productName = $('#productName').val();
-						$windowManager.create('product_send', 'send.html?productName=' + productName + '&saveWinId=product_add&saveFunction=saveData', false, true, function(show) {
+						$windowManager.create('product_send', 'send.html?productName=' + productName + '&saveWinId=product_add_product&saveFunction=saveData', false, true, function(show) {
 							show();
 							$nativeUIManager.wattingClose();
 						});
@@ -247,75 +211,7 @@ define(function(require, exports, module) {
 		});
 
 
-		$common.touchSE($('#uploadBtn'), function(event, startTouch, o) {}, function(event, o) {
-			var imgCount = $('div', '#imgUL').find('img').size();
-			if (imgCount < 6) {
-				window.setTimeout(function() {
-					files = [];
-					$nativeUIManager.confactionSheetirm('请选择上传方式操作', '取消', [{
-							title: '从照片选取'
-						}, {
-							title: '拍摄'
-						}],
-						function(index) {
-							if (index > 0) {
-								if (index == 1) {
-									plus.gallery.pick(function(p) {
-										plus.io.resolveLocalFileSystemURL(p, function(entry) {
-											$nativeUIManager.watting('正在压缩图片...');
-											window.setTimeout(function() {
-												plus.zip.compressImage({
-														src: entry.toLocalURL(),
-														dst: '_www/wzj.jpg',
-														quality: 40
-													},
-													function(event) {
-														files.push({
-															name: "uploadkey" + index,
-															path: event.target
-														});
-														index++;
-														$nativeUIManager.wattingTitle('正在上传...');
-														window.setTimeout(function() {
-															upload();
-														}, 500);
-													}, function(error) {});
-											}, 500);
-										});
-									});
-								} else if (index == 2) {
-									plus.camera.getCamera().captureImage(function(p) {
-										plus.io.resolveLocalFileSystemURL(p, function(entry) {
-											$nativeUIManager.watting('正在压缩图片...');
-											plus.zip.compressImage({
-													src: entry.toLocalURL(),
-													dst: '_www/wzj.jpg',
-													quality: 40
-												},
-												function(event) {
-													files.push({
-														name: "uploadkey" + index,
-														path: event.target
-													});
-													index++;
-													$nativeUIManager.wattingTitle('正在上传...');
-													upload();
-												}, function(error) {
-													$nativeUIManager.wattingTitle('图片压缩失败...');
-													window.setTimeout(function() {
-														$nativeUIManager.wattingClose();
-													}, 1000);
-												});
-										});
-									});
-								}
-							}
-						});
-				}, 100);
-			} else {
-				$nativeUIManager.alert('提示', '最多只能上传6张图片', 'OK', function() {});
-			}
-		});
+
 	};
 	bindValidate = function() {
 		$validator.init([{
@@ -357,23 +253,7 @@ define(function(require, exports, module) {
 		}]);
 		$validator.setUp();
 	};
-	loadData = function() {
-		$.ajax({
-			type: 'POST',
-			url: $common.getRestApiURL() + '/common/common/getAttToken',
-			dataType: 'json',
-			data: {},
-			success: function(jsonData) {
-				if (jsonData) {
-					if (jsonData['result'] == '0') {
-						$('#attToken').val(jsonData['attToken']);
-						$('#footerTools').show();
-					}
-				}
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {}
-		});
-	};
+
 	plusReady = function() {
 		$common.switchOS(function() {
 			$('body').addClass('Ios_scroll');
@@ -382,23 +262,23 @@ define(function(require, exports, module) {
 		});
 		$('#typeId').val(typeId);
 		$('.placeTxt', '#selectProductType').text(typeName);
+		$('#attToken').val(attToken);
 		bindValidate();
-		loadData();
 		bindEvent();
 		autosize(document.querySelectorAll('.textBox'));
 
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.close();
+			var footerWin = $windowManager.getById('product_add_footer');
+			if (footerWin) {
+				footerWin.close();
+			}
 		});
-		var obj=$windowManager.current();
-		if(obj){
-			obj.setStyle({'softinputMode':'adjustResize'});
+		var obj = $windowManager.current();
+		if (obj) {
+			obj.setStyle({
+				'softinputMode': 'adjustResize'
+			});
 		}
-		var height = document.body.clientHeight;
-		var minHeight = (height / 2) + (height / 2 / 2);
-		window.addEventListener('resize', function() {
-			document.getElementById("footerTools").style.display = document.body.clientHeight <= minHeight ? 'none' : 'block';
-		}, false);
 	};
 	if (window.plus) {
 		plusReady();
