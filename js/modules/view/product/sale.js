@@ -214,7 +214,7 @@ define(function(require, exports, module) {
 				if (dir) {
 					if (dir == 'message') {
 						var userName = $('#userName').text();
-						$windowManager.create('pm_header', '../pm/header.html?targetId='+userId+'&targetName='+userName, false, true, function(show) {
+						$windowManager.create('pmPlanner_header', '../pmPlanner/header.html?targetId='+userId+'&targetName='+userName, false, true, function(show) {
 							show();
 						});
 					} else if (dir == 'addFriend') {

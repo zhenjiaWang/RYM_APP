@@ -9,8 +9,11 @@ define(function(require, exports, module) {
 	var queryMap = parseURL();
 	var targetId = queryMap.get('targetId');
 	var targetName = queryMap.get('targetName');
+	var tip = queryMap.get('tip');
+	var type = queryMap.get('type');
+	
 	loadWebview = function(url) {
-		var chatWin = plus.webview.create('chat.html?targetId=' + targetId, "pm_chat", {
+		var chatWin = plus.webview.create('chat.html?targetId=' + targetId+'&type='+type, "pmInvestor_chat", {
 			top: "50px",
 			bottom: "0px",
 			scrollIndicator: 'vertical'
@@ -26,6 +29,13 @@ define(function(require, exports, module) {
 		$('h1').text('和'+targetName+'的私信');
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
+			if(tip&&tip=='1'){
+				var tipWin=$windowManager.getById('tip_list');
+				if(tipWin){
+					tipWin.evalJS('loadData()');
+					tipWin.evalJS('loadTip()');
+				}
+			}
 		});
 	};
 	if (window.plus) {

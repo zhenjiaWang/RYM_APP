@@ -17,6 +17,26 @@ define(function(require, exports, module) {
 		$('#bottomPop').removeClass('current');
 	};
 	bindEvent = function() {
+		$common.touchSE($('li', '#messageUL'), function(event, startTouch, o) {}, function(event, o) {
+			var type = $(o).attr('type');
+			var targetId = $(o).attr('targetId');
+			var userName = $(o).attr('userName');
+			if (type && targetId && userName) {
+				if (type == 'apps') {
+					$windowManager.create('pmPlanner_header', '../pmPlanner/header.html?targetId=' + targetId + '&targetName=' + userName + '&tip=1', false, true, function(show) {
+						show();
+					});
+				} else if (type == 'app') {
+					$windowManager.create('pmInvestor_header', '../pmInvestor/header.html?targetId=' + targetId + '&targetName=' + userName + '&tip=1&type='+type, false, true, function(show) {
+						show();
+					});
+				}else if (type == 'wx') {
+					$windowManager.create('pmInvestor_header', '../pmInvestor/header.html?targetId=' + targetId + '&targetName=' + userName + '&tip=1&type='+type, false, true, function(show) {
+						show();
+					});
+				}
+			}
+		});
 		$common.touchSE($('li', '#tipCountUL'), function(event, startTouch, o) {}, function(event, o) {
 			var dir = $(o).attr('dir');
 			if (dir) {
@@ -35,7 +55,7 @@ define(function(require, exports, module) {
 				}
 			}
 		});
-		
+
 		$scrollEvent.bindEvent(function() {
 			$('#addProductBtn').off('touchstart').off('touchstart');
 			$('#relationProductBtn').off('touchstart').off('touchstart');
@@ -60,8 +80,44 @@ define(function(require, exports, module) {
 			});
 		});
 	};
-	loadData = function(callback, append) {
-		bindEvent();
+	loadData = function() {
+		$.ajax({
+			type: 'POST',
+			url: $common.getRestApiURL() + '/social/friendPm/message',
+			dataType: 'json',
+			data: {},
+			success: function(jsonData) {
+				if (jsonData) {
+					if (jsonData['result'] == '0') {
+						var contactArray = jsonData['contactArray'];
+						if (contactArray && $(contactArray).size() > 0) {
+							var sb = new StringBuilder();
+							$('#messageUL').show();
+							$(contactArray).each(function(i, o) {
+								sb.append(String.formatmodel($templete.pmContactItem(o['unRead']), {
+									targetId: o['targetId'],
+									headImgUrl: o['headImgUrl'],
+									userName: o['userName'],
+									dateTime: o['dateTime'],
+									content: o['content'],
+									unRead: o['unRead'],
+									type: o['type']
+								}));
+							});
+							$('#messageUL').empty().append(sb.toString());
+						} else {
+							$('#messageUL').hide();
+						}
+						bindEvent();
+					} else {
+						$nativeUIManager.alert('提示', '加载评论失败', 'OK', function() {});
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				$nativeUIManager.alert('提示', '加载评论失败', 'OK', function() {});
+			}
+		});
 	};
 	loadTip = function() {
 		var visitCount = $userInfo.get('visitCount');

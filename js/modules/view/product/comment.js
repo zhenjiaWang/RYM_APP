@@ -13,7 +13,7 @@ define(function(require, exports, module) {
 	var currentWindow;
 	var productUserId = false;
 	reset = function() {
-		$('#content').attr('replyUserId', '').text('');
+		$('#content').attr('replyUserId', '').html('');
 		$('#replyTip').text('').hide();
 		$(".main").animate({scrollTop:0},200);	
 	};

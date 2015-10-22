@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" /> 
+		<meta name="apple-touch-fullscreen" content="yes"/>
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"> 
+		<title>评论</title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script type="text/javascript" src="../../js/StringBuilder.js"></script>
+		<script type="text/javascript" src="../../js/support.js"></script>
+		<script type="text/javascript" src='../../js/autosize.js'></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/pmPlanner/chat');
+		</script>
+		<style>
+		#content,#content *{
+			-webkit-user-select: auto;
+		}
+		</style>
+	</head>
+	<body class="bgwhite">
+		<div class="main" style="position: absolute;top:0;left:0;bottom:50px;min-height:70%;overflow-y: auto;">
+			<p class="aligncenter" id="blank" style="display: none;"><span class="timeBar">暂无私信记录</span></p>
+		</div>
+		<!--产品评论的底部begin-->
+		<footer class="footer footerInner clearfix " style="height:auto;min-height:49px;">
+			<div class="commentInt floatleft color-9"  style="position: absolute;display: none;" id="replyTip"></div>
+			<div id="content" name="content" class="commentInt floatleft" contenteditable="true"></div>
+			<a class="btnSend floatleft" href="javascript:;">发 送</a>
+		</footer>
+		<!--产品评论的底部over-->
+	</body>
+</html>

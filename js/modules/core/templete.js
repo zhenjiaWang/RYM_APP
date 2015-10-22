@@ -175,7 +175,7 @@ define(function(require, exports, module) {
 		waitingItem.append('</p>\n');
 		waitingItem.append('<p class="color-b opacityMask mart20">我还在为您精心挑选中</p>\n');
 		waitingItem.append('<p class="color-b  opacityMask p-bt20">尽请期待...</p>\n');
-	
+
 		waitingItem.append('<div class="cardBottom clearfix alignright mart10">\n');
 		waitingItem.append('<span class="clearfix floatleft"><i class="icon icon-change floatleft"></i><em class="color-9 floatleft">{relationCount}</em></span>\n');
 		waitingItem.append('</div>\n');
@@ -237,9 +237,9 @@ define(function(require, exports, module) {
 		friendItem.append('<li class="clearfix" uid="{userId}" userName="{userName}">\n');
 		friendItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		friendItem.append('<p class="mart15"><span class="font16 marl10">{userName}</span></p>\n');
-		if(status==0){
+		if (status == 0) {
 			friendItem.append('<span class="addBtn nobg noboder color-b">等待验证</span>\n');
-		}else{
+		} else {
 			friendItem.append('<span class="addBtn btnAgree">私信</span>\n');
 		}
 		friendItem.append('</li>\n');
@@ -271,10 +271,10 @@ define(function(require, exports, module) {
 	exports.friendFollowPlannerItem = function(newFlag) {
 		var relationPlannerItem = new StringBuilder();
 		relationPlannerItem.append('<section class="UserCard" userId="{userId}" saleCount="{saleCount}" userName="{userName}">\n');
-		if(newFlag){
+		if (newFlag) {
 			relationPlannerItem.append('<span class="icon-new"></span>\n');
 			relationPlannerItem.append('<span class="rightBtn rightBtnAdd"></span>\n');
-		}else{
+		} else {
 			relationPlannerItem.append('<span class="rightBtn">共同好友</span>\n');
 		}
 		relationPlannerItem.append('<div class="UserBg "><img src="{headImgUrl}"></div>\n');
@@ -296,7 +296,7 @@ define(function(require, exports, module) {
 		relationPlannerItem.append('</section>\n');
 		return relationPlannerItem.toString();
 	};
-	
+
 	exports.footer1 = function() {
 		var footerItem = new StringBuilder();
 		footerItem.append('<footer class="footer footerInner aligncenter clearfix" style="bottom:0;" id="footerTools">\n');
@@ -304,7 +304,7 @@ define(function(require, exports, module) {
 		footerItem.append('</footer>\n');
 		return footerItem.toString();
 	};
-	
+
 	exports.footer2 = function() {
 		var footerItem = new StringBuilder();
 		footerItem.append('<footer class="footer footerInner clearfix" style="bottom:0;" id="footerTools">\n');
@@ -313,7 +313,7 @@ define(function(require, exports, module) {
 		footerItem.append('</footer>\n');
 		return footerItem.toString();
 	};
-	
+
 	exports.footer3 = function() {
 		var footerItem = new StringBuilder();
 		footerItem.append('<footer class="footer footerInner footerThree  clearfix" style="bottom:0;" id="footerTools">\n');
@@ -333,7 +333,7 @@ define(function(require, exports, module) {
 		footerItem.append('</footer>\n');
 		return footerItem.toString();
 	};
-	
+
 	exports.visitItem = function() {
 		var visitItem = new StringBuilder();
 		visitItem.append('<section class="personBoard" userId="{userId}" visitType="{visitType}" userName="{userName}">\n');
@@ -350,7 +350,7 @@ define(function(require, exports, module) {
 		visitItem.append('</section>\n');
 		return visitItem.toString();
 	};
-	
+
 	exports.likeItem = function() {
 		var likeItem = new StringBuilder();
 		likeItem.append('<section class="personBoard" userId="{userId}" productId="{productId}" likeType="{likeType}" userName="{userName}">\n');
@@ -394,5 +394,35 @@ define(function(require, exports, module) {
 		weixinShare.append('&scope=snsapi_base');
 		weixinShare.append('&state=1#wechat_redirect');
 		return weixinShare.toString();
+	};
+	exports.pmItem = function(type) {
+		var pmItem = new StringBuilder();
+		pmItem.append('<section class="feedLeft {feedRight} clearfix">\n');
+		pmItem.append('<span class="inlineblock userPhoto"><img src="{headImgUrl}"></span>\n');
+		if(type=='me'){
+			pmItem.append('<div class="feed"><span class="feedBar"></span><pre style="color:#fff">{content}</pre></div>\n');
+		}else{
+			pmItem.append('<div class="feed"><span class="feedBar"></span><pre style="color:#000">{content}</pre></div>\n');
+		}
+		pmItem.append('</section>\n');
+		return pmItem.toString();
+	};
+	exports.pmContactItem = function(unRead) {
+		var pmContactItem = new StringBuilder();
+		pmContactItem.append('<li class="clearfix" targetId="{targetId}" type="{type}" userName="{userName}">\n');
+		pmContactItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}">');
+		if(unRead&&unRead!='0'){
+			pmContactItem.append('<i class="icon icon-p">{unRead}</i>\n');
+		}
+		pmContactItem.append('</span>\n');
+		pmContactItem.append('<div class="marl60 marr10">\n');
+		pmContactItem.append('<p class="font12 alignright clearfix">\n');
+		pmContactItem.append('<span class="font17 floatleft">{userName}</span>\n');
+		pmContactItem.append('<span class="color-a">{dateTime}</span>\n');
+		pmContactItem.append('</p>\n');
+		pmContactItem.append('<pre>{content}</pre>\n');
+		pmContactItem.append('</div>\n');
+		pmContactItem.append('</li>\n');
+		return pmContactItem.toString();
 	};
 });

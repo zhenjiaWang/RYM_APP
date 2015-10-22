@@ -43,6 +43,15 @@ define(function(require, exports, module) {
 		$('#bottomPop').removeClass('current');
 	};
 	bindEvent = function() {
+		$common.touchSE($('li', '#friendUL'), function(event, startTouch, o) {}, function(event, o) {
+			var targetId = $(o).attr('uid');
+			var userName = $(o).attr('userName');
+			if (targetId && userName) {
+				$windowManager.create('pmInvestor_header', '../pmInvestor/header.html?targetId=' + targetId + '&targetName=' + userName + '&type=app', false, true, function(show) {
+					show();
+				});
+			}
+		});
 		$('#keyword').off('keydown').on('keydown', function(e) {
 			e = (e) ? e : ((window.event) ? window.event : "")
 			var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
@@ -66,7 +75,7 @@ define(function(require, exports, module) {
 				loadData();
 			}
 		});
-		
+
 		$scrollEvent.bindEvent(function() {
 			$('#addProductBtn').off('touchstart').off('touchstart');
 			$('#relationProductBtn').off('touchstart').off('touchstart');
@@ -90,7 +99,7 @@ define(function(require, exports, module) {
 				});
 			});
 		});
-		
+
 		$common.touchSE($('.checkWord'), function(event, startTouch, o) {}, function(event, o) {
 			if (!$('.wordList').hasClass('current')) {
 				$('.wordList').addClass('current');
