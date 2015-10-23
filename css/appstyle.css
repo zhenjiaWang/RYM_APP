@@ -109,6 +109,7 @@ label.checkbox,label.radio,label.text{padding-left:4px;vertical-align:top;}
 .txt_hidden{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;display:inline-block;}
 .block{display:block!important;}
 .inlineblock{display: inline-block;}
+.inline{display: inline;}
 .nobg{background:none!important;}
 .nobgimg{background-image:none!important;}
 .bgwhite{background:#fff!important;}
@@ -201,6 +202,8 @@ margin-top:-11px;transition:0.3s;-webkit-transition:0.3s;}
 .icon-addf i.icon.icon-p{width:6px;height:6px;left:28px;top:12px;}
 .inputList li i.icon.icon-p{width:20px;height:20px;line-height:20px;left: initial;right:40px;top:50%;margin-top:-10px;
 font-size:12px;}
+.footer table,.footer table span{width:100%;text-align: center;}
+.footer table td{min-width: 24%;}
 /*启动登陆注册页面*/
 .begin{height:100%;background: url(../img/pageone.jpg);background-size:100% auto;}
 .logo,.logo img{width:200px;}
@@ -393,9 +396,12 @@ background:#1abded;margin:10px 15px 0 0;transition:0.3s;-webkit-transition:0.3s;
 .detail li .placeTxt{color:#2a2a2a;}
 p.txt{line-height:20px;padding-bottom:5px;}
 
-.ulBg.detail li.nobg div{width:33%;padding:10px 0;float: left;line-height:25px;color:#8d8d8d;font-size:11px;}
+.ulBg.detail li.nobg div{width:34%;padding:10px 0;float: left;line-height:25px;color:#8d8d8d;font-size:11px;}
 .ulBg.detail li.nobg div:last-child p:first-child{color:#fc7864;}
+.ulBg.detail li.nobg div:first-child{width:34%;}
+.ulBg.detail li.nobg div:last-child{width:30%;}
 .imgDetail{padding:0 10px;text-align: center;}
+.imgDetail p{padding:0 10px 10px 0;}
 .imgDetail img{max-width:100%;vertical-align: bottom;}
 .goTop,.checkWord,.add{display:block;width:50px;height:50px;border-radius:50%;opacity:0.7;position:fixed;right:20px;bottom:50px;background:#fff url(../img/gotop.png) center center no-repeat;z-index:10;background-size:45%;}
 .checkWord{text-align:center;color:#fff;line-height:50px;font-size:0px;bottom:120px;background:#000;}

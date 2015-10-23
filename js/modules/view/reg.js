@@ -23,7 +23,7 @@ define(function(require, exports, module) {
 					if (jsonData['result'] == '0') {
 						if (typeof callback == 'function') {
 							callback();
-							$nativeUIManager.wattingTitle('验证码已发送!请记住['+jsonData['verifyCode']+']');
+							$nativeUIManager.wattingTitle('验证码已发送!');
 							window.setTimeout(function() {
 								$nativeUIManager.wattingClose();
 							}, 5000);

@@ -90,9 +90,8 @@ define(function(require, exports, module) {
 					var attArray = jsonData['attArray'];
 					if (attArray && $(attArray).size() > 0) {
 						$('#productImg').show();
-						$('.imgDetail').append('<p class="font14 title color-8d">产品图片</p>\n');
 						$(attArray).each(function(i, o) {
-							$('.imgDetail').append('<p class="mart10"><img src="' + o['imgSrc'] + '"></p>\n');
+							$('.imgDetail').append('<p class="mart5"><img src="' + o['imgSrc'] + '"></p>\n');
 						});
 					}
 					$('#contentMain').show();
