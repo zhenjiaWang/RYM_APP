@@ -143,6 +143,8 @@ define(function(require, exports, module) {
 		});
 	};
 	bindEvent = function() {
+		
+		
 		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
 			var uid = $(o).attr('uid');
 			var type = $(o).attr('type');
@@ -411,12 +413,12 @@ define(function(require, exports, module) {
 				footerWin.close();
 			}
 		});
-		var obj = $windowManager.current();
-		if (obj) {
-			obj.setStyle({
-				'softinputMode': 'adjustResize'
-			});
-		}
+//		var obj = $windowManager.current();
+//		if (obj) {
+//			obj.setStyle({
+//				'softinputMode': 'adjustResize'
+//			});
+//		}
 	};
 	if (window.plus) {
 		plusReady();

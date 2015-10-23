@@ -289,12 +289,12 @@ addProduct = function() {
 				footerWin.close();
 			}
 		});
-		var obj = $windowManager.current();
-		if (obj) {
-			obj.setStyle({
-				'softinputMode': 'adjustResize'
-			});
-		}
+//		var obj = $windowManager.current();
+//		if (obj) {
+//			obj.setStyle({
+//				'softinputMode': 'adjustResize'
+//			});
+//		}
 	};
 	if (window.plus) {
 		plusReady();

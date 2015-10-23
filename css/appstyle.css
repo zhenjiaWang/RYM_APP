@@ -140,13 +140,7 @@ label.checkbox,label.radio,label.text{padding-left:4px;vertical-align:top;}
     font-style: normal;
 
 }
-pre {font-size:13px;color:#999;line-height:20px;
-    white-space: pre-wrap; /* css-3 */
-    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
-    white-space: -pre-wrap; /* Opera 4-6 */
-    white-space: -o-pre-wrap; /* Opera 7 */
-    word-wrap: break-word; /* Internet Explorer 5.5+ */
-}
+pre {font-size:13px;color:#999;line-height:20px;white-space: pre-wrap; }
 .blur{background: inherit;-webkit-filter: blur(5px);overflow: hidden;}
 /*图标*/
 .icon{display:inline-block;font-size:0;line-height:0;background-repeat: no-repeat;background-position:center center;}
@@ -353,7 +347,7 @@ opacity: 0.5;border-radius:3px;position: absolute;z-index: 2;text-align: center;
 .productList li {height:45px;line-height:45px;background-color:#fff;margin:0;width:100%;position: absolute;}
 .productList li span.lable{display:inline-block;width:70%;margin-left:52px;}
 .productList li.move{background: #fff;box-shadow:0 0 4px #adadad;z-index:100;opacity:0.8;}
-.friend_list section:last-child{border:0;}
+/*.friend_list section:last-child{border:0;}*/
 .friend_list .personBoard{margin-top:0;background:none;border-bottom:1px solid #d9d9d9;}
 .friend_list .personBoard .userInfo{padding-left:0;}
 .friend_list .personBoard .userPhoto{margin-top:3px;}
@@ -426,7 +420,9 @@ margin:-11px 0 0 -11px;-webkit-transform:rotate(0deg);transition:0.3s;-webkit-tr
 .topNav li{display:inline-block;width:50%;float: left;text-align: center;color:#aaa;}
 .topNav li.current{color:#333;}
 .commentList .personBoard .floatright{width:26%;}
-
+.commentList .personBoard .userInfo .font13{margin-left:70px;padding-top:8px;}
+.commentList .personBoard .userInfo .font13 .txt_hidden{width:96%;}
+.commentList .personBoard .color-9{margin-left:70px;margin-right:10px;}
 .mask{width:100%;position:fixed;top:0;right:0;left:0;bottom:0;display: none;z-index:200;}
 .maskAfter{z-index:90;}
 .timeBar{display:inline-block;margin:10px 0 5px 0;height:25px;line-height:25px;border-radius:3px;background:#ccc;padding:0 15px; color: #fff;}
@@ -453,7 +449,7 @@ margin:-11px 0 0 -11px;-webkit-transform:rotate(0deg);transition:0.3s;-webkit-tr
 .bottomPopB .shareBtn{border-top:1px solid #e7e6eb;margin:0;color:#22ac38;}
 .bottomPopB .shareBtn:last-child{border-top:5px solid #e7e6eb;}
 
-.numberInt{width:50%;height:30px;border:0;background:#fff;border:1px solid #ccc;text-indent:5px;}
+.numberInt{width:35%;height:30px;border:0;background:#fff;border:1px solid #ccc;text-indent:5px;}
 .UserCard{margin:0 15px;border:1px solid #dcdcdc;border-radius:2px;background:#fff;padding:0 10px;position:relative;padding-bottom:15px;border-bottom-color:#b8b8b8;box-shadow:0px 1px 0.2px #dcdcdc;border-top:0;margin-top:40px;}
 .UserBg{width:65px;height:65px;margin:0 auto;background:#ddd url(../img/w-bg.png) no-repeat center bottom;
 background-size: 100%;position: relative;top:-33px;border-radius:50% 50% 0 0;}
@@ -467,6 +463,7 @@ background-size: 100%;position: relative;top:-33px;border-radius:50% 50% 0 0;}
 
 .wechat .inputList li div{margin-left:50px;}
 .wechat .inputList li div p{height:30px;line-height:30px;}
+.wechat .inputList.detail li div{margin-left:0;}
 .inputList p span.txt_hidden{width:46%;}
 .wechat .feedList .userPhoto{margin-top:8px;}
 .wechat li .addBtn{position:relative;right:0;top:0;margin-right:10px;padding:0 15px;}
@@ -480,7 +477,7 @@ background-size: 100%;position: relative;top:-33px;border-radius:50% 50% 0 0;}
 .shareBottom div:last-child {padding-right:10px;}
 .wechat .mask{background:#000;opacity:0.3;}
 .popLog{height:125px;background:#fff;position: fixed;top:50%;left:25px;right:25px;margin-top:-63px;border-radius:10px;z-index:200;}
-.popLog .bottomBar{width:100%;height:44px;line-height:44px;border-top:1px solid #cdcdcd;position: absolute;left;0;bottom:0;}
+.popLog .bottomBar{width:100%;height:44px;line-height:44px;border-top:1px solid #cdcdcd;position: absolute;left:0;bottom:0;}
 .popLog .bottomBar a{display:inline-block;width:50%;height:44px;line-height:44px;color:#666;text-align: center;float: left;font-size:16px;color:#0076fb;}
 .popLog .bottomBar a:last-child{border-left:1px solid #cdcdcd;margin-left:-1px;}
 .choosenet{width:270px;background:#fff;position:absolute;left:50%;margin-left:-135px;z-index:300;border-radius:5px;top:50%;margin-top:-100px;}

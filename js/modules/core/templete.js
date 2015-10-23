@@ -184,7 +184,7 @@ define(function(require, exports, module) {
 	};
 	exports.commentContentItem = function(replyFlag) {
 		var commentItem = new StringBuilder();
-		commentItem.append('<li class="clearfix" userId="{userId}" userName="{userName}" uid="{uid}">\n');
+		commentItem.append('<li class="clearfix" commentType="{commentType}" userId="{userId}" userName="{userName}" uid="{uid}">\n');
 		commentItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		commentItem.append('<div class="marl60 marr10">\n');
 		commentItem.append('<p class="font12 alignright clearfix">\n');
@@ -373,14 +373,13 @@ define(function(require, exports, module) {
 		commentItem.append('<section class="personBoard" userId="{userId}" productId="{productId}">\n');
 		commentItem.append('<div class="userInfo mart5 clearfix">\n');
 		commentItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
-		commentItem.append('<div class="floatleft marl15 mart10 font13">\n');
-		commentItem.append('<p class="font17">{userName}</p>\n');
-		commentItem.append('<p class="mart10">{type}</p>\n');
+		commentItem.append('<div class="mart10 font13">\n');
+		commentItem.append('<p class="font17">{userName}<em class="color-8 font13 marl10">{type}</em></p>\n');
+		commentItem.append('<p class="mart10 txt_hidden">{updateTime}评论了产品 {productName}</p>\n');
 		commentItem.append('</div>\n');
-		commentItem.append('<div class="floatright color-9">\n');
-		commentItem.append('<p class="font11 alignright">{updateTime}评论了产品 {productName}</p>\n');
+		commentItem.append('</div>\n');
+		commentItem.append('<div class="color-9">\n');
 		commentItem.append('<pre class="color-6">{content}</pre>\n');
-		commentItem.append('</div>\n');
 		commentItem.append('</div>\n');
 		commentItem.append('</section>\n');
 		return commentItem.toString();

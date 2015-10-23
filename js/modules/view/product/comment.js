@@ -13,21 +13,23 @@ define(function(require, exports, module) {
 	var currentWindow;
 	var productUserId = false;
 	reset = function() {
-		$('#content').attr('replyUserId', '').html('');
+		$('#content').attr('replyUserId', '').attr('commentType', '').html('');
 		$('#replyTip').text('').hide();
-		$(".main").animate({scrollTop:0},200);	
+		$(".main").animate({
+			scrollTop: 0
+		}, 200);
 	};
-	reply = function(uid, userName) {
+	reply = function(uid, userName, commentType) {
 		$nativeUIManager.watting();
 		window.setTimeout(function() {
 			$keyManager.openSoftKeyboard(function() {
 				$('#replyTip').text('回复 ' + userName).show();
-				$('#content').attr('replyUserId', uid).text('').get(0).focus();
+				$('#content').attr('replyUserId', uid).attr('commentType', commentType).text('').get(0).focus();
 				$nativeUIManager.wattingClose();
 			});
 		}, 500)
 	};
-	sendComment = function(content, replyUserId, callback) {
+	sendComment = function(content, replyUserId,commentType, callback) {
 		$nativeUIManager.watting('请稍等...');
 		$common.refreshToken(function(tokenId) {
 			$.ajax({
@@ -38,6 +40,7 @@ define(function(require, exports, module) {
 					id: id,
 					tab: tab,
 					userId: userId,
+					commentType:commentType,
 					content: content,
 					replyUserId: replyUserId,
 					'org.guiceside.web.jsp.taglib.Token': tokenId
@@ -59,7 +62,8 @@ define(function(require, exports, module) {
 									dateTime: commentObj['dateTime'],
 									content: commentObj['content'],
 									replyFlag: commentObj['replyFlag'],
-									replyUserName: commentObj['replyUserName']
+									replyUserName: commentObj['replyUserName'],
+									commentType: commentObj['commentType'],
 								}));
 								$nativeUIManager.wattingTitle('评论成功!');
 								bindEvent();
@@ -173,12 +177,13 @@ define(function(require, exports, module) {
 				$('#content').get(0).focus();
 			});
 		});
-		
+
 		$common.touchSE($('.btnSend'), function(event, startTouch, o) {}, function(event, o) {
 			var content = $('#content').html();
 			if (content && content != '') {
 				var replyUserId = $('#content').attr('replyUserId');
-				sendComment(content, replyUserId, reset);
+				var commentType = $('#content').attr('commentType');
+				sendComment(content, replyUserId, commentType, reset);
 			} else {
 				$nativeUIManager.alert('提示', '请先输入评论内容', 'OK', function() {});
 			}
@@ -187,7 +192,8 @@ define(function(require, exports, module) {
 			var userName = $(o).attr('userName');
 			var userID = $(o).attr('userId');
 			var uid = $(o).attr('uid');
-			if (userID && userName && uid) {
+			var commentType = $(o).attr('commentType');
+			if (userID && userName && uid && commentType) {
 				if (productUserId && productUserId == $userInfo.get('userId')) {
 					$nativeUIManager.confactionSheetirm('请选择操作', '取消', [{
 							title: '回复'
@@ -197,7 +203,7 @@ define(function(require, exports, module) {
 						function(index) {
 							if (index > 0) {
 								if (index == 1) {
-									reply(userID, userName);
+									reply(userID, userName, commentType);
 								} else if (index == 2) {
 									$nativeUIManager.confirm('提示', '你确定要删除该条评论?', ['确定', '取消'], function() {
 										deleteComment(uid);
@@ -215,7 +221,7 @@ define(function(require, exports, module) {
 							function(index) {
 								if (index > 0) {
 									if (index == 1) {
-										reply(userID, userName);
+										reply(userID, userName, commentType);
 									} else if (index == 2) {
 										$nativeUIManager.confirm('提示', '你确定要删除该条评论?', ['确定', '取消'], function() {
 											deleteComment(uid);
@@ -224,7 +230,7 @@ define(function(require, exports, module) {
 								}
 							});
 					} else {
-						reply(userID, userName);
+						reply(userID, userName, commentType);
 					}
 				}
 			}
@@ -359,7 +365,8 @@ define(function(require, exports, module) {
 									dateTime: o['dateTime'],
 									content: o['content'],
 									replyFlag: o['replyFlag'],
-									replyUserName: o['replyUserName']
+									replyUserName: o['replyUserName'],
+									commentType: o['commentType'],
 								}));
 							});
 							$('#blank').hide();
@@ -417,9 +424,11 @@ define(function(require, exports, module) {
 		}, function() {
 
 		});
-		var obj=$windowManager.current();
-		if(obj){
-			obj.setStyle({'softinputMode':'adjustResize'});
+		var obj = $windowManager.current();
+		if (obj) {
+			obj.setStyle({
+				'softinputMode': 'adjustResize'
+			});
 		}
 		loadData();
 	};

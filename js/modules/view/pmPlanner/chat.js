@@ -68,7 +68,6 @@ define(function(require, exports, module) {
 				$('#content').html('');
 				var now = new Date();
 				var dateKey = now.getFullYear() + "-" + ((now.getMonth() + 1) < 10 ? "0" : "") + (now.getMonth() + 1) + "-" + (now.getDate() < 10 ? "0" : "") + now.getDate();
-				console.info(dateKey)
 				if (dateKey) {
 					var dateKeyCount = $('.timeBar[dir="' + dateKey + '"]').size();
 					var sb = new StringBuilder();
@@ -119,6 +118,7 @@ define(function(require, exports, module) {
 							});
 							$('#blank').hide();
 							$('.main').append(sb.toString());
+							$('.main').scrollTop( $('.main').height());
 						} else {
 							$('#blank').show();
 						}

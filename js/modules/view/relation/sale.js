@@ -67,6 +67,7 @@ define(function(require, exports, module) {
 							var typeId = o['typeId'];
 							var relationYn = o['relationYn'];
 							var uid = o['uid'];
+							var endFlag=o['endFlag'];
 							if (typeId && relationYn && uid) {
 								if (typeId == 1) {
 									var financialObj = o['financial'];
@@ -88,9 +89,10 @@ define(function(require, exports, module) {
 										}));
 									}
 								} else if (typeId == 2) {
+									var endFlag=o['endFlag'];
 									var fundObj = o['fund'];
 									if (fundObj) {
-										sb.append(String.formatmodel($templete.fundItem(relationYn), {
+										sb.append(String.formatmodel($templete.fundItem(relationYn,endFlag), {
 											productId: o['productId'],
 											numSeq: o['numSeq'],
 											userId: o['userId'],
@@ -106,9 +108,10 @@ define(function(require, exports, module) {
 										}));
 									}
 								} else if (typeId == 3) {
+									var endFlag=o['endFlag'];
 									var trustObj = o['trust'];
 									if (trustObj) {
-										sb.append(String.formatmodel($templete.trustItem(relationYn), {
+										sb.append(String.formatmodel($templete.trustItem(relationYn,endFlag), {
 											productId: o['productId'],
 											numSeq: o['numSeq'],
 											userId: o['userId'],
