@@ -156,6 +156,7 @@ define(function(require, exports, module) {
 									userName: o['userName'],
 									headImgUrl: o['headImgUrl'],
 									saleCount: o['saleCount'],
+									orgName: o['orgName'],
 									financialContent:productInfo['financialContent'],
 									trustContent:productInfo['trustContent'],
 									fundContent:productInfo['fundContent']

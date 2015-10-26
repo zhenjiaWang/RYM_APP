@@ -29,7 +29,7 @@ define(function(require, exports, module) {
 			});
 		}, 500)
 	};
-	sendComment = function(content, replyUserId,commentType, callback) {
+	sendComment = function(content, replyUserId, commentType, callback) {
 		$nativeUIManager.watting('请稍等...');
 		$common.refreshToken(function(tokenId) {
 			$.ajax({
@@ -40,7 +40,7 @@ define(function(require, exports, module) {
 					id: id,
 					tab: tab,
 					userId: userId,
-					commentType:commentType,
+					commentType: commentType,
 					content: content,
 					replyUserId: replyUserId,
 					'org.guiceside.web.jsp.taglib.Token': tokenId
@@ -338,6 +338,43 @@ define(function(require, exports, module) {
 			success: function(jsonData) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
+						var productSb = new StringBuilder();
+						var productInfo = jsonData['productInfo'];
+						if (productInfo) {
+							if (productInfo['typeId'] == 1) {
+								var financial = jsonData['financial'];
+								if (financial) {
+									productSb.append(String.formatmodel($templete.commentProductFinancial(), {
+										typeName: productInfo['typeName'],
+										name: productInfo['name'],
+										minYield: financial['minYield'],
+										maxYield: financial['maxYield'],
+										minLimitDay: financial['minLimitDay'],
+										maxLimitDay: financial['maxLimitDay']
+									}));
+								}
+							} else if (productInfo['typeId'] == 2) {
+								var fund = jsonData['fund'];
+								if (fund) {
+									productSb.append(String.formatmodel($templete.commentProductFund(), {
+										typeName: productInfo['typeName'],
+										name: productInfo['name'],
+										fundType: fund['fundType']
+									}));
+								}
+							} else if (productInfo['typeId'] == 3) {
+								var trust = jsonData['trust'];
+								if (trust) {
+									productSb.append(String.formatmodel($templete.commentProductTrust(), {
+										typeName: productInfo['typeName'],
+										name: productInfo['name'],
+										dayLimit: trust['dayLimit'],
+										yield: trust['yield']
+									}));
+								}
+							}
+							$('.commentTop').before(productSb.toString());
+						}
 						$nativeUIManager.wattingClose();
 						productUserId = jsonData['productUserId'];
 						var likeCount = jsonData['likeCount'];

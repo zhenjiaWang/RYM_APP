@@ -240,7 +240,7 @@ define(function(require, exports, module) {
 		if (status == 0) {
 			friendItem.append('<span class="addBtn nobg noboder color-b">等待验证</span>\n');
 		} else {
-			friendItem.append('<span class="addBtn btnAgree">私信</span>\n');
+			friendItem.append('<span class="addBtn btnAgree">立即沟通</span>\n');
 		}
 		friendItem.append('</li>\n');
 		return friendItem.toString();
@@ -251,6 +251,7 @@ define(function(require, exports, module) {
 		relationPlannerItem.append('<span class="icon-new"></span>\n');
 		relationPlannerItem.append('<div class="UserBg "><img src="{headImgUrl}"></div>\n');
 		relationPlannerItem.append('<p class="font14 aligncenter" style="margin-top:-25px;">{userName}</p>\n');
+		relationPlannerItem.append('<p class="font10 aligncenter color-8">{orgName}</p>\n');
 		relationPlannerItem.append('<p class="font10 aligncenter color-8">在售中: {saleCount}</p>\n');
 		relationPlannerItem.append('<p><img src="../../img/w-bg1.png" width="100%"></p>\n');
 		relationPlannerItem.append('<table width="100%" class="mart10">\n');
@@ -279,6 +280,7 @@ define(function(require, exports, module) {
 		}
 		relationPlannerItem.append('<div class="UserBg "><img src="{headImgUrl}"></div>\n');
 		relationPlannerItem.append('<p class="font14 aligncenter" style="margin-top:-25px;">{userName}</p>\n');
+		relationPlannerItem.append('<p class="font10 aligncenter color-8">{orgName}</p>\n');
 		relationPlannerItem.append('<p class="font10 aligncenter color-8">在售中: {saleCount}</p>\n');
 		relationPlannerItem.append('<p><img src="../../img/w-bg1.png" width="100%"></p>\n');
 		relationPlannerItem.append('<table width="100%" class="mart10">\n');
@@ -438,5 +440,57 @@ define(function(require, exports, module) {
 		footerItem.append('<span class="floatright" id="uploadBtn">使用图片</span>\n');
 		footerItem.append('</footer>\n');
 		return footerItem.toString();
+	};
+	
+	exports.commentProductFinancial = function() {
+		var commentProductFinancialItem = new StringBuilder();
+		commentProductFinancialItem.append('<div class="oneCard detail">\n');
+		commentProductFinancialItem.append('<div class="font11 title color-a alignright">\n');
+		commentProductFinancialItem.append('<span class="tips floatleft strong">{typeName}</span>\n');
+		commentProductFinancialItem.append('<span class="color-3 font17 strong txt_hidden" style="width:86%;">{name}</span>\n');
+		commentProductFinancialItem.append('</div>\n');
+		commentProductFinancialItem.append('<div class="clearfix mart5">\n');
+		commentProductFinancialItem.append('<span class="font14 floatleft inlineblock marl10 color-6">期限:<em class="color-6">{minLimitDay} - {maxLimitDay}天</em></span>\n');
+		commentProductFinancialItem.append('<div class="floatright alignright marr10">\n');
+		commentProductFinancialItem.append('<p class="font11 color-a">预计年化率</p>\n');
+		commentProductFinancialItem.append('<span class="tipsBig font25 color-white">{minYield} - {maxYield}<em class="font14 color-white">%</em></span>\n');
+		commentProductFinancialItem.append('</div>\n');
+		commentProductFinancialItem.append('</div>\n');
+		commentProductFinancialItem.append('</div>\n');
+		return commentProductFinancialItem.toString();
+	};
+	exports.commentProductFund= function() {
+		var commentProductFundItem = new StringBuilder();
+		commentProductFundItem.append('<div class="oneCard detail">\n');
+		commentProductFundItem.append('<div class="font11 title color-a alignright">\n');
+		commentProductFundItem.append('<span class="tips tips-j floatleft strong">{typeName}</span>\n');
+		commentProductFundItem.append('<span class="color-3 font17 strong txt_hidden" style="width:86%;">{name}</span>\n');
+		commentProductFundItem.append('</div>\n');
+		commentProductFundItem.append('<div class="clearfix mart5">\n');
+		commentProductFundItem.append('<span class="font14 floatleft inlineblock marl10 color-6">无期限</span>\n');
+		commentProductFundItem.append('<div class="floatright alignright marr10">\n');
+		commentProductFundItem.append('<p class="font11 color-a">基金类型</p>\n');
+		commentProductFundItem.append('<span class="tipsBig tips-j font25 color-white">{fundType}</span>\n');
+		commentProductFundItem.append('</div>\n');
+		commentProductFundItem.append('</div>\n');
+		commentProductFundItem.append('</div>\n');
+		return commentProductFundItem.toString();
+	};
+	exports.commentProductTrust= function() {
+		var commentProductTrustItem = new StringBuilder();
+		commentProductTrustItem.append('<div class="oneCard detail">\n');
+		commentProductTrustItem.append('<div class="font11 title color-a alignright">\n');
+		commentProductTrustItem.append('<span class="tips tips-x floatleft strong">{typeName}</span>\n');
+		commentProductTrustItem.append('<span class="color-3 font17 strong txt_hidden" style="width:86%;">{name}</span>\n');
+		commentProductTrustItem.append('</div>\n');
+		commentProductTrustItem.append('<div class="clearfix mart5">\n');
+		commentProductTrustItem.append('<span class="font14 floatleft inlineblock marl10 color-6">期限:<em class="color-6">{dayLimit} 天</em></span>\n');
+		commentProductTrustItem.append('<div class="floatright alignright marr10">\n');
+		commentProductTrustItem.append('<p class="font11 color-a">预计年化率</p>\n');
+		commentProductTrustItem.append('<span class="tipsBig tips-x font25 color-white">{yield}<em class="font14 color-white">%</em></span>\n');
+		commentProductTrustItem.append('</div>\n');
+		commentProductTrustItem.append('</div>\n');
+		commentProductTrustItem.append('</div>\n');
+		return commentProductTrustItem.toString();
 	};
 });

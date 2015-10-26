@@ -24,11 +24,11 @@ define(function(require, exports, module) {
 						$('#dayLimit').text(financialObj['dayLimit'] + '天');
 						$('#yieldDesc').text(financialObj['yield']);
 						$('#yield').text(financialObj['yield'] + '%');
-						$('#purchaseAmount').text(financialObj['purchaseAmount']);
+						$('#purchaseAmount').text(financialObj['purchaseAmount']+'万元');
 						$('#payOffType').text(financialObj['payOffType']);
 						$('#startDate').text(financialObj['startDate']);
 						$('#endDate').text(financialObj['endDate']);
-						$('#accrualDay').text(financialObj['accrualDay']);
+						$('#accrualDay').text(financialObj['accrualDay']+ '天');
 						$('#expireDate').text(financialObj['expireDate']);
 					}
 					bindEvent();

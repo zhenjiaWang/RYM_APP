@@ -44,13 +44,20 @@ define(function(require, exports, module) {
 	};
 	bindEvent = function() {
 		$common.touchSE($('.oneCard', '.cardBox'), function(event, startTouch, o) {}, function(event, o) {
-			var numSeq = $(o).attr('numSeq');
-			var userId = $(o).attr('userId');
-			var productId = $(o).attr('productId');
-			var productName = $(o).attr('productName');
-			if (numSeq && userId && productName && productId) {
-				relationExist(productId, productName, userId, numSeq);
+			var typeId = $(o).closest('.oneCard').attr('typeId');
+			var uid = $(o).closest('.oneCard').attr('uid');
+			if (typeId && uid) {
+				$windowManager.create('product_view_header', '../product/viewHeader.html?id=' + uid + '&tab=sale&typeId=' + typeId, false, true, function(show) {
+					show();
+				});
 			}
+//			var numSeq = $(o).attr('numSeq');
+//			var userId = $(o).attr('userId');
+//			var productId = $(o).attr('productId');
+//			var productName = $(o).attr('productName');
+//			if (numSeq && userId && productName && productId) {
+//				relationExist(productId, productName, userId, numSeq);
+//			}
 		});
 	};
 	loadData = function() {

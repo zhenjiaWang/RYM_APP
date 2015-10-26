@@ -51,11 +51,11 @@ define(function(require, exports, module) {
 						$('#dayLimit').text(trust['dayLimit'] + '天');
 						$('#yieldDesc').text(trust['yield']);
 						$('#yield').text(trust['yield'] + '%');
-						$('#purchaseAmount').text(trust['purchaseAmount']);
+						$('#purchaseAmount').text(trust['purchaseAmount']+'万元');
 						$('#payOffType').text(trust['payOffType']);
 						$('#startDate').text(trust['startDate']);
 						$('#endDate').text(trust['endDate']);
-						$('#accrualDay').text(trust['accrualDay']);
+						$('#accrualDay').text(trust['accrualDay']+'天');
 						$('#expireDate').text(trust['expireDate']);
 						var attArray = jsonData['attArray'];
 						if (attArray && $(attArray).size() > 0) {

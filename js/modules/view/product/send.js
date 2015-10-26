@@ -8,6 +8,7 @@ define(function(require, exports, module) {
 	var productName = queryMap.get('productName');
 	var saveWinId = queryMap.get('saveWinId');
 	var saveFunction = queryMap.get('saveFunction');
+	var onType = queryMap.get('onType');
 	var selectNumSeq = -1;
 	var oldProductName = false;
 	bindEvent = function() {
@@ -124,6 +125,9 @@ define(function(require, exports, module) {
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});
+		if(onType){
+			$('h1').text('上架产品');
+		}
 	};
 	if (window.plus) {
 		plusReady();

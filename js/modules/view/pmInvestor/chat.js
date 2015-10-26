@@ -11,6 +11,10 @@ define(function(require, exports, module) {
 	var nextIndex = 0;
 	var currentWindow;
 	var productUserId = false;
+	toBottom = function() {
+		var div=$('.main').get(0);
+		div.scrollTop = div.scrollHeight;
+	};
 	onRefresh = function() {
 		nextIndex = 0;
 		$('.main').attr('nextIndex', 0);
@@ -80,6 +84,7 @@ define(function(require, exports, module) {
 						feedRight: 'feedRight'
 					}));
 					$('.main').append(sb.toString());
+					toBottom();
 				}
 				sendComment(content);
 			} else {
@@ -94,7 +99,7 @@ define(function(require, exports, module) {
 			dataType: 'json',
 			data: {
 				targetId: targetId,
-				type:type
+				type: type
 			},
 			success: function(jsonData) {
 				if (jsonData) {
@@ -119,7 +124,7 @@ define(function(require, exports, module) {
 							});
 							$('#blank').hide();
 							$('.main').append(sb.toString());
-							$('.main').scrollTop( $('.main').height());
+							toBottom();
 						} else {
 							$('#blank').show();
 						}

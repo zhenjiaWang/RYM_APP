@@ -13,7 +13,7 @@ define(function(require, exports, module) {
 	onActionCommon = function() {
 		$nativeUIManager.watting('请选择发布栏位...');
 		window.setTimeout(function() {
-			$windowManager.create('product_send', 'send.html?productName=' + productName + '&saveWinId=product_view_header&saveFunction=onAction', false, true, function(show) {
+			$windowManager.create('product_send', 'send.html?productName=' + productName + '&saveWinId=product_view_header&saveFunction=onAction&onType=on', false, true, function(show) {
 				show();
 				$nativeUIManager.wattingClose();
 			});
@@ -23,7 +23,7 @@ define(function(require, exports, module) {
 	newOnActionCommon = function() {
 		$nativeUIManager.watting('请选择发布栏位...');
 		window.setTimeout(function() {
-			$windowManager.create('product_send', 'send.html?productName=' + productName + '&saveWinId=product_view_header&saveFunction=newOnAction', false, true, function(show) {
+			$windowManager.create('product_send', 'send.html?productName=' + productName + '&saveWinId=product_view_header&saveFunction=newOnAction&onType=new', false, true, function(show) {
 				show();
 				$nativeUIManager.wattingClose();
 			});
