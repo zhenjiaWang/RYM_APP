@@ -13,7 +13,7 @@ define(function(require, exports, module) {
 	var currentWindow;
 	var productUserId = false;
 	reset = function() {
-		$('#content').attr('replyUserId', '').attr('commentType', '').html('');
+		$('#content').attr('replyId', '').attr('commentType', '').html('');
 		$('#replyTip').text('').hide();
 		$(".main").animate({
 			scrollTop: 0
@@ -24,12 +24,12 @@ define(function(require, exports, module) {
 		window.setTimeout(function() {
 			$keyManager.openSoftKeyboard(function() {
 				$('#replyTip').text('回复 ' + userName).show();
-				$('#content').attr('replyUserId', uid).attr('commentType', commentType).text('').get(0).focus();
+				$('#content').attr('replyId', uid).attr('commentType', commentType).text('').get(0).focus();
 				$nativeUIManager.wattingClose();
 			});
 		}, 500)
 	};
-	sendComment = function(content, replyUserId, commentType, callback) {
+	sendComment = function(content, replyId, commentType, callback) {
 		$nativeUIManager.watting('请稍等...');
 		$common.refreshToken(function(tokenId) {
 			$.ajax({
@@ -42,7 +42,7 @@ define(function(require, exports, module) {
 					userId: userId,
 					commentType: commentType,
 					content: content,
-					replyUserId: replyUserId,
+					replyId: replyId,
 					'org.guiceside.web.jsp.taglib.Token': tokenId
 				},
 				success: function(jsonData) {
@@ -181,9 +181,9 @@ define(function(require, exports, module) {
 		$common.touchSE($('.btnSend'), function(event, startTouch, o) {}, function(event, o) {
 			var content = $('#content').html();
 			if (content && content != '') {
-				var replyUserId = $('#content').attr('replyUserId');
+				var replyId = $('#content').attr('replyId');
 				var commentType = $('#content').attr('commentType');
-				sendComment(content, replyUserId, commentType, reset);
+				sendComment(content, replyId, commentType, reset);
 			} else {
 				$nativeUIManager.alert('提示', '请先输入评论内容', 'OK', function() {});
 			}
@@ -203,7 +203,7 @@ define(function(require, exports, module) {
 						function(index) {
 							if (index > 0) {
 								if (index == 1) {
-									reply(userID, userName, commentType);
+									reply(uid, userName, commentType);
 								} else if (index == 2) {
 									$nativeUIManager.confirm('提示', '你确定要删除该条评论?', ['确定', '取消'], function() {
 										deleteComment(uid);
@@ -221,7 +221,7 @@ define(function(require, exports, module) {
 							function(index) {
 								if (index > 0) {
 									if (index == 1) {
-										reply(userID, userName, commentType);
+										reply(uid, userName, commentType);
 									} else if (index == 2) {
 										$nativeUIManager.confirm('提示', '你确定要删除该条评论?', ['确定', '取消'], function() {
 											deleteComment(uid);
@@ -230,7 +230,7 @@ define(function(require, exports, module) {
 								}
 							});
 					} else {
-						reply(userID, userName, commentType);
+						reply(uid, userName, commentType);
 					}
 				}
 			}
@@ -373,6 +373,7 @@ define(function(require, exports, module) {
 									}));
 								}
 							}
+							$('.oneCard').remove();
 							$('.commentTop').before(productSb.toString());
 						}
 						$nativeUIManager.wattingClose();

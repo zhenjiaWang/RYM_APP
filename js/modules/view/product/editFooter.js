@@ -80,7 +80,7 @@ define(function(require, exports, module) {
 		});
 		$common.touchSE($('#uploadBtn'), function(event, startTouch, o) {}, function(event, o) {
 			var imgCount = $('div', '#imgUL').find('img').size();
-			if (imgCount < 6) {
+			if (imgCount < 20) {
 				window.setTimeout(function() {
 					files = [];
 					$nativeUIManager.confactionSheetirm('请选择上传方式操作', '取消', [{
@@ -146,7 +146,7 @@ define(function(require, exports, module) {
 						});
 				}, 100);
 			} else {
-				$nativeUIManager.alert('提示', '最多只能上传6张图片', 'OK', function() {});
+				$nativeUIManager.alert('提示', '最多只能上传20张图片', 'OK', function() {});
 			}
 		});
 	};
