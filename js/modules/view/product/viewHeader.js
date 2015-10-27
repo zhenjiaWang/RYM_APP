@@ -10,6 +10,7 @@ define(function(require, exports, module) {
 	var id = queryMap.get('id');
 	var tab = queryMap.get('tab');
 	var typeId = queryMap.get('typeId');
+	var relationView = queryMap.get('relationView');
 	var productId;
 	var userId;
 	var productName;
@@ -127,7 +128,8 @@ define(function(require, exports, module) {
 		});
 	};
 	loadWebview = function(typeId) {
-		var productFooterWin = plus.webview.create('viewFooter.html?typeId=' + typeId, "product_view_footer", {
+		var _relationView=relationView==null?'N':relationView;
+		var productFooterWin = plus.webview.create('viewFooter.html?typeId=' + typeId+'&relationView='+_relationView, "product_view_footer", {
 			top: "50px",
 			bottom: "0px",
 			scrollIndicator: 'vertical'
@@ -140,7 +142,11 @@ define(function(require, exports, module) {
 	}
 	plusReady = function() {
 		loadData();
-		loadAction();
+		if(relationView==null){
+			loadAction();
+		}else{
+			$('#moreBtn').remove();
+		}
 		bindEvent();
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();

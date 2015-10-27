@@ -47,7 +47,7 @@ define(function(require, exports, module) {
 			var typeId = $(o).closest('.oneCard').attr('typeId');
 			var uid = $(o).closest('.oneCard').attr('uid');
 			if (typeId && uid) {
-				$windowManager.create('product_view_header', '../product/viewHeader.html?id=' + uid + '&tab=sale&typeId=' + typeId, false, true, function(show) {
+				$windowManager.create('product_view_header', '../product/viewHeader.html?id=' + uid + '&tab=sale&typeId=' + typeId+'&relationView=Y', false, true, function(show) {
 					show();
 				});
 			}

@@ -79,7 +79,8 @@ define(function(require, exports, module) {
 			$nativeUIManager.watting('请填写新增理财产品', 1500);
 		});
 		$common.touchSE($('#uploadBtn'), function(event, startTouch, o) {}, function(event, o) {
-			var imgCount = $('div', '#imgUL').find('img').size();
+			var imgCount = $userInfo.get('attCount');
+			imgCount = parseInt(imgCount);
 			if (imgCount < 20) {
 				window.setTimeout(function() {
 					files = [];

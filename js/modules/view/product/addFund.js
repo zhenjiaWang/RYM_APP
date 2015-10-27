@@ -20,6 +20,7 @@ define(function(require, exports, module) {
 			$('div', '#imgUL').append('<span type="' + jsonData['type'] + '" uid="' + jsonData['id'] + '"><img src="' + src + '"><em>删 除</em></span>\n');
 			bindEvent();
 			$userInfo.removeItem('uploadFiles');
+			$userInfo.put('attCount', $('div', '#imgUL').find('img').size() + '');
 		}
 	};
 	saveData = function(numSeq) {
@@ -273,12 +274,13 @@ define(function(require, exports, module) {
 				footerWin.close();
 			}
 		});
-//		var obj = $windowManager.current();
-//		if (obj) {
-//			obj.setStyle({
-//				'softinputMode': 'adjustResize'
-//			});
-//		}
+		$userInfo.put('attCount', $('div', '#imgUL').find('img').size() + '');
+		//		var obj = $windowManager.current();
+		//		if (obj) {
+		//			obj.setStyle({
+		//				'softinputMode': 'adjustResize'
+		//			});
+		//		}
 	};
 	if (window.plus) {
 		plusReady();
