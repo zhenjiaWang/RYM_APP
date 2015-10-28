@@ -201,68 +201,82 @@ define(function(require, exports, module) {
 						}
 					}
 				} else if (dir == 'headImgUrl') {
-					window.setTimeout(function() {
-						files = [];
-						$nativeUIManager.confactionSheetirm('请选择上传方式操作', '取消', [{
-								title: '从照片选取'
-							}, {
-								title: '拍摄'
-							}],
-							function(index) {
-								if (index > 0) {
-									if (index == 1) {
-										plus.gallery.pick(function(p) {
-											plus.io.resolveLocalFileSystemURL(p, function(entry) {
-												$nativeUIManager.watting('正在压缩图片...');
-												window.setTimeout(function() {
-													plus.zip.compressImage({
-															src: entry.toLocalURL(),
-															dst: '_www/wzj.jpg',
-															quality: 80
-														},
-														function(event) {
-															files.push({
-																name: "uploadkey" + index,
-																path: event.target
-															});
-															index++;
-															$nativeUIManager.wattingTitle('正在上传...');
+					$nativeUIManager.confactionSheetirm('你可以从以下方式设置头像', '取消', [{
+						title: '系统默认'
+					}, {
+						title: '手机照片'
+					}], function(typeIndex) {
+						if (typeIndex > 0) {
+							if (typeIndex == 1) {
+								$windowManager.create('my_img', 'img.html', false, true, function(show) {
+									show();
+								});
+							} else if (typeIndex == 2) {
+								window.setTimeout(function() {
+									files = [];
+									$nativeUIManager.confactionSheetirm('请选择上传方式操作', '取消', [{
+											title: '从照片选取'
+										}, {
+											title: '拍摄'
+										}],
+										function(index) {
+											if (index > 0) {
+												if (index == 1) {
+													plus.gallery.pick(function(p) {
+														plus.io.resolveLocalFileSystemURL(p, function(entry) {
+															$nativeUIManager.watting('正在压缩图片...');
 															window.setTimeout(function() {
-																upload();
+																plus.zip.compressImage({
+																		src: entry.toLocalURL(),
+																		dst: '_www/wzj.jpg',
+																		quality: 80
+																	},
+																	function(event) {
+																		files.push({
+																			name: "uploadkey" + index,
+																			path: event.target
+																		});
+																		index++;
+																		$nativeUIManager.wattingTitle('正在上传...');
+																		window.setTimeout(function() {
+																			upload();
+																		}, 500);
+																	}, function(error) {});
 															}, 500);
-														}, function(error) {});
-												}, 500);
-											});
-										});
-									} else if (index == 2) {
-										plus.camera.getCamera().captureImage(function(p) {
-											plus.io.resolveLocalFileSystemURL(p, function(entry) {
-												$nativeUIManager.watting('正在压缩图片...');
-												plus.zip.compressImage({
-														src: entry.toLocalURL(),
-														dst: '_www/wzj.jpg',
-														quality: 80
-													},
-													function(event) {
-														files.push({
-															name: "uploadkey" + index,
-															path: event.target
 														});
-														index++;
-														$nativeUIManager.wattingTitle('正在上传...');
-														upload();
-													}, function(error) {
-														$nativeUIManager.wattingTitle('图片压缩失败...');
-														window.setTimeout(function() {
-															$nativeUIManager.wattingClose();
-														}, 1000);
 													});
-											});
+												} else if (index == 2) {
+													plus.camera.getCamera().captureImage(function(p) {
+														plus.io.resolveLocalFileSystemURL(p, function(entry) {
+															$nativeUIManager.watting('正在压缩图片...');
+															plus.zip.compressImage({
+																	src: entry.toLocalURL(),
+																	dst: '_www/wzj.jpg',
+																	quality: 80
+																},
+																function(event) {
+																	files.push({
+																		name: "uploadkey" + index,
+																		path: event.target
+																	});
+																	index++;
+																	$nativeUIManager.wattingTitle('正在上传...');
+																	upload();
+																}, function(error) {
+																	$nativeUIManager.wattingTitle('图片压缩失败...');
+																	window.setTimeout(function() {
+																		$nativeUIManager.wattingClose();
+																	}, 1000);
+																});
+														});
+													});
+												}
+											}
 										});
-									}
-								}
-							});
-					}, 100);
+								}, 100);
+							}
+						}
+					});
 				}
 			}
 		});

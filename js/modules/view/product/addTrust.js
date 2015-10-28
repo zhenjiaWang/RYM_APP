@@ -61,7 +61,7 @@ define(function(require, exports, module) {
 			});
 		});
 	};
-	
+
 	deleteAtt = function(attId, type) {
 		$nativeUIManager.watting('请稍等...');
 		$common.refreshToken(function(tokenId) {
@@ -104,7 +104,7 @@ define(function(require, exports, module) {
 	loadOrg = function(orgCompany) {
 		$nativeUIManager.watting('请稍等...');
 		var controlValue = $('#productOrgId').val();
-		$windowManager.create('selectOrg', 'selectOrg.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue+'&win=product_add_product', false, true, function(show) {
+		$windowManager.create('selectOrg', 'selectOrg.html?title=' + orgCompany + '&controlId=productOrgId&controlValue=' + controlValue + '&win=product_add_product', false, true, function(show) {
 			show();
 			$nativeUIManager.wattingClose();
 		});
@@ -125,7 +125,7 @@ define(function(require, exports, module) {
 						if (payOffTypeList && $(payOffTypeList).size() > 0) {
 							$userInfo.put("selectList", JSON.stringify(payOffTypeList));
 							var controlValue = $('#payOffType').val();
-							$windowManager.create('select', 'select.html?title=收益类型&controlId=payOffType&controlValue=' + controlValue+'&win=product_add_product', false, true, function(show) {
+							$windowManager.create('select', 'select.html?title=收益类型&controlId=payOffType&controlValue=' + controlValue + '&win=product_add_product', false, true, function(show) {
 								show();
 								$nativeUIManager.wattingClose();
 							});
@@ -155,7 +155,7 @@ define(function(require, exports, module) {
 			}
 		});
 
-		
+
 		$common.touchSE($('#saveBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$validator.checkAll();
 			window.setTimeout(function() {
@@ -174,7 +174,7 @@ define(function(require, exports, module) {
 				}
 			}, 500);
 		});
-		
+
 		$common.touchSE($('#selectProductOrg'), function(event, startTouch, o) {}, function(event, o) {
 			$nativeUIManager.watting('请稍等...');
 			$.ajax({
@@ -283,7 +283,29 @@ define(function(require, exports, module) {
 				type: 'blank',
 				exp: '!=',
 				msg: '请选择收益类型'
-			}]
+			}],
+			callback: function(t) {
+				if (t) {
+					if ($('#payOffType').val() == '固定收益') {
+						$validator.addMode({
+							id: 'yield',
+							required: true,
+							pattern: [{
+								type: 'blank',
+								exp: '!=',
+								msg: '请输入预期收益率'
+							}, {
+								type: 'number',
+								exp: '==',
+								msg: '预期收益率格式不正确'
+							}]
+						});
+						$validator.setUp();
+					} else {
+						$validator.removeMode('yield');
+					}
+				}
+			}
 		}, {
 			id: 'purchaseAmount',
 			required: true,
@@ -336,19 +358,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请选择到期日'
 			}]
-		}, {
-			id: 'yield',
-			required: true,
-			pattern: [{
-				type: 'blank',
-				exp: '!=',
-				msg: '请输入预期收益率'
-			}, {
-				type: 'number',
-				exp: '==',
-				msg: '预期收益率格式不正确'
-			}]
-		}, {
+		},{
 			id: 'remarks',
 			required: true,
 			pattern: [{
@@ -396,10 +406,10 @@ define(function(require, exports, module) {
 			}
 		});
 		$userInfo.put('attCount', $('div', '#imgUL').find('img').size() + '');
-//		var obj=$windowManager.current();
-//		if(obj){
-//			obj.setStyle({'softinputMode':'adjustResize'});
-//		}
+		//		var obj=$windowManager.current();
+		//		if(obj){
+		//			obj.setStyle({'softinputMode':'adjustResize'});
+		//		}
 	};
 	if (window.plus) {
 		plusReady();

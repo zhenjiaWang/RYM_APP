@@ -39,6 +39,79 @@ define(function(require, exports, module) {
 		}, onRefresh);
 	};
 	bindEvent = function() {
+		$common.touchSE($('.addBtn', '#visitDIV'), function(event, startTouch, o) {}, function(event, o) {
+			if (!$(o).hasClass('nobg') && !$(o).hasClass('addDone')) {
+				var li = $(o).closest('section');
+				var friendId = $(li).attr('userId');
+				var visitType = $(li).attr('visitType');
+				if (friendId && visitType) {
+					if (visitType == 'app') {
+						$nativeUIManager.watting('请稍等...');
+						$common.refreshToken(function(tokenId) {
+							$.ajax({
+								type: 'POST',
+								url: $common.getRestApiURL() + '/social/friendPlanner/addFriend',
+								dataType: 'json',
+								data: {
+									'org.guiceside.web.jsp.taglib.Token': tokenId,
+									friendId: friendId
+								},
+								success: function(jsonData) {
+									if (jsonData) {
+										if (jsonData['result'] == '0') {
+											$nativeUIManager.wattingTitle('关注成功!');
+											$(o).remove();
+											window.setTimeout(function() {
+												$nativeUIManager.wattingClose();
+											}, 1000);
+										} else {
+											$nativeUIManager.wattingClose();
+											$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+										}
+									}
+								},
+								error: function(XMLHttpRequest, textStatus, errorThrown) {
+									$nativeUIManager.wattingClose();
+									$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+								}
+							});
+						});
+					} else if (visitType == 'wx') {
+						$nativeUIManager.watting('请稍等...');
+						$common.refreshToken(function(tokenId) {
+							$.ajax({
+								type: 'POST',
+								url: $common.getRestApiURL() + '/social/friendInvestor/addFriend',
+								dataType: 'json',
+								data: {
+									'org.guiceside.web.jsp.taglib.Token': tokenId,
+									friendId: friendId,
+									status: -1
+								},
+								success: function(jsonData) {
+									if (jsonData) {
+										if (jsonData['result'] == '0') {
+											$nativeUIManager.wattingTitle('已发送好友邀请!');
+											$(o).remove();
+											window.setTimeout(function() {
+												$nativeUIManager.wattingClose();
+											}, 1000);
+										} else {
+											$nativeUIManager.wattingClose();
+											$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+										}
+									}
+								},
+								error: function(XMLHttpRequest, textStatus, errorThrown) {
+									$nativeUIManager.wattingClose();
+									$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+								}
+							});
+						});
+					}
+				}
+			}
+		});
 
 		$common.touchSE($('.personBoard', '#visitDIV'), function(event, startTouch, o) {}, function(event, o) {
 			var userId = $(o).attr('userId');
@@ -50,8 +123,8 @@ define(function(require, exports, module) {
 						show();
 					});
 				}
-			}else{
-				$nativeUIManager.watting('客户没有理财室信息供给查看',1000);
+			} else {
+				$nativeUIManager.watting('客户没有理财室信息供给查看', 1000);
 			}
 
 		});
@@ -95,13 +168,20 @@ define(function(require, exports, module) {
 						if (visitArray && $(visitArray).size() > 0) {
 							$('#blank').hide();
 							$(visitArray).each(function(i, o) {
-								sb.append(String.formatmodel($templete.visitItem(), {
+								var text = '';
+								if (o['visitType'] == 'app') {
+									text = '加关注';
+								} else if (o['visitType'] == 'wx') {
+									text = '加好友';
+								}
+								sb.append(String.formatmodel($templete.visitItem(o['addYn']), {
 									userId: o['userId'],
 									visitType: o['visitType'],
 									userName: o['userName'],
 									headImgUrl: o['headImgUrl'],
 									type: o['type'],
-									updateTime: o['updateTime']
+									updateTime: o['updateTime'],
+									text: text
 								}));
 							});
 						} else {

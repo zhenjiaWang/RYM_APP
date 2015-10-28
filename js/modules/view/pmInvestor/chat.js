@@ -12,7 +12,7 @@ define(function(require, exports, module) {
 	var currentWindow;
 	var productUserId = false;
 	toBottom = function() {
-		var div=$('.main').get(0);
+		var div = $('.main').get(0);
 		div.scrollTop = div.scrollHeight;
 	};
 	onRefresh = function() {
@@ -91,6 +91,23 @@ define(function(require, exports, module) {
 				$nativeUIManager.alert('提示', '请先输入内容', 'OK', function() {});
 			}
 		});
+		$common.touchSE($('.userPhoto', '.main'), function(event, startTouch, o) {}, function(event, o) {
+			var section = $(o).closest('section');
+			if (section) {
+				if (!$(section).hasClass('feedRight')) {
+					var userId = $(section).attr('userId');
+					var userName = $(section).attr('userName');
+					var sendType = $(section).attr('sendType');
+					if (sendType && userId && userName) {
+						if (sendType == 'app') {
+							$windowManager.create('product_header_pop', '../product/headerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
+								show();
+							});
+						}
+					}
+				}
+			}
+		});
 	};
 	loadData = function(callback, append) {
 		$.ajax({
@@ -115,6 +132,9 @@ define(function(require, exports, module) {
 									$(pmArray).each(function(j, pm) {
 										var type = pm['type'];
 										sb.append(String.formatmodel($templete.pmItem(type), {
+											userId: pm['sendUserId'],
+											userName: pm['sendUserName'],
+											sendType: pm['sendType'],
 											headImgUrl: pm['headImgUrl'],
 											content: pm['content'],
 											feedRight: type == 'me' ? 'feedRight' : ''

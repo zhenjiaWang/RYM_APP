@@ -202,7 +202,7 @@ define(function(require, exports, module) {
 	};
 	exports.contactPlannerItem = function(addFlag) {
 		var contactItem = new StringBuilder();
-		contactItem.append('<li class="clearfix" userId="{userId}" mobilePhone="{mobilePhone}" status="{status}">\n');
+		contactItem.append('<li class="clearfix" userName="{name}"  userId="{userId}" mobilePhone="{mobilePhone}" status="{status}">\n');
 		contactItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		contactItem.append('<p class="mart15"><span class="font16 marl10">{name}</span></p>\n');
 		if (addFlag) {
@@ -336,19 +336,19 @@ define(function(require, exports, module) {
 		return footerItem.toString();
 	};
 
-	exports.visitItem = function() {
+	exports.visitItem = function(addYn) {
 		var visitItem = new StringBuilder();
 		visitItem.append('<section class="personBoard" userId="{userId}" visitType="{visitType}" userName="{userName}">\n');
 		visitItem.append('<div class="userInfo mart5 clearfix">\n');
 		visitItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		visitItem.append('<div class="floatleft marl15 mart10 font13">\n');
-		visitItem.append('<p class="font17">{userName}</p>\n');
-		visitItem.append('<p class="mart10">{type}</p>\n');
-		visitItem.append('</div>\n');
-		visitItem.append('<div class="floatright mart15 color-9">\n');
-		visitItem.append('<p class="font11 alignright">{updateTime}访问了你</p>\n');
+		visitItem.append('<p class="font17">{userName}<em class="color-8 font13 marl10">{type}</em></p>\n');
+		visitItem.append('<p class="mart10 txt_hidden">{updateTime}访问了你</p>\n');
 		visitItem.append('</div>\n');
 		visitItem.append('</div>\n');
+		if (addYn=='N') {
+			visitItem.append('<span class="addBtn">{text}</span>\n');
+		}
 		visitItem.append('</section>\n');
 		return visitItem.toString();
 	};
@@ -398,7 +398,7 @@ define(function(require, exports, module) {
 	};
 	exports.pmItem = function(type) {
 		var pmItem = new StringBuilder();
-		pmItem.append('<section class="feedLeft {feedRight} clearfix">\n');
+		pmItem.append('<section class="feedLeft {feedRight} clearfix" userId="{userId}" userName="{userName}" sendType="{sendType}">\n');
 		pmItem.append('<span class="inlineblock userPhoto"><img src="{headImgUrl}"></span>\n');
 		if(type=='me'){
 			pmItem.append('<div class="feed"><span class="feedBar"></span><pre style="color:#fff">{content}</pre></div>\n');

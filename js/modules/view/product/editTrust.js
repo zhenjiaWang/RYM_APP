@@ -280,7 +280,29 @@ define(function(require, exports, module) {
 				type: 'blank',
 				exp: '!=',
 				msg: '请选择收益类型'
-			}]
+			}],
+			callback: function(t) {
+				if (t) {
+					if ($('#payOffType').val() == '固定收益') {
+						$validator.addMode({
+							id: 'yield',
+							required: true,
+							pattern: [{
+								type: 'blank',
+								exp: '!=',
+								msg: '请输入预期收益率'
+							}, {
+								type: 'number',
+								exp: '==',
+								msg: '预期收益率格式不正确'
+							}]
+						});
+						$validator.setUp();
+					} else {
+						$validator.removeMode('yield');
+					}
+				}
+			}
 		}, {
 			id: 'purchaseAmount',
 			required: true,
@@ -333,19 +355,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请选择到期日'
 			}]
-		}, {
-			id: 'yield',
-			required: true,
-			pattern: [{
-				type: 'blank',
-				exp: '!=',
-				msg: '请输入预期收益率'
-			}, {
-				type: 'number',
-				exp: '==',
-				msg: '预期收益率格式不正确'
-			}]
-		}, {
+		},{
 			id: 'remarks',
 			required: true,
 			pattern: [{
@@ -394,6 +404,7 @@ define(function(require, exports, module) {
 						});
 					}
 					bindEvent();
+					$('#payOffType').trigger('blur');
 				}
 			}
 		}

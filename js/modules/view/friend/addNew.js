@@ -32,7 +32,19 @@ define(function(require, exports, module) {
 				show();
 			});
 		});
-		$common.touchSE($('.addBtn'), function(event, startTouch, o) {}, function(event, o) {
+		$common.touchSE($('.userPhoto', '#followUL'), function(event, startTouch, o) {}, function(event, o) {
+			event.stopPropagation();
+			var li = $(o).closest('li');
+			var userId = $(li).attr('userId');
+			var userName = $(li).attr('userName');
+			if (userId&&userName) {
+				$windowManager.create('product_header_pop', '../product/headerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
+					show();
+				});
+			}
+		});
+
+		$common.touchSE($('.addBtn', '#followUL'), function(event, startTouch, o) {}, function(event, o) {
 			if (!$(o).hasClass('nobg') && !$(o).hasClass('addDone')) {
 				var li = $(o).closest('li');
 				var friendId = $(li).attr('userId');

@@ -11,7 +11,7 @@ define(function(require, exports, module) {
 	var currentWindow;
 	var productUserId = false;
 	toBottom = function() {
-		var div=$('.main').get(0);
+		var div = $('.main').get(0);
 		div.scrollTop = div.scrollHeight;
 	};
 	onRefresh = function() {
@@ -53,8 +53,7 @@ define(function(require, exports, module) {
 				},
 				success: function(jsonData) {
 					if (jsonData) {
-						if (jsonData['result'] == '0') {
-						} else {
+						if (jsonData['result'] == '0') {} else {
 							$nativeUIManager.alert('提示', '私信发送失败', 'OK', function() {});
 						}
 					}
@@ -81,7 +80,7 @@ define(function(require, exports, module) {
 					sb.append(String.formatmodel($templete.pmItem('me'), {
 						headImgUrl: $userInfo.get('headImgUrl'),
 						content: content,
-						feedRight:'feedRight'
+						feedRight: 'feedRight'
 					}));
 					$('.main').append(sb.toString());
 					toBottom();
@@ -89,6 +88,21 @@ define(function(require, exports, module) {
 				sendComment(content);
 			} else {
 				$nativeUIManager.alert('提示', '请先输入内容', 'OK', function() {});
+			}
+		});
+
+		$common.touchSE($('.userPhoto', '.main'), function(event, startTouch, o) {}, function(event, o) {
+			var section = $(o).closest('section');
+			if (section) {
+				if (!$(section).hasClass('feedRight')) {
+					var userId = $(section).attr('userId');
+					var userName = $(section).attr('userName');
+					if (userId && userName) {
+						$windowManager.create('product_header_pop', '../product/headerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
+							show();
+						});
+					}
+				}
 			}
 		});
 	};
@@ -114,6 +128,9 @@ define(function(require, exports, module) {
 									$(pmArray).each(function(j, pm) {
 										var type = pm['type'];
 										sb.append(String.formatmodel($templete.pmItem(type), {
+											userId: pm['sendUserId'],
+											userName: pm['sendUserName'],
+											sendType:'app',
 											headImgUrl: pm['headImgUrl'],
 											content: pm['content'],
 											feedRight: type == 'me' ? 'feedRight' : ''

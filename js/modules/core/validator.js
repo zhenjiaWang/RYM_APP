@@ -260,9 +260,9 @@ define(function(require, exports, module) {
 				if (!modeMapList) {
 					modeMapList = new HashMap();
 				}
-				if(!modeMapList.containsKey(mode['id'])){
-                    modeMapList.put(mode['id'], mode);
-                }
+				if (!modeMapList.containsKey(mode['id'])) {
+					modeMapList.put(mode['id'], mode);
+				}
 			}
 		}
 	};
@@ -350,6 +350,11 @@ define(function(require, exports, module) {
 			var el = $(obj).get(0);
 			if (el) {
 				validate(el, id);
+				var currentMode = modeMapList.get(id);
+				var callback = currentMode['callback'];
+				if (callback && typeof callback == 'function') {
+					callback(modeErrorMapList.get(id));
+				}
 			}
 		}
 	};

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+		<title>个人信息</title>
+		<link rel="stylesheet" type="text/css" href="../../css/appstyle.css">
+		<script type="text/javascript" src="../../js/modules/jquery.js"></script>
+		<script type="text/javascript" src="../../js/sea.js"></script>
+		<script type="text/javascript" src="../../js/json2.js"></script>
+		<script>
+			seajs.config({
+				base: "../../js/modules/"
+			});
+			seajs.use('view/my/img');
+		</script>
+	</head>
+
+	<body>
+		<header class="header">
+			<span class="icon icon-back floatleft" id="backBtn"></span>
+			<h1 class="aligncenter font17">请选择头像</h1>
+		</header>
+
+		<div class="main" style="min-height:50%;padding:50px 0 0 0" >
+			<ul class="photoList clearfix">
+				<li><img src="http://www-web.b0.upaiyun.com/avatar/1.png"></li>
+				<li><img src="http://www-web.b0.upaiyun.com/avatar/2.png"></li>
+				<li><img src="http://www-web.b0.upaiyun.com/avatar/3.png"></li>
+				<li><img src="http://www-web.b0.upaiyun.com/avatar/4.png"></li>
+				<li><img src="http://www-web.b0.upaiyun.com/avatar/5.png"></li>
+				<li><img src="http://www-web.b0.upaiyun.com/avatar/6.png"></li>
+				<li><img src="http://www-web.b0.upaiyun.com/avatar/7.png"></li>
+				<li><img src="http://www-web.b0.upaiyun.com/avatar/8.png"></li>
+			</ul>
+		</div>
+		<span class="btn btnBottom font16" id="saveBtn">完&nbsp;&nbsp;成</span>
+	</body>
+
+</html>

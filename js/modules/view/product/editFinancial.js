@@ -276,7 +276,29 @@ define(function(require, exports, module) {
 				type: 'blank',
 				exp: '!=',
 				msg: '请选择收益类型'
-			}]
+			}],
+			callback: function(t) {
+				if (t) {
+					if ($('#payOffType_' + index).val() == '保本固定收益') {
+						$validator.addMode({
+							id: 'yield_'+index,
+							required: true,
+							pattern: [{
+								type: 'blank',
+								exp: '!=',
+								msg: '请输入预期收益率'
+							}, {
+								type: 'number',
+								exp: '==',
+								msg: '预期收益率格式不正确'
+							}]
+						});
+						$validator.setUp();
+					} else {
+						$validator.removeMode('yield_'+index);
+					}
+				}
+			}
 		});
 		$validator.addMode({
 			id: 'purchaseAmount_' + index,
@@ -333,19 +355,6 @@ define(function(require, exports, module) {
 				type: 'blank',
 				exp: '!=',
 				msg: '请选择到期日'
-			}]
-		});
-		$validator.addMode({
-			id: 'yield_' + index,
-			required: true,
-			pattern: [{
-				type: 'blank',
-				exp: '!=',
-				msg: '请输入预期收益率'
-			}, {
-				type: 'number',
-				exp: '==',
-				msg: '预期收益率格式不正确'
 			}]
 		});
 		$validator.setUp();

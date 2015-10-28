@@ -188,6 +188,24 @@ define(function(require, exports, module) {
 				$nativeUIManager.alert('提示', '请先输入评论内容', 'OK', function() {});
 			}
 		});
+		$common.touchSE($('.userPhoto', '#commentUL'), function(event, startTouch, o) {}, function(event, o) {
+			event.stopPropagation();
+			var li = $(o).closest('li');
+			if (li) {
+				var commentType = $(li).attr('commentType');
+				if (commentType) {
+					if (commentType == 'app') {
+						var userId = $(li).attr('userId');
+						var userName = $(li).attr('userName');
+						if (userId && userName) {
+							$windowManager.create('product_header_pop', 'headerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
+								show();
+							});
+						}
+					}
+				}
+			}
+		});
 		$common.touchSE($('li', '#commentUL'), function(event, startTouch, o) {}, function(event, o) {
 			var userName = $(o).attr('userName');
 			var userID = $(o).attr('userId');
