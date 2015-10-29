@@ -129,9 +129,6 @@ define(function(require, exports, module) {
 				}
 			}, 500);
 		});
-
-
-		dynamicEvent(1);
 	};
 addProduct = function() {
 		var size = $('.productDataUL').size();

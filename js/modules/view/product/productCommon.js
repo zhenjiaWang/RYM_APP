@@ -226,8 +226,6 @@ define(function(require, exports, module) {
 	};
 	newOnExist = function() {
 		$nativeUIManager.watting('请稍等...');
-		alert(ID);
-		alert(productTab);
 		$.ajax({
 			type: 'POST',
 			url: $common.getRestApiURL() + '/product/info/newOnExist',

@@ -36,7 +36,8 @@ define(function(require, exports, module) {
 			dataType: 'json',
 			data: {
 				id: id,
-				tab: tab
+				tab: tab,
+				userId: userId
 			},
 			success: function(jsonData) {
 				if (jsonData) {
@@ -49,6 +50,9 @@ define(function(require, exports, module) {
 						$userInfo.put('moreActionObj', JSON.stringify(moreActionObj));
 						$userInfo.put('actionArray', JSON.stringify(actionArray));
 						$userInfo.put('actionActionObj', JSON.stringify(actionActionObj));
+						if (typeId) {
+							loadWebview(typeId);
+						}
 					} else {
 						$userInfo.removeItem('moreArray');
 						$userInfo.removeItem('moreActionObj');
@@ -69,25 +73,7 @@ define(function(require, exports, module) {
 			}
 		});
 	};
-	loadViewData = function() {
-		$.ajax({
-			type: 'POST',
-			url: $common.getRestApiURL() + '/product/info/view',
-			dataType: 'json',
-			data: {
-				id: id,
-				tab: tab
-			},
-			success: function(jsonData) {
-				if (jsonData) {
-					if (jsonData['result'] == '0') {
-						$userInfo.put('productView', JSON.stringify(jsonData));
-					}
-				}
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {}
-		});
-	};
+
 	loadData = function() {
 		$nativeUIManager.watting('请稍等...');
 		$.ajax({
@@ -108,10 +94,15 @@ define(function(require, exports, module) {
 							userId = productInfo['userId'];
 							numSeq = productInfo['numSeq'];
 							$userInfo.put('productView', JSON.stringify(jsonData));
-							var viewUrl = '';
-							if (typeId) {
-								loadWebview(typeId);
+							if (relationView == null) {
+								loadAction();
+							} else {
+								$('#moreBtn').remove();
+								if (typeId) {
+									loadWebview(typeId);
+								}
 							}
+
 						}
 						$nativeUIManager.wattingClose();
 						bindEvent();
@@ -128,8 +119,8 @@ define(function(require, exports, module) {
 		});
 	};
 	loadWebview = function(typeId) {
-		var _relationView=relationView==null?'N':relationView;
-		var productFooterWin = plus.webview.create('viewFooter.html?typeId=' + typeId+'&relationView='+_relationView, "product_view_footer", {
+		var _relationView = relationView == null ? 'N' : relationView;
+		var productFooterWin = plus.webview.create('viewFooter.html?typeId=' + typeId + '&relationView=' + _relationView, "product_view_footer", {
 			top: "50px",
 			bottom: "0px",
 			scrollIndicator: 'vertical'
@@ -141,12 +132,11 @@ define(function(require, exports, module) {
 		}
 	}
 	plusReady = function() {
+		$userInfo.removeItem('moreArray');
+		$userInfo.removeItem('moreActionObj');
+		$userInfo.removeItem('actionArray');
+		$userInfo.removeItem('actionActionObj');
 		loadData();
-		if(relationView==null){
-			loadAction();
-		}else{
-			$('#moreBtn').remove();
-		}
 		bindEvent();
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
