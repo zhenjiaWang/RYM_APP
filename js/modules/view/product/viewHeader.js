@@ -73,7 +73,25 @@ define(function(require, exports, module) {
 			}
 		});
 	};
-
+	loadViewData = function() {
+		$.ajax({
+			type: 'POST',
+			url: $common.getRestApiURL() + '/product/info/view',
+			dataType: 'json',
+			data: {
+				id: id,
+				tab: tab
+			},
+			success: function(jsonData) {
+				if (jsonData) {
+					if (jsonData['result'] == '0') {
+						$userInfo.put('productView', JSON.stringify(jsonData));
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {}
+		});
+	};
 	loadData = function() {
 		$nativeUIManager.watting('请稍等...');
 		$.ajax({
