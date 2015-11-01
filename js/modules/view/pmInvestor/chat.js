@@ -100,7 +100,7 @@ define(function(require, exports, module) {
 					var sendType = $(section).attr('sendType');
 					if (sendType && userId && userName) {
 						if (sendType == 'app') {
-							$windowManager.create('product_header_pop', '../product/headerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
+							$windowManager.create('product_footer_pop', '../product/footerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
 								show();
 							});
 						}

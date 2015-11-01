@@ -208,96 +208,6 @@ define(function(require, exports, module) {
 					}
 				});
 			});
-
-			$common.touchSE($('span', '#footerTools'), function(event, startTouch, o) {}, function(event, o) {
-				var dir = $(o).attr('dir');
-				if (dir) {
-					if (dir == 'message') {
-						var userName = $('#userName').text();
-						$windowManager.create('pmPlanner_header', '../pmPlanner/header.html?targetId='+userId+'&targetName='+userName, false, true, function(show) {
-							show();
-						});
-					} else if (dir == 'addFriend') {
-						var friendId = $(o).closest('footer').attr('userId');
-						if (friendId) {
-							$nativeUIManager.watting('请稍等...');
-							$common.refreshToken(function(tokenId) {
-								$.ajax({
-									type: 'POST',
-									url: $common.getRestApiURL() + '/social/friendPlanner/addFriend',
-									dataType: 'json',
-									data: {
-										'org.guiceside.web.jsp.taglib.Token': tokenId,
-										friendId: friendId
-									},
-									success: function(jsonData) {
-										if (jsonData) {
-											if (jsonData['result'] == '0') {
-												$nativeUIManager.wattingTitle('关注成功!');
-												$('span[dir="delFriend"]', '#footerTools').show();
-												$(o).hide();
-												window.setTimeout(function() {
-													$nativeUIManager.wattingClose();
-													var friendListWin = $windowManager.getById('friend_list');
-													if (friendListWin) {
-														friendListWin.evalJS('onRefresh()');
-													}
-												}, 1000);
-											} else {
-												$nativeUIManager.wattingClose();
-												$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
-											}
-										}
-									},
-									error: function(XMLHttpRequest, textStatus, errorThrown) {
-										$nativeUIManager.wattingClose();
-										$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
-									}
-								});
-							});
-						}
-					} else if (dir == 'delFriend') {
-						var friendId = $(o).closest('footer').attr('userId');
-						if (friendId) {
-							$nativeUIManager.watting('请稍等...');
-							$common.refreshToken(function(tokenId) {
-								$.ajax({
-									type: 'POST',
-									url: $common.getRestApiURL() + '/social/friendPlanner/delFriend',
-									dataType: 'json',
-									data: {
-										'org.guiceside.web.jsp.taglib.Token': tokenId,
-										friendId: friendId
-									},
-									success: function(jsonData) {
-										if (jsonData) {
-											if (jsonData['result'] == '0') {
-												$nativeUIManager.wattingTitle('取消关注成功!');
-												$('span[dir="addFriend"]', '#footerTools').show();
-												$(o).hide();
-												window.setTimeout(function() {
-													$nativeUIManager.wattingClose();
-													var friendListWin = $windowManager.getById('friend_list');
-													if (friendListWin) {
-														friendListWin.evalJS('onRefresh()');
-													}
-												}, 1000);
-											} else {
-												$nativeUIManager.wattingClose();
-												$nativeUIManager.alert('提示', '取消关注失败', 'OK', function() {});
-											}
-										}
-									},
-									error: function(XMLHttpRequest, textStatus, errorThrown) {
-										$nativeUIManager.wattingClose();
-										$nativeUIManager.alert('提示', '取消关注失败', 'OK', function() {});
-									}
-								});
-							});
-						}
-					}
-				}
-			});
 		});
 		$common.touchSE($('#myFollowDIV'), function(event, startTouch, o) {}, function(event, o) {
 			var followCount = $('#follow').text();
@@ -331,7 +241,7 @@ define(function(require, exports, module) {
 			var rUserName = $(o).attr('rUserName');
 			if (userId && rUserName) {
 				if (userId != $userInfo.get('userId')) {
-					$windowManager.create('product_header_pop', 'headerPop.html?userId=' + userId + '&userName=' + rUserName, false, true, function(show) {
+					$windowManager.create('product_footer_pop', 'footerPop.html?userId=' + userId + '&userName=' + rUserName, false, true, function(show) {
 						show();
 					});
 				}
@@ -450,14 +360,11 @@ define(function(require, exports, module) {
 							if (userId != $userInfo.get('userId')) {
 								var friendYn = planner['friendYn'];
 								if (friendYn) {
-									if (friendYn == 'Y') {
-										$('span[dir="delFriend"]', '#footerTools').show();
-									} else {
-										$('span[dir="addFriend"]', '#footerTools').show();
+									var footerPopWin=$windowManager.getById('product_footer_pop');
+									if(footerPopWin){
+										footerPopWin.evalJS('toobar("'+userId+'","'+friendYn+'")');
 									}
 								}
-								$('#footerTools').show().attr('userId', userId);
-								$('.main').css('padding-bottom', '50px');
 							}
 							$('#userName').text(planner['userName']);
 							$('#plannerNo').text(planner['plannerNo']);

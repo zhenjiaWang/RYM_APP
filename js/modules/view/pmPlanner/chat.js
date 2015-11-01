@@ -98,7 +98,7 @@ define(function(require, exports, module) {
 					var userId = $(section).attr('userId');
 					var userName = $(section).attr('userName');
 					if (userId && userName) {
-						$windowManager.create('product_header_pop', '../product/headerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
+						$windowManager.create('product_footer_pop', '../product/footerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
 							show();
 						});
 					}

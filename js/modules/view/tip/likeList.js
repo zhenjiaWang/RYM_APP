@@ -46,7 +46,7 @@ define(function(require, exports, module) {
 			var userName = $(o).attr('userName');
 			if (likeType && likeType == 'app') {
 				if (userId && userName) {
-					$windowManager.create('product_header_pop', '../product/headerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
+					$windowManager.create('product_footer_pop', '../product/footerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
 						show();
 					});
 				}

@@ -65,7 +65,7 @@ define(function(require, exports, module) {
 			var uid = $(o).attr('userId');
 			var userName = $(o).attr('userName');
 			if (uid&&userName) {
-				$windowManager.create('product_header_pop', '../product/headerPop.html?userId='+uid+'&userName='+userName, false, true, function(show) {
+				$windowManager.create('product_footer_pop', '../product/footerPop.html?userId='+uid+'&userName='+userName, false, true, function(show) {
 					show();
 				});
 			}

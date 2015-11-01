@@ -11,7 +11,10 @@ define(function(require, exports, module) {
 	var userName = queryMap.get('userName');
 	bindEvent = function() {
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.close();
+			var footerPopWin=$windowManager.getById('product_footer_pop');
+			if(footerPopWin){
+				footerPopWin.close();
+			}
 		});
 		$common.touchSE($('li', '#plannerSaleTab'), function(event, startTouch, o) {}, function(event, o) {
 			if (!$(o).hasClass('current')) {
