@@ -9,6 +9,9 @@ define(function(require, exports, module) {
 	var id = queryMap.get('id');
 	var tab = queryMap.get('tab');
 	var userId = queryMap.get('userId');
+	var _replyId = queryMap.get('replyId');
+	var _userName = queryMap.get('userName');
+	var _commentType = queryMap.get('commentType');
 	var nextIndex = 0;
 	var currentWindow;
 	var productUserId = false;
@@ -446,6 +449,9 @@ define(function(require, exports, module) {
 						}
 						pullToRefreshEvent();
 						bindEvent();
+						if(_replyId&&_commentType&&_userName){
+							reply(_replyId, _userName, _commentType);
+						}
 						if (!callback) {
 							$nativeUIManager.wattingClose();
 						}

@@ -14,7 +14,7 @@ define(function(require, exports, module) {
 	var currentWindow;
 	onRefresh = function() {
 		nextIndex = 0;
-		$('#friendUL').attr('nextIndex', 0);
+		$('#viewDIV').attr('nextIndex', 0);
 		window.setTimeout(function() {
 			loadData(function() {
 				currentWindow.endPullToRefresh();
@@ -62,62 +62,102 @@ define(function(require, exports, module) {
 				loadData();
 			}
 		});
-		$common.touchSE($('.UserCard', '#friendUL'), function(event, startTouch, o) {}, function(event, o) {
+		$common.touchSE($('.personBoard', '#viewDIV'), function(event, startTouch, o) {}, function(event, o) {
 			var userId = $(o).attr('userId');
+			var viewType = $(o).attr('viewType');
 			var userName = $(o).attr('userName');
-			if (userId&&userName) {
-				$windowManager.create('product_footer_pop', '../product/footerPop.html?userId='+userId+'&userName='+userName, false, true, function(show) {
-					show();
-				});
+			if (viewType && viewType == 'app') {
+				if (userId && userName) {
+					$windowManager.create('product_footer_pop', '../product/footerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
+						show();
+					});
+				}
+			} else {
+				$nativeUIManager.watting('客户没有理财室信息供给查看', 1000);
 			}
+
 		});
-		$common.touchSE($('.rightBtnAdd'), function(event, startTouch, o) {
-			event.stopPropagation();
-		}, function(event, o) {
-			event.stopPropagation();
-			var section = $(o).closest('section');
-			var friendId = $(section).attr('userId');
-			if (friendId) {
-				$nativeUIManager.watting('请稍等...');
-				$common.refreshToken(function(tokenId) {
-					$.ajax({
-						type: 'POST',
-						url: $common.getRestApiURL() + '/social/friendPlanner/addFriend',
-						dataType: 'json',
-						data: {
-							'org.guiceside.web.jsp.taglib.Token': tokenId,
-							friendId: friendId
-						},
-						success: function(jsonData) {
-							if (jsonData) {
-								if (jsonData['result'] == '0') {
-									$nativeUIManager.wattingTitle('关注成功!');
-									$('.icon-new', section).remove();
-									$(o).text('共同好友').removeClass('rightBtnAdd').off('touchstart').off('touchend');
-									window.setTimeout(function() {
-										$nativeUIManager.wattingClose();
-									}, 1000);
-								} else {
+		
+		$common.touchSE($('.addBtn', '#viewDIV'), function(event, startTouch, o) {}, function(event, o) {
+			if (!$(o).hasClass('nobg') && !$(o).hasClass('addDone')) {
+				var li = $(o).closest('section');
+				var friendId = $(li).attr('userId');
+				var viewType = $(li).attr('viewType');
+				if (friendId && viewType) {
+					if (viewType == 'app') {
+						$nativeUIManager.watting('请稍等...');
+						$common.refreshToken(function(tokenId) {
+							$.ajax({
+								type: 'POST',
+								url: $common.getRestApiURL() + '/social/friendPlanner/addFriend',
+								dataType: 'json',
+								data: {
+									'org.guiceside.web.jsp.taglib.Token': tokenId,
+									friendId: friendId
+								},
+								success: function(jsonData) {
+									if (jsonData) {
+										if (jsonData['result'] == '0') {
+											$nativeUIManager.wattingTitle('关注成功!');
+											$(o).remove();
+											window.setTimeout(function() {
+												$nativeUIManager.wattingClose();
+											}, 1000);
+										} else {
+											$nativeUIManager.wattingClose();
+											$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+										}
+									}
+								},
+								error: function(XMLHttpRequest, textStatus, errorThrown) {
 									$nativeUIManager.wattingClose();
 									$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
 								}
-							}
-						},
-						error: function(XMLHttpRequest, textStatus, errorThrown) {
-							$nativeUIManager.wattingClose();
-							$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
-						}
-					});
-				});
+							});
+						});
+					} else if (viewType == 'wx') {
+						$nativeUIManager.watting('请稍等...');
+						$common.refreshToken(function(tokenId) {
+							$.ajax({
+								type: 'POST',
+								url: $common.getRestApiURL() + '/social/friendInvestor/addFriend',
+								dataType: 'json',
+								data: {
+									'org.guiceside.web.jsp.taglib.Token': tokenId,
+									friendId: friendId,
+									status: -1
+								},
+								success: function(jsonData) {
+									if (jsonData) {
+										if (jsonData['result'] == '0') {
+											$nativeUIManager.wattingTitle('已发送好友邀请!');
+											$(o).remove();
+											window.setTimeout(function() {
+												$nativeUIManager.wattingClose();
+											}, 1000);
+										} else {
+											$nativeUIManager.wattingClose();
+											$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+										}
+									}
+								},
+								error: function(XMLHttpRequest, textStatus, errorThrown) {
+									$nativeUIManager.wattingClose();
+									$nativeUIManager.alert('提示', '关注失败', 'OK', function() {});
+								}
+							});
+						});
+					}
+				}
 			}
 		});
 		document.addEventListener("plusscrollbottom", function() {
-			var next = $('#friendUL').attr('nextIndex');
+			var next = $('#viewDIV').attr('nextIndex');
 			if (next) {
 				if (next > 0) {
 					nextIndex = next;
 					$nativeUIManager.watting('正在加载更多...');
-					$('#friendUL').attr('nextIndex', 0);
+					$('#viewDIV').attr('nextIndex', 0);
 					window.setTimeout(function() {
 						loadData(function() {
 							$nativeUIManager.wattingClose();
@@ -148,34 +188,37 @@ define(function(require, exports, module) {
 						var sb = new StringBuilder();
 						if (viewArray && $(viewArray).size() > 0) {
 							$('#blank').hide();
-							$('.checkWord').show();
 							$(viewArray).each(function(i, o) {
-								var productInfo=o['productInfo'];
-								sb.append(String.formatmodel($templete.friendFollowPlannerItem(o['state'] == '-1'), {
+								var text = '';
+								if (o['viewType'] == 'app') {
+									text = '加关注';
+								} else if (o['viewType'] == 'wx') {
+									text = '加好友';
+								}
+								sb.append(String.formatmodel($templete.productViewItem(o['addYn']), {
 									userId: o['userId'],
+									viewType: o['viewType'],
 									userName: o['userName'],
 									headImgUrl: o['headImgUrl'],
-									saleCount: o['saleCount'],
-									orgName: o['orgName'],
-									financialContent:productInfo['financialContent'],
-									trustContent:productInfo['trustContent'],
-									fundContent:productInfo['fundContent']
+									type: o['type'],
+									updateTime: o['updateTime'],
+									text: text
 								}));
 							});
 						} else {
 							$('#blank').show();
 						}
 						if (append) {
-							$('#friendUL').append(sb.toString());
+							$('#viewDIV').append(sb.toString());
 						} else {
-							$('#friendUL').empty().append(sb.toString());
+							$('#viewDIV').empty().append(sb.toString());
 						}
 						nextIndex = 0;
-						$('#friendUL').attr('nextIndex', 0);
+						$('#viewDIV').attr('nextIndex', 0);
 						var page = jsonData['page'];
 						if (page) {
 							if (page['hasNextPage'] == true) {
-								$('#friendUL').attr('nextIndex', page['nextIndex']);
+								$('#viewDIV').attr('nextIndex', page['nextIndex']);
 							}
 						}
 						pullToRefreshEvent();

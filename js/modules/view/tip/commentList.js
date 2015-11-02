@@ -12,6 +12,7 @@ define(function(require, exports, module) {
 	var tab = queryMap.get('tab');
 	var nextIndex = 0;
 	var currentWindow;
+	
 	onRefresh = function() {
 		nextIndex = 0;
 		$('#commentDIV').attr('nextIndex', 0);
@@ -39,14 +40,56 @@ define(function(require, exports, module) {
 		}, onRefresh);
 	};
 	bindEvent = function() {
+		
+		$('#content').off('valuechange').on('valuechange', function(e) {
+			var value = $(this).text();
+			if (value) {
+				if (value != '') {
+					$('#replyTip').hide();
+				} else {
+					$('#replyTip').show();
+				}
+			} else {
+				$('#replyTip').show();
+			}
+		});
+		$common.touchSE($('#replyTip'), function(event, startTouch, o) {}, function(event, o) {
+			$keyManager.openSoftKeyboard(function() {
+				$('#content').get(0).focus();
+			});
+		});
+		$common.touchSE($('.userPhoto', '#commentDIV'), function(event, startTouch, o) {}, function(event, o) {
+			event.stopPropagation();
+			var section = $(o).closest('section');
+			if (section) {
+				var commentType = $(section).attr('commentType');
+				if (commentType) {
+					if (commentType == 'app') {
+						var userId = $(section).attr('userId');
+						var userName = $(section).attr('userName');
+						if (userId && userName) {
+							$windowManager.create('product_footer_pop', 'footerPop.html?userId=' + userId + '&userName=' + userName, false, true, function(show) {
+								show();
+							});
+						}
+					} else {
+						$nativeUIManager.watting('客户没有理财室信息供给查看', 1000);
+					}
+				}
+			}
+		});
 		$common.touchSE($('.personBoard', '#commentDIV'), function(event, startTouch, o) {}, function(event, o) {
 			var productId = $(o).attr('productId');
-			if (productId) {
-				$windowManager.create('product_commentHeader', '../product/commentHeader.html?id=' + productId + '&userId=' + $userInfo.get('userId'), false, true, function(show) {
+			var replyId = $(o).attr('uid');
+			var userName = $(o).attr('userName');
+			var commentType = $(o).attr('commentType');
+			if (productId&&replyId&&userName&&commentType) {
+				$windowManager.create('product_commentHeader', '../product/commentHeader.html?id=' + productId + '&userId=' + $userInfo.get('userId')+'&replyId='+replyId+'&commentType='+commentType+'&userName='+userName, false, true, function(show) {
 					show();
 				});
 			}
 		});
+	
 		document.addEventListener("plusscrollbottom", function() {
 			var next = $('#commentDIV').attr('nextIndex');
 			if (next) {
@@ -91,6 +134,9 @@ define(function(require, exports, module) {
 									userId: o['userId'],
 									userName: o['userName'],
 									headImgUrl: o['headImgUrl'],
+									uid: o['uid'],
+									commentType: o['commentType'],
+									productUserId: o['productUserId'],
 									type: o['type'],
 									updateTime: o['updateTime'],
 									productName: o['productName'],
@@ -150,6 +196,12 @@ define(function(require, exports, module) {
 		}, function() {
 
 		});
+		var obj = $windowManager.current();
+		if (obj) {
+			obj.setStyle({
+				'softinputMode': 'adjustResize'
+			});
+		}
 		loadData();
 	};
 	if (window.plus) {

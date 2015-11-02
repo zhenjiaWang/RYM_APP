@@ -16,13 +16,20 @@ define(function(require, exports, module) {
 		div.scrollTop = div.scrollHeight;
 	};
 	onRefresh = function() {
-		nextIndex = 0;
-		$('.main').attr('nextIndex', 0);
-		window.setTimeout(function() {
-			loadData(function() {
+		var next = $('.main').attr('nextIndex');
+		if (next) {
+			console.info(next);
+			if (next > 0) {
+				nextIndex = next;
+				$('.main').attr('nextIndex', 0);
+				loadData(function() {
+					currentWindow.endPullToRefresh();
+				}, true);
+			} else {
+				$nativeUIManager.watting('没有历史记录了!', 1500);
 				currentWindow.endPullToRefresh();
-			});
-		}, 500);
+			}
+		}
 	};
 	pullToRefreshEvent = function() {
 		currentWindow = $windowManager.current();
@@ -109,14 +116,15 @@ define(function(require, exports, module) {
 			}
 		});
 	};
-	loadData = function(callback, append) {
+	loadData = function(callback, before) {
 		$.ajax({
 			type: 'POST',
 			url: $common.getRestApiURL() + '/social/friendPm/customer',
 			dataType: 'json',
 			data: {
 				targetId: targetId,
-				type: type
+				type: type,
+				start: nextIndex > 0 ? nextIndex : ''
 			},
 			success: function(jsonData) {
 				if (jsonData) {
@@ -143,8 +151,12 @@ define(function(require, exports, module) {
 								}
 							});
 							$('#blank').hide();
-							$('.main').append(sb.toString());
-							toBottom();
+							if (before) {
+								$('p', '.main').first().before(sb.toString());
+							} else {
+								$('.main').append(sb.toString());
+								toBottom();
+							}
 						} else {
 							$('#blank').show();
 						}
@@ -152,6 +164,7 @@ define(function(require, exports, module) {
 						$('.main').attr('nextIndex', 0);
 						var page = jsonData['page'];
 						if (page) {
+							console.info(JSON.stringify(page))
 							if (page['hasNextPage'] == true) {
 								$('.main').attr('nextIndex', page['nextIndex']);
 							}
@@ -165,7 +178,7 @@ define(function(require, exports, module) {
 						if (typeof callback == 'function') {
 							callback();
 						}
-						$nativeUIManager.alert('提示', '加载评论失败', 'OK', function() {});
+						$nativeUIManager.alert('提示', '加载消息失败', 'OK', function() {});
 					}
 				}
 			},
@@ -173,7 +186,7 @@ define(function(require, exports, module) {
 				if (typeof callback == 'function') {
 					callback();
 				}
-				$nativeUIManager.alert('提示', '加载评论失败', 'OK', function() {});
+				$nativeUIManager.alert('提示', '加载消息失败', 'OK', function() {});
 			}
 		});
 	};

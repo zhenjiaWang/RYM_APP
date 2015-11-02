@@ -352,6 +352,23 @@ define(function(require, exports, module) {
 		visitItem.append('</section>\n');
 		return visitItem.toString();
 	};
+	
+	exports.productViewItem = function(addYn) {
+		var productViewItem = new StringBuilder();
+		productViewItem.append('<section class="personBoard" userId="{userId}" viewType="{viewType}" userName="{userName}">\n');
+		productViewItem.append('<div class="userInfo mart5 clearfix">\n');
+		productViewItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
+		productViewItem.append('<div class="floatleft marl15 mart10 font13">\n');
+		productViewItem.append('<p class="font17">{userName}<em class="color-8 font13 marl10">{type}</em></p>\n');
+		productViewItem.append('<p class="mart10 txt_hidden">{updateTime}访问了产品</p>\n');
+		productViewItem.append('</div>\n');
+		productViewItem.append('</div>\n');
+		if (addYn=='N') {
+			productViewItem.append('<span class="addBtn">{text}</span>\n');
+		}
+		productViewItem.append('</section>\n');
+		return productViewItem.toString();
+	};
 
 	exports.likeItem = function() {
 		var likeItem = new StringBuilder();
@@ -372,12 +389,14 @@ define(function(require, exports, module) {
 	};
 	exports.commentItem = function() {
 		var commentItem = new StringBuilder();
-		commentItem.append('<section class="personBoard" userId="{userId}" productId="{productId}">\n');
+		commentItem.append('<section class="personBoard" commentType="{commentType}" userName="{userName}" userId="{userId}" productId="{productId}" productUserId="{productUserId}" uid="{uid}">\n');
 		commentItem.append('<div class="userInfo mart5 clearfix">\n');
 		commentItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		commentItem.append('<div class="mart10 font13">\n');
-		commentItem.append('<p class="font17">{userName}<em class="color-8 font13 marl10">{type}</em></p>\n');
-		commentItem.append('<p class="mart10 txt_hidden">{updateTime}评论了产品 {productName}</p>\n');
+		commentItem.append('<p class="font17 alignright clearfix" style="height:24px;">\n');
+		commentItem.append('<span class="floatleft txt_hidden alignleft" style="width:40%;">{userName}</span>\n');
+		commentItem.append('<span class="color-8 font12 txt_hidden" style="width:60%;">{productName}</span></p>\n');
+		commentItem.append('<p class=""><em class="color-8">{updateTime}</em></p>\n');
 		commentItem.append('</div>\n');
 		commentItem.append('</div>\n');
 		commentItem.append('<div class="color-9">\n');

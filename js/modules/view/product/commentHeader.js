@@ -10,8 +10,11 @@ define(function(require, exports, module) {
 	var id = queryMap.get('id');
 	var tab = queryMap.get('tab');
 	var userId = queryMap.get('userId');
+	var replyId = queryMap.get('replyId');
+	var userName = queryMap.get('userName');
+	var commentType = queryMap.get('commentType');
 	loadWebview = function(url) {
-		var productCommentWin = plus.webview.create('comment.html?id=' + id+'&tab='+tab+'&userId='+userId, "product_comment", {
+		var productCommentWin = plus.webview.create('comment.html?id=' + id+'&tab='+tab+'&userId='+userId+'&replyId='+replyId+'&userName='+userName+'&commentType='+commentType, "product_comment", {
 			top: "50px",
 			bottom: "0px",
 			scrollIndicator: 'vertical'

@@ -439,7 +439,7 @@ margin:-11px 0 0 -11px;-webkit-transform:rotate(0deg);transition:0.3s;-webkit-tr
 .feedRight .userPhoto{float: right;}
 .feed{width:auto;max-width:60%;min-height:20px;line-height:20px;font-size:14px;padding:10px;background: #eeeeef;margin-left:10px;border-radius:5px;-webkit-border-radius:5px;position: relative;}
 .feedBar{display:inline-block;width:10px;height:19px;background:url(../img/feed_left.jpg);background-size:100%;position:absolute;top:0;}
-.feedLeft .feed{border-radius:0 5px 5px 5px;float: left;}
+.feedLeft .feed{border-radius:0 5px 5px 5px;float: left;word-break: break-all;word-wrap: break-word;}
 .feedLeft .feedBar{left:-10px;}
 .feedRight .feed{border-radius:5px 0 5px 5px;background:#4bb050;color:#fff;float: right;margin:0 10px 0 0;word-break: break-all;word-wrap: break-word;}
 .feedRight .feedBar{background-image: url(../img/feed_right.jpg);left:inherit;right:-10px;}
