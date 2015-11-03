@@ -86,6 +86,7 @@ define(function(require, exports, module) {
 				if (jsonData) {
 					if (jsonData['result'] == '0') {
 						$userInfo.put('productView', JSON.stringify(jsonData));
+						$windowManager.reloadOtherWindow('product_view', true);
 					}
 				}
 			},

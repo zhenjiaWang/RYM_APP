@@ -81,7 +81,7 @@ define(function(require, exports, module) {
 								financialName: o['financialName'],
 								purchaseAmount: o['purchaseAmount'],
 								yield: o['yield'],
-								expireDate: o['expireDate'],
+								expireDate: o['endDate'],
 								uid: o['uid']
 							}));
 						});

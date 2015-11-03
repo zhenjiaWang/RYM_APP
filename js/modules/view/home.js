@@ -208,6 +208,7 @@ define(function(require, exports, module) {
 			commentCount = parseInt(commentCount);
 			messageTipCount += commentCount;
 		}
+		
 		if (messageTipCount > 0) {
 			$('span[dir="tip"]', '#footerAction').find('.icon-p').show();
 		} else {

@@ -26,10 +26,18 @@ define(function(require, exports, module) {
 	saveData = function(numSeq) {
 		$nativeUIManager.watting('正在发布产品...');
 		var financialCount = $('.productDataUL').size();
+		var productIndex='';
 		if (financialCount <= 0) {
 			$nativeUIManager.alert('提示', '没有理财产品无法保存', 'OK', function() {});
 			return false;
 		}
+		$('.productDataUL').each(function(i,o){
+			var index=$(o).attr('index');
+			if(index){
+				productIndex+=index+',';
+			}
+		});
+		$('#productIndex').val(productIndex);
 		$common.refreshToken(function(tokenId) {
 			$('#org\\.guiceside\\.web\\.jsp\\.taglib\\.Token').val(tokenId);
 			$('#numSeq').val(numSeq);
@@ -67,7 +75,7 @@ define(function(require, exports, module) {
 			});
 		});
 	};
-	
+
 	deleteAtt = function(attId, type) {
 		$nativeUIManager.watting('请稍等...');
 		$common.refreshToken(function(tokenId) {
@@ -228,7 +236,7 @@ define(function(require, exports, module) {
 			}, function() {});
 		});
 	};
-	getProductSize=function(){
+	getProductSize = function() {
 		return $('.productDataUL').size();
 	};
 	addProduct = function() {
@@ -237,7 +245,6 @@ define(function(require, exports, module) {
 			var index = (size + 1);
 			var ul = $('.productDataUL').eq(0).clone(false);
 			if (ul) {
-				$('.delProduct').hide();
 				$('li', ul).removeClass('has-error');
 				$(ul).attr('index', index);
 				var codeObj = $('input[name="code_1"]', ul);
@@ -297,24 +304,27 @@ define(function(require, exports, module) {
 					$(yieldObj).attr('name', 'yield_' + index).attr('id', 'yield_' + index).val('');
 				}
 			}
-			$('#descUL').before('<p class="productTitle title font14 clearfix alignright" style="position:relative;bottom:-5px;"><span class="floatleft marl10">第' + index + '个理财产品</span><span class="marr10 delProduct" style="color:red;display:none;">删 除</span></p>');
+			$('#descUL').before('<p class="productTitle title font14 clearfix alignright" style="position:relative;bottom:-5px;"><span class="floatleft marl10">第' + index + '个理财产品</span><span index="' + index + '" class="marr10 delProduct" style="color:red;">删 除</span></p>');
 			$('#descUL').before(ul);
 			addValidate(index);
-			$('.delProduct').last().show();
 			$common.touchSE($('.delProduct'), function(event, startTouch, o) {}, function(event, o) {
-				$nativeUIManager.confirm('提示', '你确定删除当前产品吗!', ['确定', '取消'], function() {
-					removeValidate($('.productDataUL').size());
-					$('.productDataUL').last().remove();
-					$('.productTitle').last().remove();
-					$('.delProduct').last().show();
-				}, function() {
+				var currentIndex = $(o).attr('index');
+				var p = $(o).closest('.productTitle');
+				if (currentIndex && p) {
+					currentIndex = parseInt(currentIndex);
+					$nativeUIManager.confirm('提示', '你确定删除当前产品吗!', ['确定', '取消'], function() {
+						removeValidate(currentIndex);
+						$('.productDataUL[index="' + currentIndex + '"]').remove();
+						$(p).remove();
+					}, function() {
 
-				});
+					});
+				}
 			});
 		}
 	};
 	bindEvent = function() {
-		
+
 
 		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
 			var uid = $(o).attr('uid');
@@ -350,7 +360,7 @@ define(function(require, exports, module) {
 
 		dynamicEvent(1);
 	};
-	removeValidate=function(index){
+	removeValidate = function(index) {
 		$validator.removeMode('code_' + index);
 		$validator.removeMode('name_' + index);
 		$validator.removeMode('productOrgId_' + index);
@@ -402,7 +412,7 @@ define(function(require, exports, module) {
 				if (t) {
 					if ($('#payOffType_' + index).val() == '保本固定收益') {
 						$validator.addMode({
-							id: 'yield_'+index,
+							id: 'yield_' + index,
 							required: true,
 							pattern: [{
 								type: 'blank',
@@ -416,7 +426,7 @@ define(function(require, exports, module) {
 						});
 						$validator.setUp();
 					} else {
-						$validator.removeMode('yield_'+index);
+						$validator.removeMode('yield_' + index);
 					}
 				}
 			}
@@ -478,7 +488,7 @@ define(function(require, exports, module) {
 				msg: '请选择到期日'
 			}]
 		});
-		
+
 		$validator.setUp();
 		dynamicEvent(index);
 	};
@@ -509,23 +519,7 @@ define(function(require, exports, module) {
 			addValidate(1);
 		}, 500);
 	};
-	loadData = function() {
-		$.ajax({
-			type: 'POST',
-			url: $common.getRestApiURL() + '/common/common/getAttToken',
-			dataType: 'json',
-			data: {},
-			success: function(jsonData) {
-				if (jsonData) {
-					if (jsonData['result'] == '0') {
-						$('#attToken').val(jsonData['attToken']);
-						$('#footerTools').show();
-					}
-				}
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {}
-		});
-	};
+
 	plusReady = function() {
 		$common.switchOS(function() {
 			$('body').addClass('Ios_scroll');
@@ -538,7 +532,6 @@ define(function(require, exports, module) {
 		autosize(document.querySelectorAll('.textBox'));
 		bindValidate();
 		bindEvent();
-		loadData();
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			var footerWin = $windowManager.getById('product_add_footer');
 			if (footerWin) {
@@ -546,12 +539,12 @@ define(function(require, exports, module) {
 			}
 		});
 		$userInfo.put('attCount', $('div', '#imgUL').find('img').size() + '');
-//		var obj = $windowManager.current();
-//		if (obj) {
-//			obj.setStyle({
-//				'softinputMode': 'adjustResize'
-//			});
-//		}
+		var obj = $windowManager.current();
+		if (obj) {
+			obj.setStyle({
+				'softinputMode': 'adjustResize'
+			});
+		}
 	};
 	if (window.plus) {
 		plusReady();

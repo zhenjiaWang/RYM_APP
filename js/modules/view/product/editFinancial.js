@@ -28,6 +28,14 @@ define(function(require, exports, module) {
 			$nativeUIManager.alert('提示', '没有理财产品无法保存', 'OK', function() {});
 			return false;
 		}
+		var productIndex='';
+		$('.productDataUL').each(function(i,o){
+			var index=$(o).attr('index');
+			if(index){
+				productIndex+=index+',';
+			}
+		});
+		$('#productIndex').val(productIndex);
 		$common.refreshToken(function(tokenId) {
 			$('#org\\.guiceside\\.web\\.jsp\\.taglib\\.Token').val(tokenId);
 			$('#numSeq').val(numSeq);
@@ -45,14 +53,11 @@ define(function(require, exports, module) {
 							if (productViewHeader) {
 								productViewHeader.evalJS('loadViewData()');
 								window.setTimeout(function() {
-									$windowManager.reloadOtherWindow('product_view', true);
-									window.setTimeout(function() {
-										$nativeUIManager.wattingClose();
+									$nativeUIManager.wattingClose();
 										var footerWin = $windowManager.getById('product_edit_footer');
 										if (footerWin) {
 											footerWin.close();
 										}
-									}, 500);
 								}, 1500);
 							}
 						} else {
@@ -281,7 +286,7 @@ define(function(require, exports, module) {
 				if (t) {
 					if ($('#payOffType_' + index).val() == '保本固定收益') {
 						$validator.addMode({
-							id: 'yield_'+index,
+							id: 'yield_' + index,
 							required: true,
 							pattern: [{
 								type: 'blank',
@@ -295,7 +300,7 @@ define(function(require, exports, module) {
 						});
 						$validator.setUp();
 					} else {
-						$validator.removeMode('yield_'+index);
+						$validator.removeMode('yield_' + index);
 					}
 				}
 			}
@@ -366,7 +371,6 @@ define(function(require, exports, module) {
 			var index = (size + 1);
 			var ul = $('.productDataUL').eq(0).clone(false);
 			if (ul) {
-				$('.delProduct').hide();
 				$('li', ul).removeClass('has-error');
 				$(ul).attr('index', index);
 				var codeObj = $('input[name="code_1"]', ul);
@@ -426,19 +430,22 @@ define(function(require, exports, module) {
 					$(yieldObj).attr('name', 'yield_' + index).attr('id', 'yield_' + index).val('');
 				}
 			}
-			$('#descUL').before('<p class="productTitle title font14 clearfix alignright" style="position:relative;bottom:-5px;"><span class="floatleft marl10">第' + index + '个理财产品</span><span class="marr10 delProduct" style="color:red;display:none;">删 除</span></p>');
+			$('#descUL').before('<p class="productTitle title font14 clearfix alignright" style="position:relative;bottom:-5px;"><span class="floatleft marl10">第' + index + '个理财产品</span><span index="' + index + '" class="marr10 delProduct" style="color:red;">删 除</span></p>');
 			$('#descUL').before(ul);
 			addValidate(index);
-			$('.delProduct').last().show();
 			$common.touchSE($('.delProduct'), function(event, startTouch, o) {}, function(event, o) {
-				$nativeUIManager.confirm('提示', '你确定删除当前产品吗!', ['确定', '取消'], function() {
-					removeValidate($('.productDataUL').size());
-					$('.productDataUL').last().remove();
-					$('.productTitle').last().remove();
-					$('.delProduct').last().show();
-				}, function() {
+				var currentIndex = $(o).attr('index');
+				var p = $(o).closest('.productTitle');
+				if (currentIndex && p) {
+					currentIndex = parseInt(currentIndex);
+					$nativeUIManager.confirm('提示', '你确定删除当前产品吗!', ['确定', '取消'], function() {
+						removeValidate(currentIndex);
+						$('.productDataUL[index="' + currentIndex + '"]').remove();
+						$(p).remove();
+					}, function() {
 
-				});
+					});
+				}
 			});
 		}
 	};
@@ -584,12 +591,12 @@ define(function(require, exports, module) {
 			});
 		});
 		$userInfo.put('attCount', $('div', '#imgUL').find('img').size() + '');
-		//		var obj = $windowManager.current();
-		//		if (obj) {
-		//			obj.setStyle({
-		//				'softinputMode': 'adjustResize'
-		//			});
-		//		}
+		var obj = $windowManager.current();
+		if (obj) {
+			obj.setStyle({
+				'softinputMode': 'adjustResize'
+			});
+		}
 	};
 	if (window.plus) {
 		plusReady();

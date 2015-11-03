@@ -38,14 +38,11 @@ define(function(require, exports, module) {
 							if (productViewHeader) {
 								productViewHeader.evalJS('loadViewData()');
 								window.setTimeout(function() {
-									$windowManager.reloadOtherWindow('product_view', true);
-									window.setTimeout(function() {
-										$nativeUIManager.wattingClose();
+									$nativeUIManager.wattingClose();
 										var footerWin = $windowManager.getById('product_edit_footer');
 										if (footerWin) {
 											footerWin.close();
 										}
-									}, 500);
 								}, 1500);
 							}
 						} else {
@@ -298,12 +295,12 @@ define(function(require, exports, module) {
 			});
 		});
 		$userInfo.put('attCount', $('div', '#imgUL').find('img').size() + '');
-//		var obj = $windowManager.current();
-//		if (obj) {
-//			obj.setStyle({
-//				'softinputMode': 'adjustResize'
-//			});
-//		}
+		var obj = $windowManager.current();
+		if (obj) {
+			obj.setStyle({
+				'softinputMode': 'adjustResize'
+			});
+		}
 	};
 	if (window.plus) {
 		plusReady();

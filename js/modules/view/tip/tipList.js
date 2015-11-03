@@ -147,6 +147,7 @@ define(function(require, exports, module) {
 				$('li[dir="comment"]', '#tipCountUL').find('.icon-p').hide();
 			}
 		}
+		
 		var homeWin = $windowManager.getById($windowManager.getLaunchWindowId());
 		if (homeWin) {
 			homeWin.evalJS('loadTip()');

@@ -358,7 +358,7 @@ define(function(require, exports, module) {
 				exp: '!=',
 				msg: '请选择到期日'
 			}]
-		},{
+		}, {
 			id: 'remarks',
 			required: true,
 			pattern: [{
@@ -368,23 +368,6 @@ define(function(require, exports, module) {
 			}]
 		}]);
 		$validator.setUp();
-	};
-	loadData = function() {
-		$.ajax({
-			type: 'POST',
-			url: $common.getRestApiURL() + '/common/common/getAttToken',
-			dataType: 'json',
-			data: {},
-			success: function(jsonData) {
-				if (jsonData) {
-					if (jsonData['result'] == '0') {
-						$('#attToken').val(jsonData['attToken']);
-						$('#footerTools').show();
-					}
-				}
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {}
-		});
 	};
 	plusReady = function() {
 		$common.switchOS(function() {
@@ -398,7 +381,6 @@ define(function(require, exports, module) {
 		autosize(document.querySelectorAll('.textBox'));
 		bindValidate();
 		bindEvent();
-		loadData();
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			var footerWin = $windowManager.getById('product_add_footer');
 			if (footerWin) {
@@ -406,10 +388,12 @@ define(function(require, exports, module) {
 			}
 		});
 		$userInfo.put('attCount', $('div', '#imgUL').find('img').size() + '');
-		//		var obj=$windowManager.current();
-		//		if(obj){
-		//			obj.setStyle({'softinputMode':'adjustResize'});
-		//		}
+		var obj = $windowManager.current();
+		if (obj) {
+			obj.setStyle({
+				'softinputMode': 'adjustResize'
+			});
+		}
 	};
 	if (window.plus) {
 		plusReady();
