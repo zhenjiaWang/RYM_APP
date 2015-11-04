@@ -5,8 +5,8 @@ define(function(require, exports, module) {
 	var $userInfo = require('core/userInfo');
 	var shares = null;
 	var shareFlag = false;
-	var service=false;
-	shareMessage = function(ex, shareObj) {
+	var service = false;
+	shareStart = function(ex, shareObj, sharePic) {
 		var shareUrl = String.formatmodel($templete.weixinShare(), {
 			url: shareObj['url']
 		});
@@ -18,9 +18,43 @@ define(function(require, exports, module) {
 			title: shareObj['title'],
 			href: shareUrl
 		};
-		msg.thumbs = ["_www/logo.png"];
-		msg.pictures = ["_www/logo.png"];
+		msg.thumbs = [sharePic];
+		msg.pictures = [sharePic];
 		service.send(msg, function() {}, function(e) {});
+		if (sharePic != '_www/logo.png') {
+			window.setTimeout(function() {
+				plus.io.resolveLocalFileSystemURL(sharePic, function(entry) {
+					if (entry) {
+						entry.remove();
+					}
+				}, function(e) {
+				});
+			}, 2000);
+		}
+	}
+	shareMessage = function(ex, shareObj, userId) {
+		if (userId) {
+			$.ajax({
+				type: 'POST',
+				url: $common.getRestApiURL() + '/common/common/getHeadImg',
+				dataType: 'json',
+				data: {
+					userId: userId
+				},
+				success: function(jsonData) {
+					if (jsonData) {
+						if (jsonData['result'] == '0') {
+							shareStart(ex, shareObj, jsonData['headImgUrl']);
+						} else {
+							shareStart(ex, shareObj, '_www/logo.png');
+						}
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					shareStart(ex, shareObj, '_www/logo.png');
+				}
+			});
+		}
 	};
 	exports.auth = function(id) {
 		plus.share.getServices(function(s) {
@@ -44,9 +78,9 @@ define(function(require, exports, module) {
 			$nativeUIManager.alert('提示', '暂时无法分享' + e.code + " - " + e.message, 'OK', function() {});
 		});
 	};
-	exports.share = function(ex, shareObj) {
+	exports.share = function(ex, shareObj, userId) {
 		if (shareFlag) {
-			shareMessage(ex, shareObj);
+			shareMessage(ex, shareObj, userId);
 		}
 	};
 

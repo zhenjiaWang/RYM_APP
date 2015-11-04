@@ -338,7 +338,7 @@ define(function(require, exports, module) {
 
 	exports.visitItem = function(addYn) {
 		var visitItem = new StringBuilder();
-		visitItem.append('<section class="personBoard" userId="{userId}" visitType="{visitType}" userName="{userName}">\n');
+		visitItem.append('<section class="personBoard" userId="{userId}" visitType="{visitType}" userName="{userName}" style="position:relative;">\n');
 		visitItem.append('<div class="userInfo mart5 clearfix">\n');
 		visitItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		visitItem.append('<div class="floatleft marl15 mart10 font13">\n');
@@ -355,7 +355,7 @@ define(function(require, exports, module) {
 	
 	exports.productViewItem = function(addYn) {
 		var productViewItem = new StringBuilder();
-		productViewItem.append('<section class="personBoard" userId="{userId}" viewType="{viewType}" userName="{userName}">\n');
+		productViewItem.append('<section class="personBoard" userId="{userId}" viewType="{viewType}" userName="{userName}" style="position:relative;">\n');
 		productViewItem.append('<div class="userInfo mart5 clearfix">\n');
 		productViewItem.append('<span class="userPhoto floatleft"><img src="{headImgUrl}"></span>\n');
 		productViewItem.append('<div class="floatleft marl15 mart10 font13">\n');

@@ -54,13 +54,13 @@ define(function(require, exports, module) {
 												url:'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-room_userId-'+userId,
 												content:$userInfo.get('userName')+'的产品更新了，有你感兴趣的吗？',
 												title:$userInfo.get('userName')+'的理财室'
-											});
+											},userId);
 										} else if (index == 2) {
 											$shareManage.share('WXSceneTimeline',{
 												url:'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-room_userId-'+userId,
 												content:$userInfo.get('userName')+'的产品更新了，有你感兴趣的吗？',
 												title:$userInfo.get('userName')+'的理财室'
-											});
+											},userId);
 										}
 									}
 								});

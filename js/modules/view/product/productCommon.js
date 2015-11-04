@@ -543,13 +543,13 @@ define(function(require, exports, module) {
 														url: 'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-product_pId-' + ID + '_tab-' + productTab,
 														content: productName,
 														title: $userInfo.get('userName') + '推荐的产品'
-													});
+													},$userInfo.get('userId'));
 												} else if (shareIndex == 2) {
 													$shareManage.share('WXSceneTimeline', {
 														url: 'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-product_pId-' + ID + '_tab-' + productTab,
 														content: productName,
 														title: $userInfo.get('userName') + '推荐的产品'
-													});
+													},$userInfo.get('userId'));
 												}
 											}
 										});

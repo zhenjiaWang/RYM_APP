@@ -52,7 +52,7 @@ define(function(require, exports, module) {
 						if (typeof successCallback == 'function') {
 							successCallback(jsonData);
 						}
-					}else if (jsonData['result'] == '1') {
+					} else if (jsonData['result'] == '1') {
 						$userInfo.put('authorize', '-1');
 						if (typeof openCallback == 'function') {
 							openCallback(jsonData['unionId'], jsonData['mobilePhone']);

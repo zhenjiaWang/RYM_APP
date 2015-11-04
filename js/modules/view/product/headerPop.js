@@ -51,13 +51,13 @@ define(function(require, exports, module) {
 												url:'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-room_userId-'+userId,
 												content:userName+'的产品更新了，有你感兴趣的吗？',
 												title:userName+'的理财室'
-											});
+											},userId);
 										} else if (index == 2) {
 											$shareManage.share('WXSceneTimeline',{
 												url:'http://dev.lcruyimen.com/weixin/entrance/shareEntrance?action=action-room_userId-'+userId,
 												content:userName+'的产品更新了，有你感兴趣的吗？',
 												title:userName+'的理财室'
-											});
+											},userId);
 										}
 									}
 								});

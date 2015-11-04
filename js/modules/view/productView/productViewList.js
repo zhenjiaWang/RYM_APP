@@ -79,6 +79,7 @@ define(function(require, exports, module) {
 		});
 		
 		$common.touchSE($('.addBtn', '#viewDIV'), function(event, startTouch, o) {}, function(event, o) {
+			event.stopPropagation();
 			if (!$(o).hasClass('nobg') && !$(o).hasClass('addDone')) {
 				var li = $(o).closest('section');
 				var friendId = $(li).attr('userId');
