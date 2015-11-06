@@ -18,7 +18,7 @@ define(function(require, exports, module) {
 				function(index) {
 					if (index > 0) {
 						if (index == 1) {
-							$windowManager.create('product_add_footer', 'addFooter.html?typeId=1&typeName=理财', false, true, function(show) {
+							$windowManager.create('product_add_footer', 'addFooter.html?typeName=理财&typeId=1', false, true, function(show) {
 								show();
 							});
 						} else if (index == 2) {

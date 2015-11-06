@@ -176,7 +176,8 @@ define(function(require, exports, module) {
 								$('body').append($templete.addFooterImgItem());
 							}
 							uploadAttToken = jsonData['attToken'];
-							var productAddWin = plus.webview.create(viewUrl + '?attToken=' + jsonData['attToken'] + '&typeId=' + typeId + '&typeName=' + typeName, "product_add_product", {
+							var windowURL = encodeURI(viewUrl + '?typeName=' + typeName+'&attToken=' + jsonData['attToken'] + '&typeId=' + typeId);
+							var productAddWin = plus.webview.create(windowURL, "product_add_product", {
 								top: "0px",
 								bottom: "50px",
 								scrollIndicator: 'vertical'
