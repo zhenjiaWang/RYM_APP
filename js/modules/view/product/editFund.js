@@ -39,10 +39,10 @@ define(function(require, exports, module) {
 								productViewHeader.evalJS('loadViewData()');
 								window.setTimeout(function() {
 									$nativeUIManager.wattingClose();
-										var footerWin = $windowManager.getById('product_edit_footer');
-										if (footerWin) {
-											footerWin.close();
-										}
+									var footerWin = $windowManager.getById('product_edit_footer');
+									if (footerWin) {
+										footerWin.close();
+									}
 								}, 1500);
 							}
 						} else {
@@ -137,6 +137,15 @@ define(function(require, exports, module) {
 		});
 	};
 	bindEvent = function() {
+		$('#remarksDIV').off('valuechange').on('valuechange', function(e) {
+			var value = $(this).text();
+			if (value) {
+				if (value != '') {
+					$('#remarks').val($(this).html());
+					$validator.check('remarks');
+				}
+			}
+		});
 		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
 			var uid = $(o).attr('uid');
 			var type = $(o).attr('type');
@@ -255,7 +264,7 @@ define(function(require, exports, module) {
 					$('#productOrgId').val(productInfo['productOrgId']);
 					$('.placeTxt', '#selectProductOrg').text(productInfo['orgName']);
 					$('#remarks').val(productInfo['remarks']);
-
+					$('#remarksDIV').html(productInfo['remarks']);
 					$('#fundType').val(fund['fundType']);
 					$('.placeTxt', '#selectFundType').text(fund['fundType']);
 
@@ -283,7 +292,6 @@ define(function(require, exports, module) {
 		$('#attToken').val(attToken);
 		bindValidate();
 		loadData();
-		autosize(document.querySelectorAll('.textBox'));
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$nativeUIManager.confirm('提示', '是否放弃保存?', ['确定', '取消'], function() {
 				var footerWin = $windowManager.getById('product_edit_footer');

@@ -46,10 +46,10 @@ define(function(require, exports, module) {
 								productViewHeader.evalJS('loadViewData()');
 								window.setTimeout(function() {
 									$nativeUIManager.wattingClose();
-										var footerWin = $windowManager.getById('product_edit_footer');
-										if (footerWin) {
-											footerWin.close();
-										}
+									var footerWin = $windowManager.getById('product_edit_footer');
+									if (footerWin) {
+										footerWin.close();
+									}
 								}, 1500);
 							}
 						} else {
@@ -97,10 +97,19 @@ define(function(require, exports, module) {
 			});
 		});
 	};
-	
-	bindEvent = function() {
-		
 
+	bindEvent = function() {
+
+
+		$('#remarksDIV').off('valuechange').on('valuechange', function(e) {
+			var value = $(this).text();
+			if (value) {
+				if (value != '') {
+					$('#remarks').val($(this).html());
+					$validator.check('remarks');
+				}
+			}
+		});
 
 		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
 			var uid = $(o).attr('uid');
@@ -127,7 +136,7 @@ define(function(require, exports, module) {
 			}, 500);
 		});
 	};
-addProduct = function() {
+	addProduct = function() {
 		var size = $('.productDataUL').size();
 		if (size) {
 			var index = (size + 1);
@@ -253,6 +262,7 @@ addProduct = function() {
 						}, 500);
 					}
 					$('#remarks').val(productInfo['remarks']);
+					$('#remarksDIV').html(productInfo['remarks']);
 					var attArray = editJson['attArray'];
 					if (attArray && $(attArray).size() > 0) {
 						if (!$('#imgUL').is(':visible')) {
@@ -277,7 +287,6 @@ addProduct = function() {
 		$('#attToken').val(attToken);
 		bindValidate();
 		loadData();
-		autosize(document.querySelectorAll('.textBox'));
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$nativeUIManager.confirm('提示', '是否放弃保存?', ['确定', '取消'], function() {
 				var footerWin = $windowManager.getById('product_edit_footer');

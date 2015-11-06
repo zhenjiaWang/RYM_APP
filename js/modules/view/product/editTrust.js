@@ -141,7 +141,15 @@ define(function(require, exports, module) {
 		});
 	};
 	bindEvent = function() {
-		
+		$('#remarksDIV').off('valuechange').on('valuechange', function(e) {
+			var value = $(this).text();
+			if (value) {
+				if (value != '') {
+					$('#remarks').val($(this).html());
+					$validator.check('remarks');
+				}
+			}
+		});
 		
 		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
 			var uid = $(o).attr('uid');
@@ -377,6 +385,7 @@ define(function(require, exports, module) {
 					$('#productOrgId').val(productInfo['productOrgId']);
 					$('.placeTxt', '#selectProductOrg').text(productInfo['orgName']);
 					$('#remarks').val(productInfo['remarks']);
+					$('#remarksDIV').html(productInfo['remarks']);
 
 					$('#payOffType').val(trust['payOffType']);
 					$('.placeTxt', '#selectPayOffType').text(trust['payOffType']);

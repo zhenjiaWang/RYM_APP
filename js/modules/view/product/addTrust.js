@@ -143,6 +143,15 @@ define(function(require, exports, module) {
 		});
 	};
 	bindEvent = function() {
+		$('#remarksDIV').off('valuechange').on('valuechange', function(e) {
+			var value = $(this).text();
+			if (value) {
+				if (value != '') {
+					$('#remarks').val($(this).html());
+					$validator.check('remarks');
+				}
+			}
+		});
 		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
 			var uid = $(o).attr('uid');
 			var type = $(o).attr('type');
@@ -378,7 +387,6 @@ define(function(require, exports, module) {
 		$('#typeId').val(typeId);
 		$('.placeTxt', '#selectProductType').text(typeName);
 		$('#attToken').val(attToken);
-		autosize(document.querySelectorAll('.textBox'));
 		bindValidate();
 		bindEvent();
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {

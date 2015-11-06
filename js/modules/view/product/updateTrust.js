@@ -93,6 +93,16 @@ define(function(require, exports, module) {
 	};
 
 	bindEvent = function() {
+
+		$('#remarksDIV').off('valuechange').on('valuechange', function(e) {
+			var value = $(this).text();
+			if (value) {
+				if (value != '') {
+					$('#remarks').val($(this).html());
+					$validator.check('remarks');
+				}
+			}
+		});
 		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
 			var uid = $(o).attr('uid');
 			var type = $(o).attr('type');
@@ -148,6 +158,7 @@ define(function(require, exports, module) {
 					$('#productOrgId').val(productInfo['productOrgId']);
 					$('#orgName').val(productInfo['orgName']);
 					$('#remarks').val(productInfo['remarks']);
+					$('#remarksDIV').html(productInfo['remarks']);
 
 					$('#payOffType').val(trust['payOffType']);
 
@@ -183,7 +194,6 @@ define(function(require, exports, module) {
 		$('#attToken').val(attToken);
 		bindValidate();
 		loadData();
-		autosize(document.querySelectorAll('.textBox'));
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$nativeUIManager.confirm('提示', '是否放弃保存?', ['确定', '取消'], function() {
 				var footerWin = $windowManager.getById('product_edit_footer');

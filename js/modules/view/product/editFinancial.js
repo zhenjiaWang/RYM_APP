@@ -450,6 +450,15 @@ define(function(require, exports, module) {
 		}
 	};
 	bindEvent = function() {
+		$('#remarksDIV').off('valuechange').on('valuechange', function(e) {
+			var value = $(this).text();
+			if (value) {
+				if (value != '') {
+					$('#remarks').val($(this).html());
+					$validator.check('remarks');
+				}
+			}
+		});
 		$common.touchSE($('#addBtn'), function(event, startTouch, o) {}, function(event, o) {
 			addProduct();
 			$nativeUIManager.watting('请填写第' + $('.productDataUL').size() + '个理财产品', 1500);
@@ -555,6 +564,7 @@ define(function(require, exports, module) {
 						}, 500);
 					}
 					$('#remarks').val(productInfo['remarks']);
+					$('#remarksDIV').html(productInfo['remarks']);
 					var attArray = editJson['attArray'];
 					if (attArray && $(attArray).size() > 0) {
 						if (!$('#imgUL').is(':visible')) {

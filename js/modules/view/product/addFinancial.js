@@ -26,15 +26,15 @@ define(function(require, exports, module) {
 	saveData = function(numSeq) {
 		$nativeUIManager.watting('正在发布产品...');
 		var financialCount = $('.productDataUL').size();
-		var productIndex='';
+		var productIndex = '';
 		if (financialCount <= 0) {
 			$nativeUIManager.alert('提示', '没有理财产品无法保存', 'OK', function() {});
 			return false;
 		}
-		$('.productDataUL').each(function(i,o){
-			var index=$(o).attr('index');
-			if(index){
-				productIndex+=index+',';
+		$('.productDataUL').each(function(i, o) {
+			var index = $(o).attr('index');
+			if (index) {
+				productIndex += index + ',';
 			}
 		});
 		$('#productIndex').val(productIndex);
@@ -324,7 +324,15 @@ define(function(require, exports, module) {
 		}
 	};
 	bindEvent = function() {
-
+		$('#remarksDIV').off('valuechange').on('valuechange', function(e) {
+			var value = $(this).text();
+			if (value) {
+				if (value != '') {
+					$('#remarks').val($(this).html());
+					$validator.check('remarks');
+				}
+			}
+		});
 
 		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
 			var uid = $(o).attr('uid');
@@ -529,7 +537,6 @@ define(function(require, exports, module) {
 		$('#typeId').val(typeId);
 		$('.placeTxt', '#selectProductType').text(typeName);
 		$('#attToken').val(attToken);
-		autosize(document.querySelectorAll('.textBox'));
 		bindValidate();
 		bindEvent();
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {

@@ -141,6 +141,15 @@ define(function(require, exports, module) {
 		});
 	};
 	bindEvent = function() {
+		$('#remarksDIV').off('valuechange').on('valuechange', function(e) {
+			var value = $(this).text();
+			if (value) {
+				if (value != '') {
+					$('#remarks').val($(this).html());
+					$validator.check('remarks');
+				}
+			}
+		});
 		$common.touchSE($('span', '#imgUL'), function(event, startTouch, o) {}, function(event, o) {
 			var uid = $(o).attr('uid');
 			var type = $(o).attr('type');
@@ -266,7 +275,7 @@ define(function(require, exports, module) {
 		$('#attToken').val(attToken);
 		bindValidate();
 		bindEvent();
-		autosize(document.querySelectorAll('.textBox'));
+		
 
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			var footerWin = $windowManager.getById('product_add_footer');

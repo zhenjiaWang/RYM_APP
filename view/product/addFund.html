@@ -60,15 +60,15 @@
 				<ul id="descUL" class="inputList textareaLi mart15">
 					<li class="clearfix noboder" controlType="text">
 						<span class="lable">产品描述</span>
-						<p>
-							<textarea id="remarks" name="remarks" class="textBox"></textarea>
-						</p>
+						<input type="hidden" id="remarks" name="remarks"/>
+						<div class="textBox" contenteditable="true" id="remarksDIV" name="remarksDIV"></div>
 						<label class="lableTxt"></label>
 					</li>
 				</ul>
 				<input type="hidden" id="org.guiceside.web.jsp.taglib.Token" name="org.guiceside.web.jsp.taglib.Token"/>
 				<input type="hidden" id="numSeq" name="numSeq"/>
 				<input type="hidden" id="attToken" name="attToken"/>
+				
 			</form>
 			<ul class="inputList imgList mart15" id="imgUL" style="display: none;">
 				<li class="clearfix noboder Ios_scroll" style="overflow-y: hidden;">

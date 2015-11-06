@@ -45,7 +45,7 @@ define(function(require, exports, module) {
 					$('#viewCount').text(productInfo['viewCount']);
 					$('#relationCount').text(productInfo['relationCount']);
 					$('#orgName').text(productInfo['orgName']);
-					$('#remarks').text(productInfo['remarks']);
+					$('#remarks').html(productInfo['remarks']);
 					$('#fundTypeDesc').text(fund['fundType']);
 					$('#fundType').text(fund['fundType']);
 					var attArray = jsonData['attArray'];
