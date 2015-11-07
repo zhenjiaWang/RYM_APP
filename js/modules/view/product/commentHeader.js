@@ -14,7 +14,8 @@ define(function(require, exports, module) {
 	var userName = queryMap.get('userName');
 	var commentType = queryMap.get('commentType');
 	loadWebview = function(url) {
-		var productCommentWin = plus.webview.create('comment.html?id=' + id+'&tab='+tab+'&userId='+userId+'&replyId='+replyId+'&userName='+userName+'&commentType='+commentType, "product_comment", {
+		var	windowURL = encodeURI('comment.html?id=' + id+'&tab='+tab+'&userId='+userId+'&replyId='+replyId+'&userName='+userName+'&commentType='+commentType);
+		var productCommentWin = plus.webview.create(windowURL, "product_comment", {
 			top: "50px",
 			bottom: "0px",
 			scrollIndicator: 'vertical'

@@ -46,7 +46,7 @@ define(function(require, exports, module) {
 						$('#viewCount').text(productInfo['viewCount']);
 						$('#relationCount').text(productInfo['relationCount']);
 						$('#orgName').text(productInfo['orgName']);
-						$('#remarks').text(productInfo['remarks']);
+						$('#remarks').html(productInfo['remarks']);
 
 						$('#dayLimit').text(trust['dayLimit'] + '天');
 						$('#yieldDesc').text(trust['yield']);

@@ -70,7 +70,7 @@ define(function(require, exports, module) {
 					$('#viewCount').text(productInfo['viewCount']);
 					$('#relationCount').text(productInfo['relationCount']);
 					$('#orgName').text(productInfo['orgName']);
-					$('#remarks').text(productInfo['remarks']);
+					$('#remarks').html(productInfo['remarks']);
 					$('#dayLimit').text(financial['minLimitDay'] + '-' + financial['maxLimitDay'] + '天');
 					$('#yieldDesc').text(financial['minYield'] + '-' + financial['maxYield']);
 					var financialArray = financial['financialArray'];

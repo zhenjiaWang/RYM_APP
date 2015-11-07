@@ -111,7 +111,8 @@ define(function(require, exports, module) {
 		});
 	};
 	loadWebview = function() {
-		var headerPopWin = plus.webview.create('headerPop.html?userId=' + userId + '&userName=' + userName, "product_header_pop", {
+		var	windowURL = encodeURI('headerPop.html?userId=' + userId + '&userName=' + userName);
+		var headerPopWin = plus.webview.create(windowURL, "product_header_pop", {
 			top: "0px",
 			bottom: "50px",
 			scrollIndicator: 'vertical'
