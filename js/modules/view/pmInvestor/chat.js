@@ -61,7 +61,9 @@ define(function(require, exports, module) {
 				},
 				success: function(jsonData) {
 					if (jsonData) {
-						if (jsonData['result'] == '0') {} else {
+						if (jsonData['result'] == '0') {
+							
+						}else {
 							$nativeUIManager.alert('提示', '私信发送失败', 'OK', function() {});
 						}
 					}
@@ -132,6 +134,16 @@ define(function(require, exports, module) {
 						$nativeUIManager.wattingClose();
 						var dateArray = jsonData['dateArray'];
 						var sb = new StringBuilder();
+						var status=jsonData['status'];
+						if(status!='ok'){
+							$('.main').css('bottom','0px');
+							$('.footer').hide();
+							if(status=='notMyPlanner'){
+								$nativeUIManager.alert('提示', '你已被对方取消关注', 'OK', function() {});
+							}else if(status=='blackList'){
+									$nativeUIManager.alert('提示', '你已被对方拉黑', 'OK', function() {});
+							}
+						}
 						if (dateArray && $(dateArray).size() > 0) {
 							$(dateArray).each(function(i, datekey) {
 								var pmArray = jsonData[datekey];
