@@ -225,6 +225,18 @@ define(function(require, exports, module) {
 	};
 	bindValidate = function() {
 		$validator.init([{
+			id: 'productCode',
+			required: true,
+			pattern: [{
+				type: 'blank',
+				exp: '!=',
+				msg: '请输入代码'
+			}, {
+				type: 'length',
+				exp: '<=40',
+				msg: '代码不能大于40字'
+			}]
+		},{
 			id: 'productName',
 			required: true,
 			pattern: [{

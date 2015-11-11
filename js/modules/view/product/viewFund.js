@@ -41,6 +41,7 @@ define(function(require, exports, module) {
 				var productInfo = jsonData['productInfo'];
 				if (productInfo && fund) {
 					$('#name').text(productInfo['name']);
+					$('#code').text(productInfo['code']);
 					$('#updateTime').text(productInfo['updateTime']);
 					$('#viewCount').text(productInfo['viewCount']);
 					$('#relationCount').text(productInfo['relationCount']);

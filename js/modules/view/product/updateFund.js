@@ -39,10 +39,10 @@ define(function(require, exports, module) {
 								productViewHeader.evalJS('loadViewData()');
 								window.setTimeout(function() {
 									$nativeUIManager.wattingClose();
-										var footerWin = $windowManager.getById('product_edit_footer');
-										if (footerWin) {
-											footerWin.close();
-										}
+									var footerWin = $windowManager.getById('product_edit_footer');
+									if (footerWin) {
+										footerWin.close();
+									}
 								}, 1500);
 							}
 						} else {
@@ -144,6 +144,7 @@ define(function(require, exports, module) {
 				var fund = editJson['fund'];
 				if (productInfo && fund) {
 					$('#id').val(editJson['id']);
+					$('#productCode').val(productInfo['code']);
 					$('#productName').val(productInfo['name']);
 					$('#productOrgId').val(productInfo['productOrgId']);
 					$('#orgName').val(productInfo['orgName']);

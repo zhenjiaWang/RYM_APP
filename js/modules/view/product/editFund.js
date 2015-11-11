@@ -212,6 +212,18 @@ define(function(require, exports, module) {
 	};
 	bindValidate = function() {
 		$validator.init([{
+			id: 'productCode',
+			required: true,
+			pattern: [{
+				type: 'blank',
+				exp: '!=',
+				msg: '请输入代码'
+			}, {
+				type: 'length',
+				exp: '<=40',
+				msg: '代码不能大于40字'
+			}]
+		},{
 			id: 'productName',
 			required: true,
 			pattern: [{
@@ -260,6 +272,7 @@ define(function(require, exports, module) {
 				if (productInfo && fund) {
 					$('#id').val(editJson['id']);
 					$('#typeId').val(productInfo['typeId']);
+					$('#productCode').val(productInfo['code']);
 					$('#productName').val(productInfo['name']);
 					$('#productOrgId').val(productInfo['productOrgId']);
 					$('.placeTxt', '#selectProductOrg').text(productInfo['orgName']);
