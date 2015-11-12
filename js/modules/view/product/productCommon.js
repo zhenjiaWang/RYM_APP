@@ -62,6 +62,39 @@ define(function(require, exports, module) {
 			});
 		});
 	};
+	mergeActionCommon = function() {
+		$nativeUIManager.watting('请稍等...');
+		$common.refreshToken(function(tokenId) {
+			$.ajax({
+				type: 'POST',
+				url: $common.getRestApiURL() + '/product/info/mergeAction',
+				dataType: 'json',
+				data: {
+					id: ID,
+					'org.guiceside.web.jsp.taglib.Token': tokenId
+				},
+				success: function(jsonData) {
+					if (jsonData) {
+						if (jsonData['result'] == '0') {
+							$nativeUIManager.wattingTitle('合并成功!');
+							$windowManager.reloadOtherWindow('product_user', true);
+							window.setTimeout(function() {
+								$nativeUIManager.wattingClose();
+								$windowManager.close();
+							}, 300);
+						} else {
+							$nativeUIManager.wattingClose();
+							$nativeUIManager.alert('提示', '合并产品失败', 'OK', function() {});
+						}
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					$nativeUIManager.wattingClose();
+					$nativeUIManager.alert('提示', '合并产品失败', 'OK', function() {});
+				}
+			});
+		});
+	};
 	lockActionCommon = function() {
 		$nativeUIManager.watting('请稍等...');
 		$common.refreshToken(function(tokenId) {
@@ -508,6 +541,10 @@ define(function(require, exports, module) {
 				$windowManager.create('product_commentHeader', 'commentHeader.html?id=' + ID + '&tab=' + productTab, false, true, function(show) {
 					show();
 				});
+			}else if (action == 'merge') {
+				$nativeUIManager.confirm('提示', '你确定要合并重复产品?', ['确定', '取消'], function() {
+					mergeActionCommon();
+				}, function() {});
 			}
 		}
 	};
