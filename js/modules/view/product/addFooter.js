@@ -37,7 +37,6 @@ define(function(require, exports, module) {
 							},
 							success: function(jsonData) {
 								if (jsonData) {
-									console.info(JSON.stringify(jsonData))
 									if (jsonData['result'] == '0') {
 										$nativeUIManager.wattingClose();
 										$userInfo.put('uploadFiles', JSON.stringify(jsonData));

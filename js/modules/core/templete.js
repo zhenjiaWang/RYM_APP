@@ -411,7 +411,7 @@ define(function(require, exports, module) {
 		weixinShare.append('appid=wx7ec527daa5585fc3');
 		weixinShare.append('&redirect_uri={url}');
 		weixinShare.append('&response_type=code');
-		weixinShare.append('&scope=snsapi_base');
+		weixinShare.append('&scope=snsapi_userinfo');
 		weixinShare.append('&state=1#wechat_redirect');
 		return weixinShare.toString();
 	};
