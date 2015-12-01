@@ -176,7 +176,6 @@ define(function(require, exports, module) {
 						$('.main').attr('nextIndex', 0);
 						var page = jsonData['page'];
 						if (page) {
-							console.info(JSON.stringify(page))
 							if (page['hasNextPage'] == true) {
 								$('.main').attr('nextIndex', page['nextIndex']);
 							}

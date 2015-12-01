@@ -334,6 +334,13 @@ define(function(require, exports, module) {
 				productUserWin.evalJS('reloadMyInfo()');
 			}
 		});
+		$common.androidBack(function() {
+			$windowManager.close();
+			var productUserWin = $windowManager.getById('product_user');
+			if (productUserWin) {
+				productUserWin.evalJS('reloadMyInfo()');
+			}
+		});
 		plus.oauth.getServices(function(services) {
 			auths = services;
 		}, function(e) {

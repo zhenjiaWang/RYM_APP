@@ -4,6 +4,9 @@ define(function(require, exports, module) {
 	var $nativeUIManager = require('manager/nativeUI');
 	var $windowManager = require('manager/window');
 	bindEvent = function() {
+		$common.androidBack(function() {
+			$windowManager.close();
+		});
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});

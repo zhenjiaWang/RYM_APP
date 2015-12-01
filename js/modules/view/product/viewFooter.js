@@ -106,9 +106,6 @@ define(function(require, exports, module) {
 		loadData();
 		loadWebview();
 		bindEvent();
-		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
-			$windowManager.close();
-		});
 	};
 	if (window.plus) {
 		plusReady();

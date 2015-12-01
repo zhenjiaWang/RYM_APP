@@ -9,6 +9,9 @@ define(function(require, exports, module) {
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});
+		$common.androidBack(function() {
+			$windowManager.close();
+		});
 	};
 	loadWebview = function() {
 		var visitListWin = plus.webview.create("visitList.html", "visit_list", {

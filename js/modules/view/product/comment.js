@@ -23,14 +23,10 @@ define(function(require, exports, module) {
 		}, 200);
 	};
 	reply = function(uid, userName, commentType) {
-		$nativeUIManager.watting();
-		window.setTimeout(function() {
-			$keyManager.openSoftKeyboard(function() {
-				$('#replyTip').text('回复 ' + userName).show();
-				$('#content').attr('replyId', uid).attr('commentType', commentType).text('').get(0).focus();
-				$nativeUIManager.wattingClose();
-			});
-		}, 500)
+		$keyManager.openSoftKeyboard(function() {
+			$('#replyTip').text('回复 ' + userName).show();
+			$('#content').attr('replyId', uid).attr('commentType', commentType).text('').get(0).focus();
+		});
 	};
 	sendComment = function(content, replyId, commentType, callback) {
 		$nativeUIManager.watting('请稍等...');
@@ -177,7 +173,9 @@ define(function(require, exports, module) {
 		});
 		$common.touchSE($('#replyTip'), function(event, startTouch, o) {}, function(event, o) {
 			$keyManager.openSoftKeyboard(function() {
-				$('#content').get(0).focus();
+				window.setTimeout(function(){
+					$("#content").get(0).focus();
+				},500);
 			});
 		});
 
@@ -449,7 +447,7 @@ define(function(require, exports, module) {
 						}
 						pullToRefreshEvent();
 						bindEvent();
-						if(_replyId&&_commentType&&_userName){
+						if (_replyId && _commentType && _userName) {
 							reply(_replyId, _userName, _commentType);
 						}
 						if (!callback) {

@@ -176,6 +176,16 @@ define(function(require, exports, module) {
 		$('#attToken').val(attToken);
 		bindValidate();
 		loadData();
+		$common.androidBack(function() {
+			$nativeUIManager.confirm('提示', '是否放弃保存?', ['确定', '取消'], function() {
+				var footerWin = $windowManager.getById('product_edit_footer');
+				if (footerWin) {
+					footerWin.close();
+				}
+			}, function() {
+
+			});
+		});
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$nativeUIManager.confirm('提示', '是否放弃保存?', ['确定', '取消'], function() {
 				var footerWin = $windowManager.getById('product_edit_footer');

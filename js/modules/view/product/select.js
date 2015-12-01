@@ -13,6 +13,9 @@ define(function(require, exports, module) {
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});
+		$common.androidBack(function() {
+			$windowManager.close();
+		});
 		$common.touchSE($('li','#selectItemUL'), function(event, startTouch, o) {}, function(event, o) {
 			if(!$(o).hasClass('choosed')){
 				$('li','#selectItemUL').removeClass('choosed');

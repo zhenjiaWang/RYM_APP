@@ -19,6 +19,7 @@ define(function(require, exports, module) {
 				if (typeof callback == 'function') {
 					callback();
 				}
+
 			} else if (osName == 'iOS') {
 				var webView = plus.webview.currentWebview().nativeInstanceObject();
 				webView.plusCallMethod({

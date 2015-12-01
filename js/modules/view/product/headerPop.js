@@ -10,6 +10,12 @@ define(function(require, exports, module) {
 	var userId = queryMap.get('userId');
 	var userName = queryMap.get('userName');
 	bindEvent = function() {
+		$common.androidBack(function() {
+			var footerPopWin=$windowManager.getById('product_footer_pop');
+			if(footerPopWin){
+				footerPopWin.close();
+			}
+		});
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			var footerPopWin=$windowManager.getById('product_footer_pop');
 			if(footerPopWin){

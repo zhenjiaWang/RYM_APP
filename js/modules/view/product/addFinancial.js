@@ -545,6 +545,12 @@ define(function(require, exports, module) {
 				footerWin.close();
 			}
 		});
+		$common.androidBack(function() {
+			var footerWin = $windowManager.getById('product_add_footer');
+			if (footerWin) {
+				footerWin.close();
+			}
+		});
 		$userInfo.put('attCount', $('div', '#imgUL').find('img').size() + '');
 		var obj = $windowManager.current();
 		if (obj) {

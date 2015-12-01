@@ -389,6 +389,12 @@ define(function(require, exports, module) {
 		$('#attToken').val(attToken);
 		bindValidate();
 		bindEvent();
+		$common.androidBack(function() {
+			var footerWin = $windowManager.getById('product_add_footer');
+			if (footerWin) {
+				footerWin.close();
+			}
+		});
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			var footerWin = $windowManager.getById('product_add_footer');
 			if (footerWin) {

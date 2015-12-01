@@ -98,7 +98,8 @@ define(function(require, exports, module) {
 												plus.zip.compressImage({
 														src: entry.toLocalURL(),
 														dst: '_www/wzj.jpg',
-														quality: 40
+														quality: 40,
+														overwrite:true
 													},
 													function(event) {
 														files.push({
@@ -121,7 +122,8 @@ define(function(require, exports, module) {
 											plus.zip.compressImage({
 													src: entry.toLocalURL(),
 													dst: '_www/wzj.jpg',
-													quality: 40
+													quality: 40,
+													overwrite:true
 												},
 												function(event) {
 													files.push({

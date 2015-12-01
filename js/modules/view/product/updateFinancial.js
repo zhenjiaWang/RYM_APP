@@ -297,6 +297,16 @@ define(function(require, exports, module) {
 
 			});
 		});
+		$common.androidBack(function() {
+			$nativeUIManager.confirm('提示', '是否放弃保存?', ['确定', '取消'], function() {
+				var footerWin = $windowManager.getById('product_edit_footer');
+				if (footerWin) {
+					footerWin.close();
+				}
+			}, function() {
+
+			});
+		});
 		$userInfo.put('attCount', $('div', '#imgUL').find('img').size() + '');
 		var obj = $windowManager.current();
 		if (obj) {

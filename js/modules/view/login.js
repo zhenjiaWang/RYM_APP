@@ -72,10 +72,12 @@ define(function(require, exports, module) {
 				}, false);
 				$nativeUIManager.watting('请稍等...');
 				var s = auths[0];
+				alert(s);
 				s.login(function(e) {
 					if (s.authResult) {
 						s.getUserInfo(function() {
 							value = s.userInfo['unionid'];
+							alert(value);
 							if (value) {
 								loginWechat(value);
 							}

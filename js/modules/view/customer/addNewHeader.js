@@ -6,6 +6,9 @@ define(function(require, exports, module) {
 	var $windowManager = require('manager/window');
 	var $controlWindow = require('manager/controlWindow');
 	bindEvent = function() {
+		$common.androidBack(function() {
+			$windowManager.close();
+		});
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});

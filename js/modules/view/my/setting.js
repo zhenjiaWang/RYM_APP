@@ -7,6 +7,9 @@ define(function(require, exports, module) {
 		$common.touchSE($('#backBtn'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.close();
 		});
+		$common.androidBack(function() {
+			$windowManager.close();
+		});
 		$common.touchSE($('#about'), function(event, startTouch, o) {}, function(event, o) {
 			$windowManager.create('my_about', 'about.html', false, true, function(show) {
 				show();

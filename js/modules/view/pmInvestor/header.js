@@ -37,6 +37,16 @@ define(function(require, exports, module) {
 				}
 			}
 		});
+		$common.androidBack(function() {
+			$windowManager.close();
+			if(tip&&tip=='1'){
+				var tipWin=$windowManager.getById('tip_list');
+				if(tipWin){
+					tipWin.evalJS('loadData()');
+					tipWin.evalJS('loadTip()');
+				}
+			}
+		});
 	};
 	if (window.plus) {
 		plusReady();

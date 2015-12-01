@@ -11,6 +11,9 @@ define(function(require, exports, module) {
 	var currentWindow;
 	var queryMap = parseURL();
 	var userId = queryMap.get('userId');
+	reloadMyInfo=function(){
+		
+	};
 	onRefresh = function() {
 		nextIndex = 0;
 		$('.cardBox').attr('nextIndex', 0);
