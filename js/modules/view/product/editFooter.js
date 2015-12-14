@@ -98,8 +98,9 @@ define(function(require, exports, module) {
 											window.setTimeout(function() {
 												plus.zip.compressImage({
 														src: entry.toLocalURL(),
-														dst: '_www/wzj.jpg',
-														quality: 40
+														dst: '_documents/wzj.jpg',
+														quality: 20,
+														overwrite: true
 													},
 													function(event) {
 														files.push({
@@ -111,7 +112,8 @@ define(function(require, exports, module) {
 														window.setTimeout(function() {
 															upload();
 														}, 500);
-													}, function(error) {});
+													},
+													function(error) {});
 											}, 500);
 										});
 									});
@@ -121,8 +123,9 @@ define(function(require, exports, module) {
 											$nativeUIManager.watting('正在压缩图片...');
 											plus.zip.compressImage({
 													src: entry.toLocalURL(),
-													dst: '_www/wzj.jpg',
-													quality: 40
+													dst: '_documents/wzj.jpg',
+													quality: 20,
+													overwrite: true
 												},
 												function(event) {
 													files.push({
@@ -134,7 +137,8 @@ define(function(require, exports, module) {
 													window.setTimeout(function() {
 														upload();
 													}, 500);
-												}, function(error) {
+												},
+												function(error) {
 													$nativeUIManager.wattingTitle('图片压缩失败...');
 													window.setTimeout(function() {
 														$nativeUIManager.wattingClose();
@@ -170,9 +174,9 @@ define(function(require, exports, module) {
 					if (jsonData) {
 						if (jsonData['result'] == '0') {
 							if (typeId == '1') {
-								if(editType=='edit'){
+								if (editType == 'edit') {
 									$('body').append($templete.addFooterImgProductItem());
-								}else{
+								} else {
 									$('body').append($templete.addFooterImgItem());
 								}
 							} else {

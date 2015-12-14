@@ -7,6 +7,7 @@ define(function(require, exports, module) {
 	var $controlWindow = require('manager/controlWindow');
 	var $templete = require('core/templete');
 	goSearch = function(value) {
+		value=encodeURIComponent(value);
 		$windowManager.load('investorList.html?keyword=' + value);
 	};
 	bindEvent = function() {

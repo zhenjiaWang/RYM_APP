@@ -290,8 +290,9 @@ define(function(require, exports, module) {
 											window.setTimeout(function() {
 												plus.zip.compressImage({
 														src: entry.toLocalURL(),
-														dst: '_www/wzj.jpg',
-														quality: 40
+														dst: '_documents/wzj.jpg',
+														quality: 20,
+														overwrite: true
 													},
 													function(event) {
 														files.push({
@@ -303,7 +304,8 @@ define(function(require, exports, module) {
 														window.setTimeout(function() {
 															upload();
 														}, 500);
-													}, function(error) {});
+													},
+													function(error) {});
 											}, 500);
 										});
 									});
@@ -313,8 +315,9 @@ define(function(require, exports, module) {
 											$nativeUIManager.watting('正在压缩图片...');
 											plus.zip.compressImage({
 													src: entry.toLocalURL(),
-													dst: '_www/wzj.jpg',
-													quality: 40
+													dst: '_documents/wzj.jpg',
+													quality: 20,
+													overwrite: true
 												},
 												function(event) {
 													files.push({
@@ -324,7 +327,8 @@ define(function(require, exports, module) {
 													index++;
 													$nativeUIManager.wattingTitle('正在上传...');
 													upload();
-												}, function(error) {
+												},
+												function(error) {
 													$nativeUIManager.wattingTitle('图片压缩失败...');
 													window.setTimeout(function() {
 														$nativeUIManager.wattingClose();
@@ -360,9 +364,9 @@ define(function(require, exports, module) {
 							if (userId != $userInfo.get('userId')) {
 								var friendYn = planner['friendYn'];
 								if (friendYn) {
-									var footerPopWin=$windowManager.getById('product_footer_pop');
-									if(footerPopWin){
-										footerPopWin.evalJS('toobar("'+userId+'","'+friendYn+'")');
+									var footerPopWin = $windowManager.getById('product_footer_pop');
+									if (footerPopWin) {
+										footerPopWin.evalJS('toobar("' + userId + '","' + friendYn + '")');
 									}
 								}
 							}

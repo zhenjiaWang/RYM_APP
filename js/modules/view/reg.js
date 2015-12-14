@@ -241,7 +241,7 @@ define(function(require, exports, module) {
 	};
 	plusReady = function() {
 		if(unionId){
-			$('#unionId').val(unionId);
+			$('#openId').val(unionId);
 			if(mobilePhone&&mobilePhone!=undefined&&mobilePhone!='undefined'){
 				$('#mobilePhone').val(mobilePhone).attr('readonly','readonly');
 			}

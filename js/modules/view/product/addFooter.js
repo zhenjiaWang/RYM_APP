@@ -94,36 +94,11 @@ define(function(require, exports, module) {
 									plus.gallery.pick(function(p) {
 										plus.io.resolveLocalFileSystemURL(p, function(entry) {
 											$nativeUIManager.watting('正在压缩图片...');
-											window.setTimeout(function() {
-												plus.zip.compressImage({
-														src: entry.toLocalURL(),
-														dst: '_www/wzj.jpg',
-														quality: 40,
-														overwrite:true
-													},
-													function(event) {
-														files.push({
-															name: "uploadkey" + index,
-															path: event.target
-														});
-														index++;
-														$nativeUIManager.wattingTitle('正在上传...');
-														window.setTimeout(function() {
-															upload();
-														}, 500);
-													}, function(error) {});
-											}, 500);
-										});
-									});
-								} else if (index == 2) {
-									plus.camera.getCamera().captureImage(function(p) {
-										plus.io.resolveLocalFileSystemURL(p, function(entry) {
-											$nativeUIManager.watting('正在压缩图片...');
 											plus.zip.compressImage({
 													src: entry.toLocalURL(),
-													dst: '_www/wzj.jpg',
-													quality: 40,
-													overwrite:true
+													dst: '_documents/wzj.jpg',
+													quality: 20,
+													overwrite: true
 												},
 												function(event) {
 													files.push({
@@ -135,8 +110,38 @@ define(function(require, exports, module) {
 													window.setTimeout(function() {
 														upload();
 													}, 500);
-												}, function(error) {
-													$nativeUIManager.wattingTitle('图片压缩失败...');
+												},
+												function(error) {
+													$nativeUIManager.wattingTitle('图片压缩失败...code:'+error.code+',message:'+error.message);
+													window.setTimeout(function() {
+														$nativeUIManager.wattingClose();
+													}, 1000);
+												});
+										});
+									});
+								} else if (index == 2) {
+									plus.camera.getCamera().captureImage(function(p) {
+										plus.io.resolveLocalFileSystemURL(p, function(entry) {
+											$nativeUIManager.watting('正在压缩图片...');
+											plus.zip.compressImage({
+													src: entry.toLocalURL(),
+													dst: '_documents/wzj.jpg',
+													quality: 20,
+													overwrite: true
+												},
+												function(event) {
+													files.push({
+														name: "uploadkey" + index,
+														path: event.target
+													});
+													index++;
+													$nativeUIManager.wattingTitle('正在上传...');
+													window.setTimeout(function() {
+														upload();
+													}, 500);
+												},
+												function(error) {
+													$nativeUIManager.wattingTitle('图片压缩失败...code:'+error.code+',message:'+error.message);
 													window.setTimeout(function() {
 														$nativeUIManager.wattingClose();
 													}, 1000);
@@ -177,7 +182,7 @@ define(function(require, exports, module) {
 								$('body').append($templete.addFooterImgItem());
 							}
 							uploadAttToken = jsonData['attToken'];
-							var windowURL = encodeURI(viewUrl + '?typeName=' + typeName+'&attToken=' + jsonData['attToken'] + '&typeId=' + typeId);
+							var windowURL = encodeURI(viewUrl + '?typeName=' + typeName + '&attToken=' + jsonData['attToken'] + '&typeId=' + typeId);
 							var productAddWin = plus.webview.create(windowURL, "product_add_product", {
 								top: "0px",
 								bottom: "50px",

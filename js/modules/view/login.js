@@ -72,26 +72,24 @@ define(function(require, exports, module) {
 				}, false);
 				$nativeUIManager.watting('请稍等...');
 				var s = auths[0];
-				alert(s);
 				s.login(function(e) {
 					if (s.authResult) {
 						s.getUserInfo(function() {
 							value = s.userInfo['unionid'];
-							alert(value);
 							if (value) {
 								loginWechat(value);
 							}
 						}, function(e) {
 							$nativeUIManager.wattingClose();
-							$nativeUIManager.alert('提示', '无法使用微信登录', 'OK', function() {});
+							$nativeUIManager.alert('提示', '无法使用微信登录['+e.code+']['+e.message+']', 'OK', function() {});
 						});
 					}
 				}, function(e) {
 					$nativeUIManager.wattingClose();
-					$nativeUIManager.alert('提示', '无法使用微信登录', 'OK', function() {});
+					$nativeUIManager.alert('提示', '无法使用微信登录['+e.code+']['+e.message+']', 'OK', function() {});
 				});
 			}, function(e) {
-				$nativeUIManager.alert('提示', '无法使用微信登录', 'OK', function() {});
+				$nativeUIManager.alert('提示', '无法使用微信登录['+e.code+']['+e.message+']', 'OK', function() {});
 			});
 		});
 		var height = document.body.clientHeight;
