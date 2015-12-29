@@ -48,6 +48,12 @@ define(function(require, exports, module) {
 
 	plusReady = function() {
 		init();
+		
+		$common.touchSE($('#forgetBtn'), function(event, startTouch, o) {}, function(event, o) {
+			$windowManager.create('forgetBtn', 'forget.html', false, true, function(show) {
+				show();
+			});
+		});
 		$common.touchSE($('#loginBtn'), function(event, startTouch, o) {}, function(event, o) {
 			var mobilePhone = $.trim($('#mobilePhone').val());
 			var password = $.trim($('#password').val());

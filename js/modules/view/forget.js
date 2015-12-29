@@ -1,6 +1,5 @@
 define(function(require, exports, module) {
 	var $common = require('core/common');
-	var $userInfo = require('core/userInfo');
 	var $authorize = require('core/authorize');
 	var $nativeUIManager = require('manager/nativeUI');
 	var $windowManager = require('manager/window');
@@ -13,7 +12,7 @@ define(function(require, exports, module) {
 			url: $common.getRestApiURL() + '/common/reg/verifyCode',
 			dataType: 'json',
 			data: {
-				mobilePhone: $userInfo.get('mobilePhone')
+				mobilePhone: $('#mobilePhone').val()
 			},
 			success: function(jsonData) {
 				if (jsonData) {
@@ -70,33 +69,31 @@ define(function(require, exports, module) {
 				var passed = $validator.isPassed();
 				if (passed) {
 					$nativeUIManager.watting('正在重置密码...');
-					$common.refreshToken(function(tokenId) {
-						$.ajax({
-							type: 'POST',
-							url: $common.getRestApiURL() + '/sys/planner/password',
-							dataType: 'json',
-							data: {
-								'org.guiceside.web.jsp.taglib.Token': tokenId,
-								password: $('#password').val()
-							},
-							success: function(jsonData) {
-								if (jsonData) {
-									if (jsonData['result'] == '0') {
-										$nativeUIManager.wattingClose();
-										$nativeUIManager.alert('提示', '重置密码成功，请重新登录！', 'OK', function() {
-											$authorize.logout();
-										});
-									} else {
-										$nativeUIManager.wattingClose();
-										$nativeUIManager.alert('提示', '重置密码失败', 'OK', function() {});
-									}
+					$.ajax({
+						type: 'POST',
+						url: $common.getRestApiURL() + '/common/reg/password',
+						dataType: 'json',
+						data: {
+							password: $('#password').val(),
+							mobilePhone: $('#mobilePhone').val()
+						},
+						success: function(jsonData) {
+							if (jsonData) {
+								if (jsonData['result'] == '0') {
+									$nativeUIManager.wattingClose();
+									$nativeUIManager.alert('提示', '重置密码成功，请重新登录！', 'OK', function() {
+										$windowManager.close();
+									});
+								} else {
+									$nativeUIManager.wattingClose();
+									$nativeUIManager.alert('提示', '重置密码失败', 'OK', function() {});
 								}
-							},
-							error: function(XMLHttpRequest, textStatus, errorThrown) {
-								$nativeUIManager.wattingClose();
-								$nativeUIManager.alert('提示', '重置密码失败', 'OK', function() {});
 							}
-						});
+						},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+							$nativeUIManager.wattingClose();
+							$nativeUIManager.alert('提示', '重置密码失败', 'OK', function() {});
+						}
 					});
 				}
 			}, 500);
@@ -104,6 +101,44 @@ define(function(require, exports, module) {
 	};
 	bindValidate = function() {
 		$validator.init([{
+			id: 'mobilePhone',
+			required: true,
+			pattern: [{
+				type: 'reg',
+				exp: '_mobile',
+				msg: '格式不正确'
+			}],
+			callback: function(t) {
+				if (t) {
+					$.ajax({
+						type: 'POST',
+						url: $common.getRestApiURL() + '/common/reg/validateMobilePhonePlanner',
+						dataType: 'json',
+						data: {
+							mobilePhone: $('#mobilePhone').val()
+						},
+						success: function(jsonData) {
+							if (jsonData) {
+								if (jsonData['result'] == '0') {
+									if ($('#verifyCodeBtn').hasClass('waitNum')) {
+										$('#verifyCodeBtn').removeClass('waitNum').text('点击获取验证码');
+									}
+								} else {
+									$nativeUIManager.alert('提示', '没有查到该手机号码对应的理财师！', 'OK', function() {
+										$('#mobilePhone').val('');
+									});
+								}
+							}
+						},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+							$nativeUIManager.alert('提示', '没有查到该手机号码对应的理财师！', 'OK', function() {
+								$('#mobilePhone').val('');
+							});
+						}
+					});
+				}
+			}
+		}, {
 			id: 'verifyCode',
 			required: true,
 			pattern: [{
@@ -118,7 +153,7 @@ define(function(require, exports, module) {
 						url: $common.getRestApiURL() + '/common/reg/validateCode',
 						dataType: 'json',
 						data: {
-							mobilePhone:  $userInfo.get('mobilePhone'),
+							mobilePhone: $('#mobilePhone').val(),
 							verifyCode: $('#verifyCode').val()
 						},
 						success: function(jsonData) {

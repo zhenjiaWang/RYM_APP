@@ -26,7 +26,7 @@ define(function(require, exports, module) {
 							$nativeUIManager.wattingTitle('验证码已发送!');
 							window.setTimeout(function() {
 								$nativeUIManager.wattingClose();
-							}, 5000);
+							}, 2000);
 						}
 					}
 				}

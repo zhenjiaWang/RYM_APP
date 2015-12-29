@@ -399,7 +399,8 @@ define(function(require, exports, module) {
 			url: $common.getRestApiURL() + '/product/info/editData',
 			dataType: 'json',
 			data: {
-				id: ID
+				id: ID,
+				flag:'Y'
 			},
 			success: function(jsonData) {
 				if (jsonData) {
@@ -418,7 +419,7 @@ define(function(require, exports, module) {
 								editUrl += 'Trust.html';
 							}
 						}
-						$windowManager.create('product_edit_footer', 'editFooter.html?typeId='+typeId+'&editType='+editType, false, true, function(show) {
+						$windowManager.create('product_edit_footer', 'editFooter.html?typeId='+typeId+'&editType='+editType+'&id='+ID, false, true, function(show) {
 							show();
 							$nativeUIManager.wattingClose();
 						});

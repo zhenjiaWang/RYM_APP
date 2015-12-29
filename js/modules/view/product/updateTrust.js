@@ -8,6 +8,7 @@ define(function(require, exports, module) {
 	var $validator = require('core/validator');
 	var queryMap = parseURL();
 	var attToken = queryMap.get('attToken');
+	var id = queryMap.get('id');
 	addFileSuccess = function(src) {
 		var jsonDataStr = $userInfo.get('uploadFiles');
 		if (jsonDataStr) {
@@ -145,6 +146,30 @@ define(function(require, exports, module) {
 		$validator.setUp();
 	};
 	loadData = function() {
+		$.ajax({
+			type: 'POST',
+			url: $common.getRestApiURL() + '/product/info/editDataRemarks',
+			dataType: 'json',
+			data: {
+				id: id
+			},
+			success: function(jsonData) {
+				if (jsonData) {
+					if (jsonData['result'] == '0') {
+						var remarks = jsonData['remarks'];
+						if (remarks) {
+							$('#remarks').val(remarks);
+							$('#remarksDIV').html(remarks);
+						}
+					} else {
+						$nativeUIManager.alert('提示', '获取产品描述失败', 'OK', function() {});
+					}
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				$nativeUIManager.alert('提示', '获取产品描述失败', 'OK', function() {});
+			}
+		});
 		var editJsonStr = $userInfo.get('editJson');
 		if (editJsonStr) {
 			var editJson = JSON.parse(editJsonStr);
@@ -157,8 +182,6 @@ define(function(require, exports, module) {
 					$('#productName').val(productInfo['name']);
 					$('#productOrgId').val(productInfo['productOrgId']);
 					$('#orgName').val(productInfo['orgName']);
-					$('#remarks').val(productInfo['remarks']);
-					$('#remarksDIV').html(productInfo['remarks']);
 
 					$('#payOffType').val(trust['payOffType']);
 

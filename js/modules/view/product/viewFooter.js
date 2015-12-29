@@ -10,6 +10,8 @@ define(function(require, exports, module) {
 	var $scrollEvent = require('manager/scrollEvent');
 	var queryMap = parseURL();
 	var typeId = queryMap.get('typeId');
+	var id = queryMap.get('id');
+	var tab = queryMap.get('tab');
 	var relationView = queryMap.get('relationView');
 	bindEvent = function() {
 		$scrollEvent.bindEvent(function() {
@@ -90,7 +92,7 @@ define(function(require, exports, module) {
 			} else if (typeId == '3') {
 				viewUrl = 'viewTrust.html';
 			}
-			var productViewWin = plus.webview.create(viewUrl, "product_view", {
+			var productViewWin = plus.webview.create(viewUrl+'?id='+id+'&tab='+tab, "product_view", {
 				top: "0px",
 				bottom: "50px",
 				scrollIndicator: 'vertical'

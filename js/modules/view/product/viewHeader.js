@@ -80,7 +80,8 @@ define(function(require, exports, module) {
 			dataType: 'json',
 			data: {
 				id: id,
-				tab: tab
+				tab: tab,
+				flag:'Y'
 			},
 			success: function(jsonData) {
 				if (jsonData) {
@@ -101,7 +102,8 @@ define(function(require, exports, module) {
 			dataType: 'json',
 			data: {
 				id: id,
-				tab: tab
+				tab: tab,
+				flag:'Y'
 			},
 			success: function(jsonData) {
 				if (jsonData) {
@@ -139,7 +141,7 @@ define(function(require, exports, module) {
 	};
 	loadWebview = function(typeId) {
 		var _relationView = relationView == null ? 'N' : relationView;
-		var productFooterWin = plus.webview.create('viewFooter.html?typeId=' + typeId + '&relationView=' + _relationView, "product_view_footer", {
+		var productFooterWin = plus.webview.create('viewFooter.html?typeId=' + typeId + '&relationView=' + _relationView+'&id='+id+'&tab='+tab, "product_view_footer", {
 			top: "50px",
 			bottom: "0px",
 			scrollIndicator: 'vertical'
